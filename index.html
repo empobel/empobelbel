@@ -3,1864 +3,291 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <title>Thập Tứ Tour · Khám Phá Quy Nhơn 4N3Đ | THPT Lương Thế Vinh TP.HCM</title>
-  <meta name="description" content="Website cẩm nang giới thiệu hành trình tour du lịch Quy Nhơn 4 ngày 3 đêm khởi hành từ TP.HCM: Kỳ Co, Eo Gió, Ghềnh Ráng, Khách sạn Odin 4 sao.">
+  <title>Thập Tứ Tour - Khám Phá Quy Nhơn | Lớp 10A4 THPT Lương Thế Vinh TP.HCM</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="hero-bg.jpg" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-/* Hallmark · v2.0.0 · theme: editorial · genre: editorial · shape: showcase */
-/* critique: bespoke travel tour guide for Quy Nhon 4N3D with Animate UI motion tokens */
-
-:root {
-  /* Hallmark Color Tokens - Oceanic Editorial */
-  --color-paper: oklch(98.2% 0.008 85);
-  --color-paper-2: oklch(95% 0.012 85);
-  --color-paper-3: oklch(99.5% 0.004 85);
-  --color-paper-alpha: oklch(98.2% 0.008 85 / 0.85);
-  --color-ink: oklch(18% 0.02 240);
-  --color-ink-2: oklch(34% 0.02 240);
-  --color-muted: oklch(52% 0.018 240);
-  --color-rule: oklch(88% 0.01 85);
-  --color-ink-rule: oklch(32% 0.02 240);
-
-  /* Brand Accents */
-  --color-accent: oklch(48% 0.15 195);
-  --color-accent-hover: oklch(42% 0.17 195);
-  --color-accent-ink: oklch(99% 0.004 85);
-  --color-accent-amber: oklch(72% 0.18 55);
-  --color-accent-amber-hover: oklch(66% 0.2 55);
-  --color-accent-amber-ink: oklch(18% 0.02 240);
-  --color-focus: oklch(48% 0.15 195);
-  --color-surface-card: oklch(99.5% 0.004 85);
-  --color-surface-hover: oklch(96.5% 0.01 85);
-  --color-tag-bg: oklch(93% 0.02 195);
-  --color-tag-text: oklch(36% 0.12 195);
-  --color-amber-tag-bg: oklch(93% 0.04 60);
-  --color-amber-tag-text: oklch(40% 0.14 55);
-
-  /* Functional Overlay & Ambient Tokens */
-  --color-hero-glow: oklch(92% 0.04 195 / 0.35);
-  --color-video-bg: oklch(14% 0.015 240);
-  --color-video-overlay: oklch(14% 0.015 240 / 0.25);
-
-  /* Typography with native Vietnamese diacritic support */
-  --font-display: "Fraunces", "Be Vietnam Pro", Georgia, serif;
-  --font-body: "Be Vietnam Pro", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-
-  /* Hallmark Spacing Tokens (4px scale) */
-  --space-2xs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
-  --space-3xl: 64px;
-  --space-4xl: 96px;
-
-  /* Layout & Geometry */
-  --container-max: 1200px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-pill: 999px;
-  --rule-hair: 1px;
-  --rule-bar: 2px;
-  --shadow-sm: 0 2px 8px -2px oklch(18% 0.02 240 / 0.08);
-  --shadow-md: 0 12px 28px -8px oklch(18% 0.02 240 / 0.12);
-  --shadow-lg: 0 24px 48px -12px oklch(18% 0.02 240 / 0.16);
-
-  /* Animate UI Motion Tokens */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-soft: cubic-bezier(0.215, 0.61, 0.355, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-color: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --dur-press: 120ms;
-  --dur-fast: 180ms;
-  --dur-menu: 220ms;
-  --dur-normal: 300ms;
-  --dur-disclosure: 350ms;
-  --dur-dialog: 450ms;
-}
-
-[data-theme="dark"] {
-  --color-paper: oklch(15% 0.015 240);
-  --color-paper-2: oklch(19% 0.018 240);
-  --color-paper-3: oklch(23% 0.02 240);
-  --color-paper-alpha: oklch(15% 0.015 240 / 0.85);
-  --color-ink: oklch(96% 0.008 85);
-  --color-ink-2: oklch(84% 0.012 85);
-  --color-muted: oklch(64% 0.015 240);
-  --color-rule: oklch(28% 0.02 240);
-  --color-ink-rule: oklch(34% 0.02 240);
-
-  --color-accent: oklch(66% 0.15 195);
-  --color-accent-hover: oklch(72% 0.17 195);
-  --color-accent-ink: oklch(14% 0.015 240);
-  --color-accent-amber: oklch(78% 0.17 55);
-  --color-accent-amber-hover: oklch(84% 0.19 55);
-  --color-accent-amber-ink: oklch(14% 0.015 240);
-  --color-focus: oklch(66% 0.15 195);
-  --color-surface-card: oklch(20% 0.018 240);
-  --color-surface-hover: oklch(24% 0.02 240);
-  --color-tag-bg: oklch(25% 0.04 195);
-  --color-tag-text: oklch(75% 0.12 195);
-  --color-amber-tag-bg: oklch(26% 0.05 60);
-  --color-amber-tag-text: oklch(82% 0.14 55);
-
-  --color-hero-glow: oklch(22% 0.05 195 / 0.25);
-  --color-video-bg: oklch(11% 0.012 240);
-  --color-video-overlay: oklch(11% 0.012 240 / 0.35);
-
-  --shadow-sm: 0 2px 8px -2px oklch(0% 0 0 / 0.3);
-  --shadow-md: 0 12px 28px -8px oklch(0% 0 0 / 0.45);
-  --shadow-lg: 0 24px 48px -12px oklch(0% 0 0 / 0.6);
-}
-
-/* Floor 4: overflow-x: clip on both html and body */
-html, body {
-  overflow-x: clip;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: var(--font-body);
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  line-height: 1.6;
-  font-variant-numeric: tabular-nums;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-img, video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Floor 6: Focus ring via outline, not border, appearing instantly */
-:focus-visible {
-  outline: var(--rule-bar) solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-/* Floor 5: Image-bearing grid tracks use minmax(0, 1fr) and overflow-wrap */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  color: var(--color-ink);
-  overflow-wrap: break-word;
-  min-width: 0;
-  line-height: 1.25;
-}
-
-/* Container */
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--space-md);
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-inline: var(--space-lg);
-  }
-}
-
-/* Buttons with spring.press tokens */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.95rem;
-  border: var(--rule-bar) solid transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) var(--ease-color), border-color var(--dur-fast) var(--ease-color), color var(--dur-fast) var(--ease-color), box-shadow var(--dur-fast) var(--ease-out);
-}
-
-.btn:active {
-  transform: scale(0.97);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.btn-primary {
-  background-color: var(--color-accent);
-  color: var(--color-accent-ink);
-  border-color: var(--color-accent);
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-}
-
-.btn-secondary {
-  background-color: var(--color-paper-3);
-  color: var(--color-ink);
-  border-color: var(--color-rule);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background-color: var(--color-surface-hover);
-  border-color: var(--color-ink-rule);
-}
-
-.btn-amber {
-  background-color: var(--color-accent-amber);
-  color: var(--color-accent-amber-ink);
-  border-color: var(--color-accent-amber);
-}
-
-.btn-amber:hover:not(:disabled) {
-  background-color: var(--color-accent-amber-hover);
-  border-color: var(--color-accent-amber-hover);
-}
-
-/* Header & Nav */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background-color: var(--color-paper-alpha);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-  transition: background-color var(--dur-normal) var(--ease-color), border-color var(--dur-normal) var(--ease-color);
-}
-
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 72px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.logo-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  background-color: var(--color-accent);
-  color: var(--color-accent-ink);
-}
-
-.nav-menu {
-  display: none;
-  align-items: center;
-  gap: var(--space-md);
-  list-style: none;
-}
-
-@media (min-width: 992px) {
-  .nav-menu {
-    display: flex;
-  }
-}
-
-.nav-link {
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--color-ink-2);
-  padding: var(--space-2xs) var(--space-xs);
-  border-radius: var(--radius-sm);
-  transition: color var(--dur-fast) var(--ease-color);
-}
-
-.nav-link:hover {
-  color: var(--color-accent);
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.theme-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-paper-3);
-  border: var(--rule-hair) solid var(--color-rule);
-  color: var(--color-ink);
-  cursor: pointer;
-  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) var(--ease-color);
-}
-
-.theme-toggle-btn:active {
-  transform: scale(0.92);
-}
-
-.theme-icon-sun {
-  display: block;
-}
-
-.theme-icon-moon {
-  display: none;
-}
-
-[data-theme="dark"] .theme-icon-sun {
-  display: none;
-}
-
-[data-theme="dark"] .theme-icon-moon {
-  display: block;
-}
-
-/* Hero Section */
-.hero {
-  position: relative;
-  padding-block: var(--space-2xl) var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-  background-color: var(--color-paper);
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-xl);
-  align-items: center;
-}
-
-@media (min-width: 992px) {
-  .hero-grid {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  }
-}
-
-.hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-2xs) var(--space-md);
-  border-radius: var(--radius-pill);
-  background-color: var(--color-tag-bg);
-  color: var(--color-tag-text);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: var(--space-md);
-  border: var(--rule-hair) solid var(--color-rule);
-}
-
-.hero-title {
-  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-md);
-  color: var(--color-ink);
-}
-
-.hero-desc {
-  font-size: clamp(1rem, 1.2vw, 1.18rem);
-  color: var(--color-ink-2);
-  margin-bottom: var(--space-lg);
-  max-width: 580px;
-}
-
-.hero-specs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
-  max-width: 540px;
-}
-
-@media (min-width: 576px) {
-  .hero-specs {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.spec-item {
-  padding: var(--space-sm);
-  background-color: var(--color-paper-3);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-md);
-}
-
-.spec-label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--color-muted);
-  font-weight: 500;
-  margin-bottom: 2px;
-}
-
-.spec-value {
-  display: block;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.hero-visual {
-  position: relative;
-}
-
-.hero-visual-card {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: clip;
-  border: var(--rule-bar) solid var(--color-rule);
-  box-shadow: var(--shadow-lg);
-  background-color: var(--color-paper-2);
-}
-
-.hero-image {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  transition: transform var(--dur-normal) var(--ease-out);
-}
-
-.hero-visual-card:hover .hero-image {
-  transform: scale(1.03);
-}
-
-.hero-image-caption {
-  position: absolute;
-  bottom: var(--space-md);
-  left: var(--space-md);
-  right: var(--space-md);
-  padding: var(--space-sm) var(--space-md);
-  background-color: var(--color-paper-alpha);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius-md);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-ink);
-  border: var(--rule-hair) solid var(--color-rule);
-}
-
-/* Video Showcase Section */
-.video-section {
-  padding-block: var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-  background-color: var(--color-paper-2);
-}
-
-.section-head {
-  text-align: center;
-  max-width: 680px;
-  margin-inline: auto;
-  margin-bottom: var(--space-2xl);
-}
-
-.section-title {
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 700;
-  margin-bottom: var(--space-xs);
-}
-
-.section-subtitle {
-  font-size: 1rem;
-  color: var(--color-muted);
-}
-
-.video-frame-wrap {
-  position: relative;
-  max-width: 960px;
-  margin-inline: auto;
-  border-radius: var(--radius-lg);
-  overflow: clip;
-  border: var(--rule-bar) solid var(--color-ink-rule);
-  box-shadow: var(--shadow-lg);
-  background-color: var(--color-video-bg);
-}
-
-.video-player {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-}
-
-.video-controls-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-video-overlay);
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.video-play-btn {
-  width: 68px;
-  height: 68px;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-accent-amber);
-  color: var(--color-accent-amber-ink);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-md);
-  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) var(--ease-color);
-}
-
-.video-play-btn:active {
-  transform: scale(0.92);
-}
-
-.video-play-btn svg {
-  width: 28px;
-  height: 28px;
-  margin-left: 3px;
-}
-
-/* Destinations Grid */
-.destinations-section {
-  padding-block: var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-}
-
-.destinations-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: var(--space-lg);
-}
-
-@media (min-width: 640px) {
-  .destinations-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .destinations-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.dest-card {
-  background-color: var(--color-surface-card);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-lg);
-  overflow: clip;
-  display: flex;
-  flex-direction: column;
-  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-color);
-}
-
-.dest-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-ink-rule);
-}
-
-.dest-card:active {
-  transform: scale(0.985);
-}
-
-.dest-image-wrap {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  overflow: clip;
-  background-color: var(--color-paper-2);
-}
-
-.dest-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--dur-normal) var(--ease-out);
-}
-
-.dest-card:hover .dest-image {
-  transform: scale(1.05);
-}
-
-.dest-tag {
-  position: absolute;
-  top: var(--space-sm);
-  left: var(--space-sm);
-  padding: 3px var(--space-xs);
-  border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 600;
-  background-color: var(--color-paper-alpha);
-  backdrop-filter: blur(6px);
-  color: var(--color-ink);
-  border: var(--rule-hair) solid var(--color-rule);
-}
-
-.dest-content {
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.dest-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: var(--space-2xs);
-}
-
-.dest-desc {
-  font-size: 0.9rem;
-  color: var(--color-ink-2);
-  margin-bottom: var(--space-md);
-  flex: 1;
-}
-
-.dest-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--space-sm);
-  border-top: var(--rule-hair) solid var(--color-rule);
-  font-size: 0.85rem;
-  color: var(--color-muted);
-}
-
-/* Timeline & Itinerary Section */
-.itinerary-section {
-  padding-block: var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-  background-color: var(--color-paper-2);
-}
-
-.timeline-tabs-wrap {
-  display: flex;
-  justify-content: center;
-  margin-bottom: var(--space-xl);
-}
-
-.timeline-tabs {
-  display: inline-flex;
-  gap: var(--space-2xs);
-  padding: var(--space-2xs);
-  background-color: var(--color-paper-3);
-  border-radius: var(--radius-pill);
-  border: var(--rule-hair) solid var(--color-rule);
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.tab-btn {
-  padding: var(--space-xs) var(--space-lg);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-ink-2);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform var(--dur-press) var(--ease-out), color var(--dur-fast) var(--ease-color), background-color var(--dur-fast) var(--ease-color);
-}
-
-.tab-btn:active {
-  transform: scale(0.96);
-}
-
-.tab-btn.active {
-  background-color: var(--color-accent);
-  color: var(--color-accent-ink);
-  box-shadow: var(--shadow-sm);
-}
-
-.day-panel {
-  display: none;
-}
-
-.day-panel.active {
-  display: block;
-}
-
-.day-summary-banner {
-  background-color: var(--color-surface-card);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-md);
-  padding: var(--space-md) var(--space-lg);
-  margin-bottom: var(--space-xl);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-}
-
-.day-summary-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.day-summary-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  font-size: 0.88rem;
-  color: var(--color-muted);
-}
-
-.timeline-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  max-width: 860px;
-  margin-inline: auto;
-}
-
-.timeline-card {
-  display: grid;
-  grid-template-columns: 80px minmax(0, 1fr);
-  gap: var(--space-md);
-  background-color: var(--color-surface-card);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  transition: border-color var(--dur-fast) var(--ease-color);
-}
-
-@media (max-width: 540px) {
-  .timeline-card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.timeline-card:hover {
-  border-color: var(--color-accent);
-}
-
-.timeline-time-col {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--color-accent);
-  padding-top: var(--space-2xs);
-}
-
-.timeline-title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-2xs);
-}
-
-.timeline-item-title {
-  font-size: 1.08rem;
-  font-weight: 700;
-}
-
-.timeline-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 2px var(--space-xs);
-  border-radius: var(--radius-pill);
-}
-
-.timeline-badge-tour {
-  background-color: var(--color-tag-bg);
-  color: var(--color-tag-text);
-}
-
-.timeline-badge-self {
-  background-color: var(--color-amber-tag-bg);
-  color: var(--color-amber-tag-text);
-}
-
-.timeline-desc {
-  font-size: 0.92rem;
-  color: var(--color-ink-2);
-  margin-bottom: var(--space-xs);
-}
-
-.timeline-cost {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--color-muted);
-}
-
-.timeline-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--space-2xl);
-}
-
-/* Culinary Section */
-.culinary-section {
-  padding-block: var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-}
-
-.culinary-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: var(--space-md);
-}
-
-@media (min-width: 576px) {
-  .culinary-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 992px) {
-  .culinary-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.food-card {
-  background-color: var(--color-surface-card);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
-}
-
-.food-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: var(--space-2xs);
-}
-
-.food-spot {
-  font-size: 0.82rem;
-  color: var(--color-muted);
-  margin-bottom: var(--space-xs);
-}
-
-.food-desc {
-  font-size: 0.88rem;
-  color: var(--color-ink-2);
-  flex: 1;
-  margin-bottom: var(--space-sm);
-}
-
-.food-price {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.92rem;
-  color: var(--color-accent-amber);
-}
-
-/* Costs & Packing Section */
-.costs-section {
-  padding-block: var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-  background-color: var(--color-paper-2);
-}
-
-.costs-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-xl);
-}
-
-@media (min-width: 992px) {
-  .costs-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.costs-card {
-  background-color: var(--color-surface-card);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-}
-
-.costs-card-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin-bottom: var(--space-md);
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.costs-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.cost-row {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-xs);
-  font-size: 0.92rem;
-  color: var(--color-ink-2);
-  padding-bottom: var(--space-xs);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-}
-
-.cost-row:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.check-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: 0.92rem;
-  color: var(--color-ink);
-  cursor: pointer;
-  user-select: none;
-}
-
-.check-item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--color-accent);
-  cursor: pointer;
-}
-
-/* FAQ Accordion */
-.faq-section {
-  padding-block: var(--space-3xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-}
-
-.faq-list {
-  max-width: 800px;
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.faq-item {
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-md);
-  background-color: var(--color-surface-card);
-  overflow: clip;
-}
-
-.faq-trigger {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-  padding: var(--space-md) var(--space-lg);
-  background: transparent;
-  border: none;
-  text-align: left;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-ink);
-  cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease-color);
-}
-
-.faq-trigger:hover {
-  background-color: var(--color-surface-hover);
-}
-
-.faq-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  transition: transform var(--dur-disclosure) var(--ease-soft);
-}
-
-.faq-item.open .faq-icon {
-  transform: rotate(180deg);
-}
-
-.faq-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--dur-disclosure) var(--ease-soft);
-}
-
-.faq-item.open .faq-content {
-  grid-template-rows: 1fr;
-}
-
-.faq-inner {
-  overflow: hidden;
-}
-
-.faq-text {
-  padding: 0 var(--space-lg) var(--space-md);
-  font-size: 0.92rem;
-  color: var(--color-ink-2);
-  line-height: 1.6;
-}
-
-/* Footer */
-.footer {
-  padding-block: var(--space-2xl);
-  border-top: var(--rule-hair) solid var(--color-rule);
-  background-color: var(--color-paper-3);
-  font-size: 0.88rem;
-  color: var(--color-muted);
-}
-
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  align-items: center;
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .footer-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-  }
-}
-
-/* Floor 7: prefers-reduced-motion fallback */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Print CSS */
-@media print {
-  .header, .video-section, .faq-section, .theme-toggle-btn {
-    display: none !important;
-  }
-  body {
-    background: transparent !important;
-    color: var(--color-ink) !important;
-  }
-  .itinerary-section {
-    background: transparent !important;
-  }
-  .day-panel {
-    display: block !important;
-    page-break-after: always;
-  }
-}
-
-  </style>
-  <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('thap_tu_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved ? saved : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
-    })();
-  </script>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- ===== THANH TIẾN TRÌNH CUỘN TRANG ===== -->
+  <div class="scroll-progress-bar" id="scrollProgress"></div>
+
+  <!-- ===== CON TRỎ CHUỘT TƯƠNG TÁC (MAGIC CURSOR) ===== -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ===== HEADER ===== -->
   <header class="header">
-    <div class="container header-inner">
-      <a href="#top" class="logo">
-        <span class="logo-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M2 12h20M2 12a10 10 0 0 1 20 0M2 12a10 10 0 0 0 20 0"></path>
-          </svg>
-        </span>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image">
         <span>Thập Tứ Tour</span>
       </a>
-
-      <nav aria-label="Điều hướng chính">
-        <ul class="nav-menu">
-          <li><a href="#gioi-thieu" class="nav-link">Giới thiệu</a></li>
-          <li><a href="#diem-den" class="nav-link">Điểm đến</a></li>
-          <li><a href="#lich-trinh" class="nav-link">Lịch trình</a></li>
-          <li><a href="#am-thuc" class="nav-link">Ẩm thực</a></li>
-          <li><a href="#chi-phi" class="nav-link">Chi phí</a></li>
-          <li><a href="#faq" class="nav-link">Hỏi đáp</a></li>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="nav">
+        <ul class="nav-list">
+          <li><a href="index.html" class="active">Trang chủ</a></li>
+          <li><a href="#ve-tui-toi">Về chúng tôi</a></li>
+          <li><a href="#lich-trinh">Lịch trình chuyến đi</a></li>
+          <li><a href="#dia-diem">Địa điểm nổi bật</a></li>
         </ul>
       </nav>
-
-      <div class="header-actions">
-        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Chuyển chế độ giao diện sáng tối">
-          <span class="theme-icon-sun">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-            </svg>
-          </span>
-          <span class="theme-icon-moon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-            </svg>
-          </span>
-        </button>
-        <a href="#lich-trinh" class="btn btn-primary">Xem lịch trình</a>
-      </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="hero" id="top">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="hero-pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 14 14"></polyline>
-            </svg>
-            <span>Thập Tứ Tour · Cẩm nang hành trình Lớp 10A4</span>
-          </div>
-          <h1 class="hero-title">Khám phá Quy Nhơn 4 ngày 3 đêm</h1>
-          <p class="hero-desc">
-            Trải nghiệm làn nước trong xanh ngọc bích tại Kỳ Co, vẻ đẹp lộng gió của Eo Gió và di tích Ghềnh Ráng Tiên Sa thơ mộng.
+  <!-- ===== HERO BANNER VỚI HIỆU ỨNG PARALLAX ===== -->
+  <section class="hero" id="top">
+    <div class="hero-bg-floating-glow"></div>
+    <div class="hero-content">
+      <div class="project-badge-pill floating-badge">
+        🎓 Dự án học sinh Lớp 10A4 • THPT Lương Thế Vinh TP.HCM
+      </div>
+      <h1 class="hero-title-dynamic">Khám Phá Vẻ Đẹp<br><span class="hero-gradient-text">Quy Nhơn - Bình Định</span></h1>
+      <p>Cùng tụi mình dạo quanh xứ Nẫu mộng mơ: từ làn nước trong xanh ngọc bích Kỳ Co, Eo Gió lộng gió, ẩm thực hải sản phố biển đến trải nghiệm vũ trụ kỳ thú tại ExploraScience.</p>
+      <div class="hero-buttons">
+        <a href="#lich-trinh" class="hero-btn pulse-glow">Xem lịch trình chuyến đi</a>
+        <a href="#dia-diem" class="hero-btn-outline">Địa điểm nổi bật →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE TICKER (DẢI CHỮ CHẠY VÔ TẬN) ===== -->
+  <div class="marquee-ticker-wrap">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span>🌊 THẬP TỨ TOUR</span>
+        <span class="dot">•</span>
+        <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
+        <span class="dot">•</span>
+        <span>🏖️ KỲ CO - EO GIÓ</span>
+        <span class="dot">•</span>
+        <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
+        <span class="dot">•</span>
+        <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
+        <span class="dot">•</span>
+        <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
+        <span class="dot">•</span>
+        <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
+        <span class="dot">•</span>
+        <span>🦞 HẢI SẢN XUÂN DIỆU DUY MẬP</span>
+        <span class="dot">•</span>
+        <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
+        <span class="dot">•</span>
+        <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
+        <span class="dot">•</span>
+        <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
+        <span class="dot">•</span>
+      </div>
+      <div class="marquee-content" aria-hidden="true">
+        <span>🌊 THẬP TỨ TOUR</span>
+        <span class="dot">•</span>
+        <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
+        <span class="dot">•</span>
+        <span>🏖️ KỲ CO - EO GIÓ</span>
+        <span class="dot">•</span>
+        <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
+        <span class="dot">•</span>
+        <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
+        <span class="dot">•</span>
+        <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
+        <span class="dot">•</span>
+        <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
+        <span class="dot">•</span>
+        <span>🦞 HẢI SẢN XUÂN DIỆU DUY MẬP</span>
+        <span class="dot">•</span>
+        <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
+        <span class="dot">•</span>
+        <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
+        <span class="dot">•</span>
+        <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
+        <span class="dot">•</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VỀ TỤI TÔI ===== -->
+  <section class="about-us-section" id="ve-tui-toi">
+    <div class="container">
+      <div class="section-title reveal-on-scroll">
+        <h2>Về Chúng Tôi</h2>
+        <p>Câu chuyện nhỏ đằng sau trang web Thập Tứ Tour</p>
+      </div>
+      
+      <div class="about-us-card tilt-card reveal-on-scroll">
+        <div class="about-us-content">
+          <span class="school-tag">🏫 Lớp 10A4 • Năm 2026 • THPT Lương Thế Vinh TP.HCM</span>
+          <h3>Chào mọi người, tụi mình là Thập Tứ Tour! 👋</h3>
+          <p>
+            Tụi mình là một nhóm học sinh đến từ <strong>lớp 10A4 (khóa 2026), trường THPT Lương Thế Vinh - TP. Hồ Chí Minh</strong>. Xuất phát từ niềm say mê vẻ đẹp biển đảo miền Trung và mong muốn áp dụng công nghệ lập trình web thuần, tụi mình đã xây dựng website này như một cẩm nang giới thiệu du lịch Quy Nhơn thật sinh động và gần gũi.
+          </p>
+          <p>
+            Mục tiêu của website này rất đơn giản: <em>chia sẻ kinh nghiệm, giới thiệu các điểm đến tuyệt đẹp của Quy Nhơn</em> để bất cứ ai đang có ý định ghé thăm xứ Nẫu đều có thể dễ dàng tìm hiểu và lên kế hoạch cho chuyến đi của mình. Tụi mình <strong>không kinh doanh hay nhận đặt tour</strong>, trang web là sản phẩm học tập.
           </p>
 
-          <div class="hero-specs">
-            <div class="spec-item">
-              <span class="spec-label">Thời lượng</span>
-              <span class="spec-value">4 ngày 3 đêm</span>
+          <div class="about-stats-grid">
+            <div class="stat-box">
+              <span class="stat-number">8+</span>
+              <span class="stat-label">Điểm đến nổi bật</span>
             </div>
-            <div class="spec-item">
-              <span class="spec-label">Khởi hành</span>
-              <span class="spec-value">TP.HCM</span>
+            <div class="stat-box">
+              <span class="stat-number">4N3Đ</span>
+              <span class="stat-label">Trọn vẹn hành trình</span>
             </div>
-            <div class="spec-item">
-              <span class="spec-label">Lưu trú</span>
-              <span class="spec-value">Khách sạn Odin 4 sao</span>
+            <div class="stat-box">
+              <span class="stat-number">10A4</span>
+              <span class="stat-label">Tập thể lớp THPT LTV</span>
             </div>
-            <div class="spec-item">
-              <span class="spec-label">Ước tính chi phí</span>
-              <span class="spec-value">5.920.000đ</span>
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <a href="#lich-trinh" class="btn btn-primary">Xem chi tiết lịch trình</a>
-            <a href="#gioi-thieu" class="btn btn-secondary">Xem video thực tế</a>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-visual-card">
-            <img src="hero-bg.jpg" alt="Biển Quy Nhơn trong xanh với bãi cát dài" class="hero-image" width="600" height="450">
-            <div class="hero-image-caption">
-              <span>Bình minh rực rỡ bên bờ biển xứ Nẫu</span>
-            </div>
+        <div class="about-us-image-box">
+          <img src="about-quynhon.jpg" alt="Toàn cảnh biển đảo Quy Nhơn" class="about-us-img">
+          <div class="about-image-caption">
+            <span>🌊 Toàn cảnh Cù Lao Xanh - Quy Nhơn, Bình Định</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Video Showcase Section -->
-    <section class="video-section" id="gioi-thieu">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">Hành trình trải nghiệm xứ Nẫu</h2>
-          <p class="section-subtitle">Ghi lại vẻ đẹp biển đảo trong lành và những khoảnh khắc đáng nhớ của đoàn du khách.</p>
-        </div>
+  <!-- Dải chuyển tiếp phân cách mềm mại giữa 2 phần -->
+  <div class="section-divider-curve">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#ffffff" d="M0,35 C280,80 540,10 820,50 C1100,90 1300,30 1440,55 L1440,80 L0,80 Z"></path>
+    </svg>
+  </div>
 
-        <div class="video-frame-wrap" id="videoFrameWrap">
-          <video id="quyNhonVideo" class="video-player" playsinline preload="metadata" poster="about-quynhon.jpg">
-            <source src="quy-nhon.mp4" type="video/mp4">
-            Trình duyệt của bạn không hỗ trợ thẻ video.
-          </video>
-          <div class="video-controls-overlay" id="videoOverlay">
-            <button type="button" class="video-play-btn" id="videoPlayBtn" aria-label="Phát video hành trình Quy Nhơn">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-            </button>
-          </div>
+  <!-- ===== LỊCH TRÌNH CHUYẾN ĐI (TIMELINE 4 NGÀY 3 ĐÊM) ===== -->
+  <section class="timeline-section" id="lich-trinh">
+    <div class="container">
+      <div class="section-title reveal-on-scroll">
+        <span class="section-badge">🗓️ Lộ trình thực tế 4N3Đ</span>
+        <h2>Lịch Trình Chi Tiết 4 Ngày 3 Đêm</h2>
+        <p>Hành trình trọn vẹn khám phá Quy Nhơn: chi tiết từng mốc giờ, địa điểm dừng chân, ẩm thực đặc sản & phương án dự phòng thời tiết</p>
+      </div>
+
+      <!-- Banner hỗ trợ dù & áo mưa -->
+      <div class="umbrella-alert-banner floating-badge reveal-on-scroll">
+        <span class="umbrella-icon">☂️</span>
+        <div class="umbrella-text">
+          <strong>Lưu ý chu đáo từ Thập Tứ Tour:</strong> Đoàn luôn chuẩn bị sẵn <strong>dù che và áo mưa tiện lợi</strong> để hỗ trợ tận tình cho các thành viên trong suốt chuyến đi!
         </div>
       </div>
-    </section>
 
-    <!-- Destinations Section -->
-    <section class="destinations-section" id="diem-den">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">Điểm dừng chân không thể bỏ lỡ</h2>
-          <p class="section-subtitle">Những thắng cảnh tự nhiên và điểm văn hóa tạo nên sức hút độc đáo của vùng đất Bình Định.</p>
-        </div>
+      <!-- Tabs chuyển Ngày 1 / 2 / 3 / 4 -->
+      <div class="timeline-tabs reveal-on-scroll" id="timelineTabs">
+        <button class="timeline-tab-btn active" data-day="1" type="button">
+          <span class="tab-day-badge">Ngày 1</span>
+          <span class="tab-day-title">Khởi hành & Biển Quy Nhơn</span>
+        </button>
+        <button class="timeline-tab-btn" data-day="2" type="button">
+          <span class="tab-day-badge">Ngày 2</span>
+          <span class="tab-day-title">Kỳ Co – Eo Gió & Phố đêm</span>
+        </button>
+        <button class="timeline-tab-btn" data-day="3" type="button">
+          <span class="tab-day-badge">Ngày 3</span>
+          <span class="tab-day-title">Ghềnh Ráng Tiên Sa & Dạo phố</span>
+        </button>
+        <button class="timeline-tab-btn" data-day="4" type="button">
+          <span class="tab-day-badge">Ngày 4</span>
+          <span class="tab-day-title">Check-in kỉ niệm & Về TP.HCM</span>
+        </button>
+      </div>
 
-        <div class="destinations-grid">
-          <!-- Item 1 -->
-          <article class="dest-card">
-            <div class="dest-image-wrap">
-              <img src="hero-bg.jpg" alt="Bãi biển Kỳ Co với làn nước biển hai màu" class="dest-image" loading="lazy">
-              <span class="dest-tag">Ngày 2</span>
-            </div>
-            <div class="dest-content">
-              <h3 class="dest-title">Bãi biển Kỳ Co</h3>
-              <p class="dest-desc">Được ví như Maldives của Việt Nam với bờ cát trắng mịn, nước biển hai màu ngọc bích và trải nghiệm lặn ngắm san hô Bãi Dứa.</p>
-              <div class="dest-footer">
-                <span>Xã Nhơn Lý, Quy Nhơn</span>
-                <span>Cano khứ hồi</span>
-              </div>
-            </div>
-          </article>
+      <!-- Khung hiển thị Timeline -->
+      <div class="timeline-container" id="timelineContainer">
+        <!-- Render động bằng JS -->
+      </div>
+    </div>
+  </section>
 
-          <!-- Item 2 -->
-          <article class="dest-card">
-            <div class="dest-image-wrap">
-              <img src="about-quynhon.jpg" alt="Vách đá ngoạn mục tại danh thắng Eo Gió" class="dest-image" loading="lazy">
-              <span class="dest-tag">Ngày 2</span>
-            </div>
-            <div class="dest-content">
-              <h3 class="dest-title">Danh thắng Eo Gió</h3>
-              <p class="dest-desc">Cung đường tản bộ uốn lượn ven vách đá kỳ vĩ, nơi đón những làn gió biển tươi mát và góc chụp ảnh hoàng hôn tuyệt mỹ.</p>
-              <div class="dest-footer">
-                <span>Xã Nhơn Lý, Quy Nhơn</span>
-                <span>Điểm ngắm hoàng hôn</span>
-              </div>
-            </div>
-          </article>
+  <!-- ===== DANH MỤC ĐỊA DANH ===== -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="section-title reveal-on-scroll">
+        <h2>Khám phá theo danh mục</h2>
+        <p>Lựa chọn loại hình cảnh sắc Quy Nhơn bạn muốn tìm hiểu</p>
+      </div>
+      <div class="category-grid" id="categoryGrid">
+        <!-- Render bằng JS -->
+      </div>
+    </div>
+  </section>
 
-          <!-- Item 3 -->
-          <article class="dest-card">
-            <div class="dest-image-wrap">
-              <img src="hero-bg.jpg" alt="Khu du lịch Ghềnh Ráng Tiên Sa và bãi đá trứng" class="dest-image" loading="lazy">
-              <span class="dest-tag">Ngày 3</span>
-            </div>
-            <div class="dest-content">
-              <h3 class="dest-title">Ghềnh Ráng Tiên Sa</h3>
-              <p class="dest-desc">Quần thể danh thắng sát biển với bãi đá trứng Hoàng Hậu tròn mịn độc đáo và khu tưởng niệm đồi thi nhân Hàn Mặc Tử.</p>
-              <div class="dest-footer">
-                <span>Phường Ghềnh Ráng</span>
-                <span>Di tích lịch sử</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Item 4 -->
-          <article class="dest-card">
-            <div class="dest-image-wrap">
-              <img src="about-quynhon.jpg" alt="Tượng Phật đôi uy nghiêm tại Tịnh Xá Ngọc Hòa" class="dest-image" loading="lazy">
-              <span class="dest-tag">Ngày 2</span>
-            </div>
-            <div class="dest-content">
-              <h3 class="dest-title">Tịnh Xá Ngọc Hòa</h3>
-              <p class="dest-desc">Điểm đến tâm linh thanh tịnh bên cạnh Eo Gió, nổi tiếng với công trình tượng Phật đôi Quan Thế Âm đồ sộ hướng ra biển lớn.</p>
-              <div class="dest-footer">
-                <span>Bán đảo Phương Mai</span>
-                <span>Chiêm bái tâm linh</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Item 5 -->
-          <article class="dest-card">
-            <div class="dest-image-wrap">
-              <img src="hero-bg.jpg" alt="Trung tâm Khám phá Khoa học ExploraScience Quy Nhơn" class="dest-image" loading="lazy">
-              <span class="dest-tag">Ngày 3</span>
-            </div>
-            <div class="dest-content">
-              <h3 class="dest-title">ExploraScience</h3>
-              <p class="dest-desc">Tổ hợp không gian khoa học tiên phong tại Đông Nam Á với nhà chiếu hình vũ trụ và các phòng thực nghiệm thiên văn học hiện đại.</p>
-              <div class="dest-footer">
-                <span>Đại lộ Khoa học</span>
-                <span>Trải nghiệm vũ trụ</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Item 6 -->
-          <article class="dest-card">
-            <div class="dest-image-wrap">
-              <img src="about-quynhon.jpg" alt="Bờ biển đường Xuân Diệu lung linh về đêm" class="dest-image" loading="lazy">
-              <span class="dest-tag">Ngày 1</span>
-            </div>
-            <div class="dest-content">
-              <h3 class="dest-title">Biển Xuân Diệu và Chợ Đêm</h3>
-              <p class="dest-desc">Cung đường ven biển sầm uất tập trung các quán hải sản tươi sống và phố đêm nhộn nhịp để thưởng thức ẩm thực đường phố.</p>
-              <div class="dest-footer">
-                <span>Trung tâm thành phố</span>
-                <span>Hải sản và quà lưu niệm</span>
-              </div>
-            </div>
-          </article>
+  <!-- ===== TÌM KIẾM ĐỊA DANH NỔI BẬT ===== -->
+  <section class="search-filter" id="dia-diem">
+    <div class="container">
+      <div class="section-title reveal-on-scroll" style="margin-bottom: 25px;">
+        <span class="section-badge">📍 Điểm dừng chân</span>
+        <h2>Địa Điểm Nổi Bật Trong Chuyến Đi</h2>
+        <p>Các địa danh đoàn sẽ ghé thăm cùng mốc thời gian xuất hiện trong lịch trình</p>
+      </div>
+      <div class="search-filter-bar reveal-on-scroll">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Tìm kiếm địa điểm: Kỳ Co, Eo Gió, Khách sạn Odin, Xuân Diệu, Bún cá Ngọc Liên, ExploraScience...">
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Itinerary Section -->
-    <section class="itinerary-section" id="lich-trinh">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">Lịch trình 4 ngày 3 đêm</h2>
-          <p class="section-subtitle">Chương trình được thiết kế khoa học, kết hợp trọn vẹn giữa nghỉ dưỡng, ngắm cảnh và ẩm thực.</p>
-        </div>
-
-        <div class="timeline-tabs-wrap">
-          <div class="timeline-tabs" role="tablist">
-            <button type="button" class="tab-btn active" data-day="day1" role="tab" aria-selected="true">Ngày 1</button>
-            <button type="button" class="tab-btn" data-day="day2" role="tab" aria-selected="false">Ngày 2</button>
-            <button type="button" class="tab-btn" data-day="day3" role="tab" aria-selected="false">Ngày 3</button>
-            <button type="button" class="tab-btn" data-day="day4" role="tab" aria-selected="false">Ngày 4</button>
-          </div>
-        </div>
-
-        <!-- Day 1 Panel -->
-        <div class="day-panel active" id="day1">
-          <div class="day-summary-banner">
-            <div>
-              <h3 class="day-summary-title">Ngày 1: Khởi hành và chạm biển Quy Nhơn</h3>
-              <p class="day-summary-meta">Di chuyển từ TP.HCM, nhận phòng khách sạn Odin và dạo biển đêm</p>
-            </div>
-            <span class="hero-pill">5 mốc hoạt động</span>
-          </div>
-
-          <div class="timeline-list">
-            <div class="timeline-card">
-              <div class="timeline-time-col">02:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Lên xe khởi hành đi Quy Nhơn</h4>
-                  <span class="timeline-badge timeline-badge-tour">Di chuyển</span>
-                </div>
-                <p class="timeline-desc">Xe giường nằm đón đoàn từ TP.HCM, bắt đầu chuyến đi xuôi về vùng biển miền Trung.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">07:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Dừng chân ăn sáng và nghỉ ngơi</h4>
-                  <span class="timeline-badge timeline-badge-self">Ăn uống</span>
-                </div>
-                <p class="timeline-desc">Ăn sáng tại trạm dừng chân dọc đường với các món phở, hủ tiếu, cơm tấm thơm ngon.</p>
-                <span class="timeline-cost">Khoảng 50.000đ mỗi người</span>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">12:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Đến khách sạn Odin Quy Nhơn</h4>
-                  <span class="timeline-badge timeline-badge-tour">Khách sạn 4 sao</span>
-                </div>
-                <p class="timeline-desc">Gửi hành lý tại quầy lễ tân, thưởng thức bữa trưa đặc sản bún cá Ngọc Liên hoặc nem chả Lợi.</p>
-                <span class="timeline-cost">Bún cá 65.000đ mỗi phần</span>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">16:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Nhận phòng và dạo biển Quy Nhơn</h4>
-                  <span class="timeline-badge timeline-badge-tour">Nghỉ dưỡng</span>
-                </div>
-                <p class="timeline-desc">Nghỉ ngơi lấy lại năng lượng, sau đó đi bộ tắm biển và chụp hình tại quảng trường trung tâm thành phố.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">18:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Ăn tối hải sản và dạo chợ đêm</h4>
-                  <span class="timeline-badge timeline-badge-self">Tự túc</span>
-                </div>
-                <p class="timeline-desc">Thưởng thức hải sản tươi rói tại quán Lộc Biển đường Xuân Diệu, dạo chơi mua sắm quà lưu niệm tại chợ đêm.</p>
-                <span class="timeline-cost">150.000đ đến 450.000đ tùy chọn món</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 2 Panel -->
-        <div class="day-panel" id="day2">
-          <div class="day-summary-banner">
-            <div>
-              <h3 class="day-summary-title">Ngày 2: Kỳ Co, Eo Gió và biển đảo Nhơn Lý</h3>
-              <p class="day-summary-meta">Khám phá thiên đường biển đảo, lặn san hô và ngắm hoàng hôn</p>
-            </div>
-            <span class="hero-pill">Kỳ Co và Eo Gió</span>
-          </div>
-
-          <div class="timeline-list">
-            <div class="timeline-card">
-              <div class="timeline-time-col">06:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Ăn sáng tại khách sạn Odin</h4>
-                  <span class="timeline-badge timeline-badge-tour">Điểm tâm</span>
-                </div>
-                <p class="timeline-desc">Dùng bữa sáng phong phú tại khách sạn, chuẩn bị đồ bơi, kem chống nắng và kính mát.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">08:15</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Cano vượt biển sang đảo Kỳ Co</h4>
-                  <span class="timeline-badge timeline-badge-tour">Trải nghiệm</span>
-                </div>
-                <p class="timeline-desc">Trải nghiệm cano cao tốc lướt sóng, tắm biển tại bãi cát trắng mịn và lặn ngắm rạn san hô Bãi Dứa đầy màu sắc.</p>
-                <span class="timeline-cost">Vé và cano 450.000đ đến 490.000đ</span>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">12:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Đại tiệc hải sản làng chài Nhơn Lý</h4>
-                  <span class="timeline-badge timeline-badge-tour">Thực đơn 8 món</span>
-                </div>
-                <p class="timeline-desc">Thưởng thức bữa trưa đậm đà hương vị biển: mực hấp gừng, tôm nướng, cá biển nướng giấy bạc và lẩu hải sản.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">14:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Chiêm bái Tịnh Xá Ngọc Hòa và check-in Eo Gió</h4>
-                  <span class="timeline-badge timeline-badge-tour">Tham quan</span>
-                </div>
-                <p class="timeline-desc">Viếng tượng Phật đôi Quan Thế Âm linh thiêng, sau đó thả bước trên cung đường vách đá lộng gió đẹp như tranh vẽ.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">18:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Tối tự do thưởng thức ẩm thực đường phố</h4>
-                  <span class="timeline-badge timeline-badge-self">Tự do</span>
-                </div>
-                <p class="timeline-desc">Thử bánh xèo tôm nhảy, bánh bèo chén, nem nướng hoặc trải nghiệm câu mực đêm thú vị.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 3 Panel -->
-        <div class="day-panel" id="day3">
-          <div class="day-summary-banner">
-            <div>
-              <h3 class="day-summary-title">Ngày 3: Ghềnh Ráng Tiên Sa và khám phá vũ trụ</h3>
-              <p class="day-summary-meta">Tìm về thi sĩ Hàn Mặc Tử và tìm hiểu khoa học thiên văn</p>
-            </div>
-            <span class="hero-pill">Khoa học và Văn hóa</span>
-          </div>
-
-          <div class="timeline-list">
-            <div class="timeline-card">
-              <div class="timeline-time-col">07:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Ăn sáng bánh hỏi lòng heo xứ Nẫu</h4>
-                  <span class="timeline-badge timeline-badge-self">Đặc sản</span>
-                </div>
-                <p class="timeline-desc">Thưởng thức món điểm tâm trứ danh của người Bình Định tại quán Diên Hồng hoặc Mẫn.</p>
-                <span class="timeline-cost">40.000đ đến 55.000đ mỗi phần</span>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">08:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Tham quan Ghềnh Ráng Tiên Sa</h4>
-                  <span class="timeline-badge timeline-badge-tour">Thắng cảnh</span>
-                </div>
-                <p class="timeline-desc">Khám phá bãi đá trứng Hoàng Hậu tròn nhẵn tự nhiên, viếng mộ nhà thơ Hàn Mặc Tử và ngắm toàn cảnh vịnh Quy Nhơn.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">13:45</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Trải nghiệm Trung tâm ExploraScience</h4>
-                  <span class="timeline-badge timeline-badge-tour">Khoa học</span>
-                </div>
-                <p class="timeline-desc">Khám phá nhà chiếu hình vũ trụ vòm tròn, tương tác vật lý thực nghiệm và chiêm ngưỡng các mô hình thiên hà.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">18:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Bữa tiệc Gala tổng kết hành trình</h4>
-                  <span class="timeline-badge timeline-badge-tour">Ấm cúng</span>
-                </div>
-                <p class="timeline-desc">Tập trung ăn tối với các món cơm niêu, gà chỉ Sông Cầu hoặc lẩu hải sản nướng than hồng.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 4 Panel -->
-        <div class="day-panel" id="day4">
-          <div class="day-summary-banner">
-            <div>
-              <h3 class="day-summary-title">Ngày 4: Mua quà đặc sản và về lại TP.HCM</h3>
-              <p class="day-summary-meta">Tạm biệt thành phố biển, mua quà lưu niệm và lên xe trở về</p>
-            </div>
-            <span class="hero-pill">Kết thúc hành trình</span>
-          </div>
-
-          <div class="timeline-list">
-            <div class="timeline-card">
-              <div class="timeline-time-col">07:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Ăn sáng và dạo phố biển buổi sớm</h4>
-                  <span class="timeline-badge timeline-badge-tour">Thong thả</span>
-                </div>
-                <p class="timeline-desc">Thưởng thức cà phê ngắm biển sớm tại Surf Bar hoặc các quán cà phê dọc công viên Xuân Diệu.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">09:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Mua sắm đặc sản tại Chợ Đầm Quy Nhơn</h4>
-                  <span class="timeline-badge timeline-badge-self">Mua sắm</span>
-                </div>
-                <p class="timeline-desc">Chọn mua bánh ít lá gai, tré rơm Bình Định, mực ngào ớt, nem chua Chợ Huyện làm quà cho gia đình và bạn bè.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">11:30</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Trả phòng khách sạn Odin</h4>
-                  <span class="timeline-badge timeline-badge-tour">Hoàn tất</span>
-                </div>
-                <p class="timeline-desc">Kiểm tra hành lý cá nhân, làm thủ tục trả phòng và dùng bữa trưa nhẹ trước giờ xe đón.</p>
-              </div>
-            </div>
-
-            <div class="timeline-card">
-              <div class="timeline-time-col">13:00</div>
-              <div class="timeline-content-col">
-                <div class="timeline-title-row">
-                  <h4 class="timeline-item-title">Lên xe trở về TP.HCM</h4>
-                  <span class="timeline-badge timeline-badge-tour">Về lại điểm đón</span>
-                </div>
-                <p class="timeline-desc">Xe giường nằm đón đoàn khởi hành về lại TP.HCM, kết thúc chuyến du lịch Quy Nhơn 4 ngày 3 đêm đầy ắp kỷ niệm đẹp.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline-actions">
-          <button type="button" class="btn btn-secondary" onclick="window.print()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 6 2 18 2 18 9"></polyline>
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-              <rect x="6" y="14" width="12" height="8"></rect>
-            </svg>
-            <span>In và tải lịch trình lưu trữ</span>
-          </button>
-        </div>
+  <!-- ===== DANH SÁCH ĐỊA ĐIỂM ===== -->
+  <section class="tours-section">
+    <div class="container">
+      <div class="tour-grid" id="tourGrid">
+        <!-- Render bằng JS -->
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Culinary Section -->
-    <section class="culinary-section" id="am-thuc">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">Ẩm thực xứ Nẫu đậm đà</h2>
-          <p class="section-subtitle">Thưởng thức hương vị nguyên bản của hải sản tươi sống và những món ăn dân dã nức tiếng.</p>
-        </div>
-
-        <div class="culinary-grid">
-          <div class="food-card">
-            <h3 class="food-title">Bún cá Ngọc Liên</h3>
-            <span class="food-spot">379 Nguyễn Huệ, TP. Quy Nhơn</span>
-            <p class="food-desc">Nước dùng ngọt thanh nấu từ xương cá tươi, chả cá thu dai mềm kèm rau sống bắp chuối tươi mát.</p>
-            <span class="food-price">65.000đ mỗi tô</span>
-          </div>
-
-          <div class="food-card">
-            <h3 class="food-title">Nem nướng chả nướng Lợi</h3>
-            <span class="food-spot">113 Tăng Bạt Hổ, TP. Quy Nhơn</span>
-            <p class="food-desc">Nem nướng than thơm phức ăn kèm ram giòn rụm, rau sống và nước chấm đậu phộng bí truyền béo ngậy.</p>
-            <span class="food-price">55.000đ mỗi phần</span>
-          </div>
-
-          <div class="food-card">
-            <h3 class="food-title">Hải sản Lộc Biển</h3>
-            <span class="food-spot">48 Xuân Diệu, ven biển Quy Nhơn</span>
-            <p class="food-desc">Mực hấp cuốn bánh tráng, tôm hùm sốt bơ tỏi, ốc nhảy luộc sả tươi ngon được đánh bắt từ các thuyền sớm.</p>
-            <span class="food-price">150.000đ đến 450.000đ</span>
-          </div>
-
-          <div class="food-card">
-            <h3 class="food-title">Bánh xèo tôm nhảy Gia Vỹ</h3>
-            <span class="food-spot">14 Diên Hồng, TP. Quy Nhơn</span>
-            <p class="food-desc">Vỏ bánh giòn rụm màu vàng óng ôm trọn những con tôm đất đỏ au nhảy tanh tách, ăn cùng xoài băm chua ngọt.</p>
-            <span class="food-price">45.000đ mỗi chiếc</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Costs & Checklist Section -->
-    <section class="costs-section" id="chi-phi">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">Chi phí và vật dụng cần mang</h2>
-          <p class="section-subtitle">Phân định rõ ràng quyền lợi trọn gói và danh sách chuẩn bị để chuyến đi diễn ra trọn vẹn nhất.</p>
-        </div>
-
-        <div class="costs-grid">
-          <!-- Card 1: Costs breakdown -->
-          <div class="costs-card">
-            <h3 class="costs-card-title">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
-                <path d="M12 18V6"></path>
-              </svg>
-              <span>Ước tính các khoản chi phí chính</span>
-            </h3>
-            <ul class="costs-list">
-              <li class="cost-row">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>Xe giường nằm khứ hồi chất lượng cao chặng TP.HCM đến Quy Nhơn.</span>
-              </li>
-              <li class="cost-row">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>3 đêm lưu trú tiêu chuẩn tại Khách sạn Odin 4 sao trung tâm biển Quy Nhơn.</span>
-              </li>
-              <li class="cost-row">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>Tour cano cao tốc ra đảo Kỳ Co, lặn ngắm san hô Bãi Dứa và bữa trưa hải sản.</span>
-              </li>
-              <li class="cost-row">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>Toàn bộ vé tham quan danh thắng Eo Gió, Ghềnh Ráng và ExploraScience.</span>
-              </li>
-              <li class="cost-row">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>Bảo hiểm du lịch nội địa mức bồi thường tối đa 50.000.000đ mỗi vụ.</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Card 2: Packing Checklist -->
-          <div class="costs-card">
-            <h3 class="costs-card-title">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-              </svg>
-              <span>Hành trang nên chuẩn bị</span>
-            </h3>
-            <ul class="costs-list" id="packingChecklist">
-              <li class="cost-row">
-                <label class="check-item">
-                  <input type="checkbox" data-check="cccd" checked>
-                  <span>Căn cước công dân hoặc hộ chiếu còn hạn sử dụng.</span>
-                </label>
-              </li>
-              <li class="cost-row">
-                <label class="check-item">
-                  <input type="checkbox" data-check="sunscreen" checked>
-                  <span>Kem chống nắng quang phổ rộng SPF 50+ và kính râm.</span>
-                </label>
-              </li>
-              <li class="cost-row">
-                <label class="check-item">
-                  <input type="checkbox" data-check="swimwear" checked>
-                  <span>Bộ đồ bơi và dép xỏ ngón chống trơn trượt khi đi cano.</span>
-                </label>
-              </li>
-              <li class="cost-row">
-                <label class="check-item">
-                  <input type="checkbox" data-check="powerbank">
-                  <span>Pin sạc dự phòng điện thoại và túi bọc chống nước.</span>
-                </label>
-              </li>
-              <li class="cost-row">
-                <label class="check-item">
-                  <input type="checkbox" data-check="medicine">
-                  <span>Thuốc say xe và một số vật dụng sơ cứu cá nhân.</span>
-                </label>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Accordion -->
-    <section class="faq-section" id="faq">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">Câu hỏi thường gặp</h2>
-          <p class="section-subtitle">Những thông tin cần biết trước khi khởi hành chuyến du lịch Quy Nhơn.</p>
-        </div>
-
-        <div class="faq-list">
-          <!-- FAQ 1 -->
-          <div class="faq-item">
-            <button type="button" class="faq-trigger" aria-expanded="false">
-              <span>Thời gian xe giường nằm di chuyển từ TP.HCM đến Quy Nhơn là bao lâu?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner">
-                <p class="faq-text">Xe giường nằm xuất phát lúc 02:00 sáng và đến Quy Nhơn vào khoảng 12:00 trưa (mất khoảng 10 tiếng bao gồm thời gian nghỉ chân ăn sáng dọc đường). Xe trang bị rèm riêng biệt, cổng sạc và điều hòa êm ái.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- FAQ 2 -->
-          <div class="faq-item">
-            <button type="button" class="faq-trigger" aria-expanded="false">
-              <span>Khách sạn Odin có vị trí thế nào và có gần biển không?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner">
-                <p class="faq-text">Khách sạn Odin đạt chuẩn 4 sao, nằm tại vị trí trung tâm thành phố Quy Nhơn, cách bãi biển chỉ 3 phút đi bộ. Khách sạn có hồ bơi tầng thượng, nhà hàng buffet và dịch vụ hỗ trợ gửi hành lý chu đáo.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- FAQ 3 -->
-          <div class="faq-item">
-            <button type="button" class="faq-trigger" aria-expanded="false">
-              <span>Nếu thời tiết biển động thì hoạt động đi cano ra Kỳ Co xử lý thế nào?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner">
-                <p class="faq-text">Nếu biển có sóng lớn ảnh hưởng an toàn cano, đoàn sẽ chuyển sang phương án di chuyển bằng đường bộ qua đèo ngắm cảnh để vào Kỳ Co, đảm bảo an toàn tuyệt đối mà vẫn trải nghiệm trọn vẹn danh thắng.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- FAQ 4 -->
-          <div class="faq-item">
-            <button type="button" class="faq-trigger" aria-expanded="false">
-              <span>Chi phí ăn uống tự túc vào các buổi tối tại Quy Nhơn có đắt không?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner">
-                <p class="faq-text">Vật giá tại Quy Nhơn rất phải chăng. Các món đặc sản như bún cá, nem nướng chỉ từ 40.000đ đến 65.000đ mỗi phần. Bữa tối hải sản tươi sống phong phú dao động từ 150.000đ đến 350.000đ mỗi người.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- FAQ 5 -->
-          <div class="faq-item">
-            <button type="button" class="faq-trigger" aria-expanded="false">
-              <span>Nên mang trang phục gì khi tham quan biển đảo và Tịnh Xá?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner">
-                <p class="faq-text">Khi tắm biển Kỳ Co bạn nên mặc đồ bơi gọn gàng. Khi vào chiêm bái Tịnh Xá Ngọc Hòa nên chuẩn bị trang phục lịch sự, kín đáo (áo có tay, quần hoặc váy dài qua gối) để tôn trọng nơi thanh tịnh.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
+  <!-- ===== FOOTER ===== -->
   <footer class="footer">
-    <div class="container footer-inner">
-      <div>
-        <p style="font-weight: 700; color: var(--color-ink); margin-bottom: 4px;">Thập Tứ Tour · Cẩm nang du lịch Lớp 10A4</p>
-        <p>Trường THPT Lương Thế Vinh TP.HCM · Khám phá vẻ đẹp biển đảo Quy Nhơn 4N3Đ</p>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="logo">
+            <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image">
+            <span>Thập Tứ Tour</span>
+          </div>
+          <p>
+            Thập Tứ Tour là dự án giới thiệu các địa danh du lịch tuyệt đẹp tại Quy Nhơn - Bình Định của nhóm học sinh lớp 10A4 năm 2026, Trường THPT Lương Thế Vinh - TP. Hồ Chí Minh.
+          </p>
+        </div>
+        <div>
+          <h3>Liên kết nhanh</h3>
+          <ul class="footer-links">
+            <li><a href="#top">Trang chủ</a></li>
+            <li><a href="#ve-tui-toi">Về tụi tôi</a></li>
+            <li><a href="#lich-trinh">Lịch trình chuyến đi</a></li>
+            <li><a href="#dia-diem">Địa điểm nổi bật</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Thông tin liên hệ</h3>
+          <ul class="footer-links">
+            <li>🏫 Trường THPT Lương Thế Vinh, TP.HCM</li>
+            <li>📍 Quận 1, TP. Hồ Chí Minh, Việt Nam</li>
+            <li>✉️ yenit4444@gmail.com</li>
+            <li>📞 (+84) 774 805 419</li>
+            <li>🌐 Lớp 10A4 Năm 2026 Trường LTV</li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <p>Bản quyền 2026 Thập Tứ Tour · Thiết kế theo chuẩn Hallmark và Animate UI</p>
+      <div class="footer-bottom">
+        <p>© 2024 - 2026 Thập Tứ Tour. Dự án giới thiệu du lịch Quy Nhơn của học sinh lớp 10A4 Trường THPT Lương Thế Vinh, TP.HCM.</p>
       </div>
     </div>
   </footer>
 
+  <!-- Nút về đầu trang -->
+  <button class="back-to-top" id="backToTop">↑</button>
+
+  <!-- Scripts -->
+  <script src="js/tours.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
