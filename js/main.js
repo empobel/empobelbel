@@ -1,332 +1,602 @@
 /**
- * Quy Nhơn 4N3Đ - MDS Collective Style Interactive Engine
- * Uses GSAP + ScrollTrigger + Dynamic SVG Bezier Connections + Interactive Console
+ * Thập Tứ Tour Quy Nhơn — MDS Collective Interactive Engine
+ * Reverse engineered & adapted for luxury travel showcase
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Register GSAP ScrollTrigger if present
-  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-  }
+(function() {
+  'use strict';
 
-  // 1. Theme Toggle
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      try {
-        localStorage.setItem('mds_theme', newTheme);
-      } catch (e) {}
-    });
-  }
+  // 1. TORCH CURSOR EFFECT
+  (function initTorch() {
+    var torch = document.getElementById('torch');
+    if (!torch) return;
 
-  // 2. MDS Preloader 0 -> 100% & Hero Headline Reveal
-  const loader = document.getElementById('loader');
-  const ln = document.getElementById('ln');
-  const lbar = document.getElementById('lbar');
-  const heroWords = document.querySelectorAll('.hero h1 .w span');
+    var curX = window.innerWidth / 2;
+    var curY = window.innerHeight / 2;
+    var targetX = curX;
+    var targetY = curY;
+    var curR = 260;
+    var targetR = 260;
+    var isMoving = false;
+    var scrollTimeout = null;
 
-  const revealHero = () => {
-    if (loader) loader.classList.add('done');
-    if (typeof gsap !== 'undefined') {
-      gsap.to(heroWords, {
-        y: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.12,
-        delay: 0.1
-      });
-    } else {
-      heroWords.forEach(w => w.style.transform = 'none');
+    function renderTorch() {
+      curX += (targetX - curX) * 0.12;
+      curY += (targetY - curY) * 0.12;
+      curR += (targetR - curR) * 0.08;
+
+      torch.style.setProperty('--x', curX.toFixed(1) + 'px');
+      torch.style.setProperty('--y', curY.toFixed(1) + 'px');
+      torch.style.setProperty('--r', curR.toFixed(1) + 'px');
+
+      requestAnimationFrame(renderTorch);
     }
-  };
+    renderTorch();
 
-  if (loader && ln && lbar) {
-    if (typeof gsap !== 'undefined') {
-      const progressObj = { val: 0 };
-      gsap.to(progressObj, {
-        val: 100,
+    window.addEventListener('pointermove', function(e) {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!isMoving) {
+        isMoving = true;
+        curX = targetX;
+        curY = targetY;
+        torch.classList.add('on');
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', function() {
+      torch.classList.remove('on');
+      isMoving = false;
+    });
+
+    window.addEventListener('scroll', function() {
+      targetR = 300;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        targetR = 260;
+      }, 300);
+    }, { passive: true });
+  })();
+
+  // 2. PRELOADER & HERO STAGGER
+  (function initLoader() {
+    var loader = document.getElementById('loader');
+    var ln = document.getElementById('ln');
+    var lbar = document.getElementById('lbar');
+    var heroWords = document.querySelectorAll('.hero h1 .w span');
+
+    function revealHero() {
+      if (loader) loader.classList.add('done');
+      if (window.gsap && heroWords.length) {
+        gsap.to(heroWords, {
+          y: 0,
+          duration: 1.3,
+          ease: 'power4.out',
+          stagger: 0.09,
+          delay: 0.15
+        });
+      } else {
+        heroWords.forEach(function(el) {
+          el.style.transform = 'none';
+        });
+      }
+    }
+
+    if (!loader || !ln) {
+      revealHero();
+      return;
+    }
+
+    if (window.gsap) {
+      var progress = { v: 0 };
+      gsap.to(progress, {
+        v: 100,
         duration: 1.5,
         ease: 'power2.inOut',
-        onUpdate: () => {
-          const rounded = Math.round(progressObj.val);
-          ln.textContent = String(rounded);
-          lbar.style.setProperty('--p', rounded + '%');
+        onUpdate: function() {
+          var val = Math.round(progress.v);
+          ln.textContent = String(val);
+          if (lbar) lbar.style.setProperty('--p', val + '%');
         },
-        onComplete: () => {
+        onComplete: function() {
           setTimeout(revealHero, 200);
         }
       });
     } else {
-      let p = 0;
-      const interval = setInterval(() => {
-        p += 5;
-        ln.textContent = String(p);
-        lbar.style.setProperty('--p', p + '%');
-        if (p >= 100) {
-          clearInterval(interval);
-          setTimeout(revealHero, 200);
+      var count = 0;
+      var timer = setInterval(function() {
+        count += 4;
+        if (count > 100) count = 100;
+        ln.textContent = String(count);
+        if (lbar) lbar.style.setProperty('--p', count + '%');
+        if (count === 100) {
+          clearInterval(timer);
+          setTimeout(revealHero, 250);
         }
       }, 30);
     }
-  } else {
-    revealHero();
-  }
+  })();
 
-  // 3. Manifesto Text Scrubbing on Scroll (#mani)
-  const mani = document.getElementById('mani');
-  if (mani) {
-    const rawText = (mani.textContent || '').trim();
-    mani.innerHTML = rawText
-      .split(/\s+/)
-      .map(w => `<span class="w">${w}</span>`)
-      .join(' ');
+  // 3. NAVIGATION (STICKY, BURGER, FULLSCREEN MENU & DROPDOWNS)
+  (function initNav() {
+    var nav = document.querySelector('nav');
+    var brandHero = document.querySelector('.brand-hero');
+    var openBtn = document.getElementById('open');
+    var closeBtn = document.getElementById('closeMenu');
+    var menu = document.getElementById('menu');
 
-    const words = mani.querySelectorAll('.w');
+    function updateNav() {
+      if (!nav) return;
+      var triggerHeight = brandHero ? brandHero.offsetHeight - nav.offsetHeight : 20;
+      nav.classList.toggle('solid', window.scrollY > triggerHeight);
+    }
+    updateNav();
+    window.addEventListener('scroll', updateNav, { passive: true });
+    window.addEventListener('resize', updateNav, { passive: true });
 
-    if (typeof ScrollTrigger !== 'undefined') {
+    if (openBtn && menu) {
+      openBtn.addEventListener('click', function() {
+        menu.classList.add('open');
+        menu.setAttribute('aria-hidden', 'false');
+        openBtn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    function closeMenuFn() {
+      if (!menu) return;
+      menu.classList.remove('open');
+      menu.setAttribute('aria-hidden', 'true');
+      if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeMenuFn);
+
+    if (menu) {
+      menu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', closeMenuFn);
+      });
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('open')) {
+          closeMenuFn();
+        }
+      });
+    }
+
+    // Nav dropdowns
+    document.querySelectorAll('nav .dd').forEach(function(dd) {
+      var trigger = dd.querySelector('.dd-t');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isOpen = dd.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      document.addEventListener('click', function() {
+        dd.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+
+      dd.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          dd.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.focus();
+        }
+      });
+    });
+  })();
+
+  // 4. PARALLAX VIDEO & SCROLL TRIGGER SCRUBBING
+  (function initHeroParallax() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    var video = document.querySelector('.brand-hero video');
+    if (video) {
+      gsap.to(video, {
+        yPercent: 18,
+        scale: 1.08,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.brand-hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    }
+
+    var heroTitle = document.querySelector('.hero h1');
+    if (heroTitle) {
+      gsap.to(heroTitle, {
+        yPercent: -8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    }
+
+    // Figures reveal & scrub
+    gsap.utils.toArray('.fig').forEach(function(fig) {
+      var media = fig.querySelector('img, video');
+      var speed = parseFloat(fig.dataset.speed || '0.12');
+      if (media) {
+        gsap.fromTo(media, 
+          { yPercent: -speed * 100 / 1.2, scale: 1.08 },
+          {
+            yPercent: speed * 100 / 1.2,
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: fig,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          }
+        );
+      }
+    });
+
+    // Sub-reveals
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      revealObserver.observe(el);
+    });
+
+    // Typography fade up
+    gsap.utils.toArray('.up').forEach(function(el) {
+      gsap.fromTo(el, 
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 92%',
+            once: true
+          }
+        }
+      );
+    });
+  })();
+
+  // 5. MANIFESTO SCROLL SCRUBBING
+  (function initManifesto() {
+    var mani = document.getElementById('mani');
+    if (!mani) return;
+
+    var text = (mani.textContent || '').trim();
+    mani.innerHTML = text.split(' ').map(function(word) {
+      return '<span class="w">' + word + '</span>';
+    }).join(' ');
+
+    var words = mani.querySelectorAll('.w');
+    if (!window.ScrollTrigger) {
+      words.forEach(function(w) { w.classList.add('on'); });
+      return;
+    }
+
+    ScrollTrigger.create({
+      trigger: mani,
+      start: 'top 80%',
+      end: 'bottom 45%',
+      scrub: true,
+      onUpdate: function(self) {
+        var activeIndex = Math.floor(self.progress * words.length);
+        words.forEach(function(w, idx) {
+          w.classList.toggle('on', idx <= activeIndex);
+        });
+      }
+    });
+  })();
+
+  // 6. DYNAMIC SVG BEZIER FLOWCHART
+  (function initFlow() {
+    var flow = document.querySelector('.flow');
+    if (!flow) return;
+
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', 'links');
+    svg.setAttribute('aria-hidden', 'true');
+    flow.prepend(svg);
+
+    var nodes = Array.from(flow.querySelectorAll('.node'));
+    if (nodes.length < 5) return;
+
+    // Connections between stages:
+    // [0]: Traveler, [1]: Hub, [2]: Ky Co, [3]: Eo Gio, [4]: Odin 4*, [5]: Experience
+    var pairs = [
+      [nodes[0], nodes[1]],
+      [nodes[1], nodes[2]],
+      [nodes[1], nodes[3]],
+      [nodes[2], nodes[4]],
+      [nodes[2], nodes[5], true],
+      [nodes[3], nodes[5], true]
+    ];
+
+    function drawLinks() {
+      var flowRect = flow.getBoundingClientRect();
+      var isCol = window.getComputedStyle(flow).flexDirection === 'column';
+      svg.innerHTML = '';
+
+      pairs.forEach(function(pair) {
+        var nA = pair[0];
+        var nB = pair[1];
+        var isHot = pair[2];
+        if (!nA || !nB) return;
+
+        var rA = nA.getBoundingClientRect();
+        var rB = nB.getBoundingClientRect();
+        var startX, startY, endX, endY, d;
+
+        if (isCol) {
+          startX = rA.left + rA.width / 2 - flowRect.left;
+          startY = rA.bottom - flowRect.top + 6;
+          endX = rB.left + rB.width / 2 - flowRect.left;
+          endY = rB.top - flowRect.top - 10;
+          var midY = (startY + endY) / 2;
+          d = 'M ' + startX + ' ' + startY + ' C ' + startX + ' ' + midY + ' ' + endX + ' ' + midY + ' ' + endX + ' ' + endY;
+        } else {
+          startX = rA.right - flowRect.left + 6;
+          startY = rA.top + rA.height / 2 - flowRect.top;
+          endX = rB.left - flowRect.left - 10;
+          endY = rB.top + rB.height / 2 - flowRect.top;
+          var midX = (startX + endX) / 2;
+          d = 'M ' + startX + ' ' + startY + ' C ' + midX + ' ' + startY + ' ' + midX + ' ' + endY + ' ' + endX + ' ' + endY;
+        }
+
+        var path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('d', d);
+        if (isHot) path.setAttribute('class', 'hot');
+        svg.appendChild(path);
+
+        // Arrow head
+        var arr = document.createElementNS(svgNS, 'path');
+        var tip = isCol ? [endX, endY + 4] : [endX + 4, endY];
+        arr.setAttribute('d', isCol
+          ? 'M ' + (tip[0] - 5) + ' ' + (tip[1] - 7) + ' L ' + tip[0] + ' ' + tip[1] + ' L ' + (tip[0] + 5) + ' ' + (tip[1] - 7)
+          : 'M ' + (tip[0] - 7) + ' ' + (tip[1] - 5) + ' L ' + tip[0] + ' ' + tip[1] + ' L ' + (tip[0] - 7) + ' ' + (tip[1] + 5)
+        );
+        arr.setAttribute('style', 'stroke-dasharray:none;animation:none');
+        if (isHot) arr.setAttribute('class', 'hot');
+        svg.appendChild(arr);
+      });
+    }
+
+    drawLinks();
+    window.addEventListener('resize', drawLinks);
+    window.addEventListener('load', drawLinks);
+    setTimeout(drawLinks, 800);
+    setTimeout(drawLinks, 2000);
+
+    // Interactive node click toggle
+    var aiNode = flow.querySelector('.node.ai');
+    if (aiNode) {
+      aiNode.addEventListener('click', function() {
+        aiNode.classList.toggle('open');
+        setTimeout(drawLinks, 300);
+      });
+    }
+  })();
+
+  // 7. DOUBLE INFINITE MARQUEE
+  (function initMarquee() {
+    var brandScript = document.getElementById('brands');
+    if (!brandScript) return;
+
+    var list;
+    try {
+      list = JSON.parse(brandScript.textContent || '[]');
+    } catch(e) {
+      list = [];
+    }
+    if (!list.length) return;
+
+    function buildRow(id, items) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = '';
+      var repeats = Math.max(3, Math.ceil(window.innerWidth * 2 / (items.length * 160)) * 2);
+      for (var i = 0; i < repeats; i++) {
+        items.forEach(function(item) {
+          var span = document.createElement('span');
+          span.textContent = item;
+          if (i > 0) span.setAttribute('aria-hidden', 'true');
+          el.appendChild(span);
+        });
+      }
+    }
+
+    var half = Math.ceil(list.length / 2);
+    buildRow('marq1', list.slice(0, half));
+    buildRow('marq2', list.slice(half));
+  })();
+
+  // 8. KEY STATS COUNTERS
+  (function initStats() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.utils.toArray('[data-count]').forEach(function(el) {
+      var target = parseFloat(el.dataset.count);
+      var small = el.querySelector('small');
+      var suffix = small ? small.outerHTML : '';
+      var counter = { v: 0 };
+      el.innerHTML = '0' + suffix;
+
       ScrollTrigger.create({
-        trigger: mani,
-        start: 'top 80%',
-        end: 'bottom 45%',
-        scrub: true,
-        onUpdate: (self) => {
-          const activeCount = Math.floor(self.progress * words.length);
-          words.forEach((wordEl, idx) => {
-            wordEl.classList.toggle('on', idx <= activeCount);
+        trigger: el,
+        start: 'top 85%',
+        once: true,
+        onEnter: function() {
+          gsap.to(counter, {
+            v: target,
+            duration: 1.6,
+            ease: 'power3.out',
+            onUpdate: function() {
+              el.innerHTML = Math.round(counter.v) + suffix;
+            }
           });
         }
       });
-    } else {
-      words.forEach(w => w.classList.add('on'));
-    }
-  }
-
-  // 4. Brand Hero Video Parallax Scrub
-  const brandVideo = document.getElementById('brandVideo');
-  if (brandVideo && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.to(brandVideo, {
-      yPercent: 16,
-      scale: 1.08,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.brand-hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
     });
-  }
+  })();
 
-  // 5. Dynamic SVG Bezier Flowchart (.flow)
-  const flowWrap = document.getElementById('flowWrap');
-  if (flowWrap) {
-    const svgNs = 'http://www.w3.org/2000/svg';
-    const svgLinks = document.createElementNS(svgNs, 'svg');
-    svgLinks.setAttribute('class', 'links');
-    svgLinks.setAttribute('aria-hidden', 'true');
-    flowWrap.prepend(svgLinks);
+  // 9. PROPRIETARY TECH CONSOLE
+  (function initConsole() {
+    var cgrid = document.getElementById('cgrid');
+    var clog = document.getElementById('clog');
+    var cclock = document.getElementById('cclock');
+    if (!cgrid || !clog || !cclock) return;
 
-    const nodes = Array.from(flowWrap.querySelectorAll('.node'));
+    var isMobile = window.matchMedia('(max-width: 800px)').matches;
+    var cols = isMobile ? 8 : 12;
+    var rows = isMobile ? 8 : 9;
+    var cells = [];
 
-    const renderFlowLinks = () => {
-      svgLinks.innerHTML = '';
-      const wrapRect = flowWrap.getBoundingClientRect();
-      const isColumn = window.innerWidth <= 900;
-
-      for (let i = 0; i < nodes.length - 1; i++) {
-        const fromNode = nodes[i];
-        const toNode = nodes[i + 1];
-
-        const r1 = fromNode.getBoundingClientRect();
-        const r2 = toNode.getBoundingClientRect();
-
-        let pathD = '';
-        if (isColumn) {
-          // Top to Bottom
-          const x1 = r1.left + r1.width / 2 - wrapRect.left;
-          const y1 = r1.bottom - wrapRect.top;
-          const x2 = r2.left + r2.width / 2 - wrapRect.left;
-          const y2 = r2.top - wrapRect.top;
-          const midY = (y1 + y2) / 2;
-          pathD = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
-        } else {
-          // Left to Right
-          const x1 = r1.right - wrapRect.left;
-          const y1 = r1.top + r1.height / 2 - wrapRect.top;
-          const x2 = r2.left - wrapRect.left;
-          const y2 = r2.top + r2.height / 2 - wrapRect.top;
-          const midX = (x1 + x2) / 2;
-          pathD = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
-        }
-
-        const pathEl = document.createElementNS(svgNs, 'path');
-        pathEl.setAttribute('d', pathD);
-        if (i % 2 === 1) {
-          pathEl.setAttribute('class', 'hot');
-        }
-        svgLinks.appendChild(pathEl);
-      }
-    };
-
-    renderFlowLinks();
-    window.addEventListener('resize', renderFlowLinks);
-    setTimeout(renderFlowLinks, 500);
-    setTimeout(renderFlowLinks, 1500);
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: flowWrap,
-        start: 'top 85%',
-        once: true,
-        onEnter: () => setTimeout(renderFlowLinks, 400)
-      });
-    }
-  }
-
-  // 6. Interactive Expedition Console Terminal (#console)
-  const cgrid = document.getElementById('cgrid');
-  const clog = document.getElementById('clog');
-  const cclock = document.getElementById('cclock');
-
-  if (cgrid && clog && cclock) {
-    const cols = window.innerWidth <= 768 ? 8 : 12;
-    const rows = cols === 8 ? 8 : 9;
-    const cells = [];
-
-    // Populate LED Matrix
-    for (let i = 0; i < cols * rows; i++) {
-      const cell = document.createElement('div');
+    cgrid.innerHTML = '';
+    for (var i = 0; i < cols * rows; i++) {
+      var cell = document.createElement('div');
       cell.className = 'c';
       cgrid.appendChild(cell);
       cells.push(cell);
     }
 
-    const flashCell = (el, type) => {
-      el.classList.add(type);
-      setTimeout(() => el.classList.remove(type), type === 'on' ? 900 : type === 'o' ? 1100 : 1400);
-    };
+    function flashCell(cell, cls) {
+      if (!cell) return;
+      cell.classList.add(cls);
+      setTimeout(function() {
+        cell.classList.remove(cls);
+      }, cls === 'on' ? 900 : (cls === 'o' ? 1100 : 1400));
+    }
 
-    // Pointer Ripple on Grid
-    cgrid.addEventListener('pointermove', (e) => {
-      const target = e.target;
+    cgrid.addEventListener('pointermove', function(e) {
+      var target = e.target;
       if (target && target.classList && target.classList.contains('c')) {
         flashCell(target, 'o');
-        const idx = cells.indexOf(target);
-        [idx - 1, idx + 1, idx - cols, idx + cols].forEach(nIdx => {
-          if (cells[nIdx] && Math.random() < 0.5) {
+        var idx = cells.indexOf(target);
+        var neighbors = [idx - 1, idx + 1, idx - cols, idx + cols];
+        neighbors.forEach(function(nIdx) {
+          if (cells[nIdx] && Math.random() < 0.45) {
             flashCell(cells[nIdx], 'p');
           }
         });
       }
     });
 
-    // Ambient random twinkle
-    setInterval(() => {
-      const randCell = cells[Math.floor(Math.random() * cells.length)];
-      if (randCell) {
-        flashCell(randCell, Math.random() < 0.25 ? 'w' : 'p');
-      }
+    cgrid.parentElement.addEventListener('pointerleave', function() {
+      cells.forEach(function(c) { c.classList.remove('o'); });
+    });
+
+    setInterval(function() {
+      var rand = cells[Math.floor(Math.random() * cells.length)];
+      flashCell(rand, Math.random() < 0.25 ? 'w' : 'p');
     }, 280);
 
-    // Live Clock (HH:MM:SS)
-    const getNowTime = () => {
-      const now = new Date();
-      return [now.getHours(), now.getMinutes(), now.getSeconds()]
-        .map(n => String(n).padStart(2, '0'))
-        .join(':');
-    };
+    function getFormattedTime() {
+      var now = new Date();
+      return [now.getHours(), now.getMinutes(), now.getSeconds()].map(function(n) {
+        return String(n).padStart(2, '0');
+      }).join(':');
+    }
 
-    cclock.textContent = getNowTime();
-    setInterval(() => {
-      cclock.textContent = getNowTime();
-    }, 250);
+    cclock.textContent = getFormattedTime();
+    setInterval(function() {
+      cclock.textContent = getFormattedTime();
+    }, 300);
 
-    // Streaming Expedition Logs
-    const streamLogs = [
-      'Trạm thời tiết Kỳ Co: Nhiệt độ 28°C, gió nhẹ, biển êm dịu',
-      'Thủy triều Bãi Dứa: Tầm nhìn lặn san hô lý tưởng đạt 12m',
-      'Khách sạn Odin: Tiêu chuẩn phòng 4 sao sẵn sàng check-in',
-      'Đội cano Nhơn Lý: Đã đăng kiểm an toàn hàng hải phục vụ đoàn',
-      'Bếp Lộc Biển: Lô cá thu và tôm hùm tươi vừa cập cảng sớm',
-      'ExploraScience: Lịch chiếu nhà vòm thiên văn mở cửa bình thường',
-      'Ghềnh Ráng: Bãi đá trứng Hoàng Hậu thoáng đãng đón bình minh',
-      'Cung đường Eo Gió: Tầm nhìn hoàng hôn không mây tuyệt đẹp',
-      'Đặc sản Chợ Đầm: Lô bánh ít lá gai và tré rơm mới ra lò',
-      'Xe giường nằm: Kiểm tra định kỳ an toàn kỹ thuật 100%'
+    var logs = [
+      'Thời tiết biển Kỳ Co: Nắng vàng, gió cấp 2, biển êm',
+      'Nhiệt độ nước biển: 27.4°C · Tầm nhìn lặn san hô: 15m',
+      'Thủy triều Eo Gió: Đang dâng, điều kiện chụp ảnh tuyệt đẹp',
+      'Hệ thống cano cao tốc sẵn sàng tại bến Nhơn Lý',
+      'Vận hành xe đón đoàn TP.HCM ➔ Quy Nhơn chuẩn giờ',
+      'Kiểm định áo phao & kính lặn san hô đạt chuẩn 100%',
+      'Phòng khách sạn Odin 4★ trung tâm thành phố sẵn sàng',
+      'Thực đơn 7 món hải sản tươi sống làng chài hoàn tất',
+      'Trung tâm ExploraScience: Suất chiếu vũ trụ đã xác nhận',
+      'Đội ngũ điều phối & thợ ảnh sẵn sàng đồng hành'
     ];
+    var logIndex = 0;
 
-    let logIdx = 0;
-    const appendLog = () => {
-      const logDiv = document.createElement('div');
-      logDiv.innerHTML = `<span>[${getNowTime()}]</span>${streamLogs[logIdx % streamLogs.length]} ...`;
-      clog.appendChild(logDiv);
+    function pushLog() {
+      var row = document.createElement('div');
+      row.innerHTML = '<span>' + getFormattedTime() + '</span>' + logs[logIndex % logs.length] + ' ...';
+      clog.appendChild(row);
+      requestAnimationFrame(function() {
+        row.classList.add('show');
+      });
 
-      requestAnimationFrame(() => logDiv.classList.add('show'));
-
-      const maxLogs = window.innerWidth <= 768 ? 5 : 7;
-      while (clog.children.length > maxLogs) {
+      var maxRows = isMobile ? 6 : 7;
+      while (clog.children.length > maxRows) {
         clog.removeChild(clog.firstChild);
       }
+      logIndex++;
 
-      logIdx++;
-      // Trigger a few cells
-      for (let k = 0; k < 3; k++) {
+      for (var f = 0; f < 3; f++) {
         flashCell(cells[Math.floor(Math.random() * cells.length)], 'on');
       }
 
-      setTimeout(appendLog, 1600 + Math.random() * 1800);
-    };
+      setTimeout(pushLog, 1500 + Math.random() * 1800);
+    }
+    pushLog();
+  })();
 
-    appendLog();
-  }
+  // 10. QUOTE MARK HIGHLIGHTS
+  (function initMarkHighlights() {
+    var marks = document.querySelectorAll('.quote mark, .trow mark');
+    if (!marks.length) return;
 
-  // 7. Day Tabs Switching
-  const tabBtns = document.querySelectorAll('.tabs-row .tab-btn');
-  const dayBoxes = document.querySelectorAll('.day-box');
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetDay = btn.getAttribute('data-day');
-      if (!targetDay) return;
-
-      tabBtns.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-
-      dayBoxes.forEach(box => {
-        if (box.id === targetDay) {
-          box.classList.add('active');
-        } else {
-          box.classList.remove('active');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
         }
       });
-    });
-  });
+    }, { rootMargin: '0px 0px -15% 0px' });
 
-  // 8. FAQ Accordion
-  const faqItems = document.querySelectorAll('.faq-item');
-  faqItems.forEach(item => {
-    const qBtn = item.querySelector('.faq-q');
-    if (!qBtn) return;
+    marks.forEach(function(m) { observer.observe(m); });
+  })();
 
-    qBtn.addEventListener('click', () => {
-      const isOpen = item.classList.contains('open');
+  // 11. INQUIRY FORM (NON-BOOKING Q&A ONLY)
+  (function initInquiryForm() {
+    var form = document.getElementById('f');
+    if (!form) return;
 
-      faqItems.forEach(other => {
-        if (other !== item) other.classList.remove('open');
-      });
-
-      if (isOpen) {
-        item.classList.remove('open');
-      } else {
-        item.classList.add('open');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) {
+        var oldText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = 'Đang gửi thông tin...';
+        setTimeout(function() {
+          form.innerHTML = '<div style="padding:40px;text-align:center;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);">' +
+            '<h3 style="font-family:var(--serif);font-size:28px;margin-bottom:12px;">Đã nhận câu hỏi tư vấn!</h3>' +
+            '<p style="color:var(--ink2);margin:0;line-height:1.6;">Cảm ơn bạn đã quan tâm đến hành trình Quy Nhơn 4N3Đ. Đội ngũ Thập Tứ Tour sẽ phản hồi giải đáp thông tin chi tiết qua Zalo/Email trong thời gian sớm nhất.</p>' +
+            '</div>';
+        }, 800);
       }
     });
-  });
-});
+  })();
+
+})();

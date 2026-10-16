@@ -1,1639 +1,507 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Quy Nhơn 4N3Đ · Cẩm Nang Hành Trình Cao Cấp | Thập Tứ Tour</title>
-  <meta name="description" content="Hành trình du lịch khám phá biển đảo Quy Nhơn 4 ngày 3 đêm: Kỳ Co, Eo Gió, Ghềnh Ráng Tiên Sa, Khách sạn Odin 4 sao.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thập Tứ Tour — Cẩm Nang Hành Trình Quy Nhơn 4N3Đ</title>
+  <meta name="description" content="Khám phá cẩm nang hành trình viễn chinh biển đảo Quy Nhơn 4 ngày 3 đêm: Bãi biển Kỳ Co, danh thắng Eo Gió, Ghềnh Ráng Tiên Sa, ExploraScience và nghỉ dưỡng Odin Hotel 4 sao.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="hero-bg.jpg" fetchpriority="high">
+  
+  <!-- Preload video showreel -->
+  <link rel="preload" as="video" href="quy-nhon.mp4" type="video/mp4">
+
+  <!-- MDS Collective Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
-  <style>
-/* MDS Collective Luxury Editorial Style for Quy Nhon 4N3D Tour */
-:root {
-  --bg: #ffffff;
-  --bg2: #f6f6f4;
-  --bg3: #ebebeb;
-  --ink: #101010;
-  --ink2: #4a4a46;
-  --ink3: #767671;
-  --ink3-lg: #9a9a95;
-  --line: #e3e3df;
-  --rule: #a3a39e;
-  --navy: #1c486d;
-  --navy-light: #1c486d1a;
-  --orange: #e6872d;
-  --orange-light: #e6872d24;
-  --hl-orange: #e6872d38;
-  --hl-navy: #1c486d24;
-  
-  --serif: "Instrument Serif", "Fraunces", Georgia, serif;
-  --sans: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --mono: SF Mono, Menlo, Monaco, Consolas, monospace;
-  
-  --r: 16px;
-  --r-lg: 24px;
-  --container-max: 1280px;
-}
-
-[data-theme="dark"] {
-  --bg: #0d0e10;
-  --bg2: #141619;
-  --bg3: #1d2024;
-  --ink: #f4f4f2;
-  --ink2: #b5b5b0;
-  --ink3: #8a8a85;
-  --ink3-lg: #6b6b66;
-  --line: #26292e;
-  --rule: #3d4148;
-  --navy: #4a82b0;
-  --navy-light: #4a82b02a;
-  --orange: #f29a43;
-  --orange-light: #f29a432a;
-  --hl-orange: #f29a4340;
-  --hl-navy: #4a82b040;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  overflow-x: clip;
-}
-
-body {
-  background-color: var(--bg);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.6;
-  font-variant-numeric: tabular-nums;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-img, video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-:focus-visible {
-  outline: 2px solid var(--navy);
-  outline-offset: 3px;
-}
-
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: 24px;
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-inline: 48px;
-  }
-}
-
-/* Editorial Highlights */
-mark {
-  background-color: var(--hl-orange);
-  color: inherit;
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-  font-style: inherit;
-}
-
-mark.hl-navy {
-  background-color: var(--hl-navy);
-}
-
-/* MDS Preloader */
-#loader {
-  background: var(--bg);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-  display: flex;
-  position: fixed;
-  inset: 0;
-}
-
-#loader.done {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-#loader .box {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 16px;
-  width: 240px;
-  display: flex;
-}
-
-#loader .n {
-  font-family: var(--serif);
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  justify-content: flex-end;
-  align-items: baseline;
-  font-size: clamp(48px, 8vw, 96px);
-  line-height: 1;
-  display: flex;
-}
-
-#loader .n small {
-  margin-left: 4px;
-  font-size: 0.45em;
-  font-family: var(--sans);
-  font-weight: 500;
-  color: var(--ink3);
-}
-
-#loader .n span {
-  text-align: right;
-  min-width: 1.4em;
-  display: inline-block;
-}
-
-#loader .bar {
-  background: var(--line);
-  width: 100%;
-  height: 2px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 99px;
-}
-
-#loader .bar i {
-  width: var(--p, 0%);
-  background: var(--ink);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  transition: width 0.1s linear;
-}
-
-#loader .tag {
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  font-family: var(--mono);
-  font-size: 11px;
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
-
-/* Header */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: var(--bg);
-  border-bottom: 1px solid var(--line);
-  transition: background-color 0.4s ease, border-color 0.4s ease;
-}
-
-.header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 72px;
-}
-
-.brand-mark {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.brand-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--orange);
-  animation: pulse 2s infinite ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.6; }
-}
-
-.nav-links {
-  display: none;
-  align-items: center;
-  gap: 32px;
-  list-style: none;
-}
-
-@media (min-width: 992px) {
-  .nav-links {
-    display: flex;
-  }
-}
-
-.nav-links a {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink2);
-  transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: var(--ink);
-}
-
-.header-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.weather-badge {
-  display: none;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--ink3);
-  padding: 6px 12px;
-  background: var(--bg2);
-  border-radius: 99px;
-  border: 1px solid var(--line);
-}
-
-@media (min-width: 768px) {
-  .weather-badge {
-    display: flex;
-  }
-}
-
-.theme-btn {
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--ink);
-  transition: border-color 0.2s ease, transform 0.15s ease;
-}
-
-.theme-btn:active {
-  transform: scale(0.92);
-}
-
-/* Hero Section */
-.hero {
-  padding-top: clamp(60px, 10vh, 120px);
-  padding-bottom: clamp(60px, 8vh, 100px);
-  position: relative;
-  border-bottom: 1px solid var(--line);
-}
-
-.hero-meta-strip {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  margin-bottom: 32px;
-}
-
-.hero h1 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(48px, 8.5vw, 120px);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  margin-bottom: 40px;
-}
-
-.hero h1 .w {
-  display: block;
-  overflow: hidden;
-}
-
-.hero h1 .w span {
-  display: inline-block;
-  transform: translateY(110%);
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero h1 em {
-  font-style: italic;
-  font-family: var(--serif);
-  color: var(--navy);
-}
-
-.hero-body-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 40px;
-  align-items: end;
-}
-
-@media (min-width: 992px) {
-  .hero-body-grid {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
-  }
-}
-
-.hero-desc {
-  font-size: clamp(18px, 1.6vw, 24px);
-  line-height: 1.55;
-  color: var(--ink2);
-}
-
-.hero-specs-board {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border: 1px solid var(--line);
-  background-color: var(--bg2);
-  border-radius: var(--r);
-  overflow: hidden;
-}
-
-.spec-cell {
-  padding: 16px 20px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.spec-cell:nth-child(2n) {
-  border-right: none;
-}
-
-.spec-cell:nth-child(n+3) {
-  border-bottom: none;
-}
-
-.spec-k {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.spec-v {
-  font-family: var(--serif);
-  font-size: 24px;
-  line-height: 1.1;
-  color: var(--ink);
-}
-
-/* Dual Infinite Marquee */
-.marq-wrap {
-  border-bottom: 1px solid var(--line);
-  padding-block: 28px;
-  overflow: hidden;
-  background-color: var(--bg2);
-}
-
-.marq {
-  white-space: nowrap;
-  gap: 0;
-  width: max-content;
-  display: flex;
-  animation: 45s linear infinite marq;
-}
-
-.marq.r {
-  margin-top: 20px;
-  animation-duration: 55s;
-  animation-direction: reverse;
-}
-
-.marq span {
-  font-family: var(--serif);
-  color: var(--ink3-lg);
-  letter-spacing: 0.02em;
-  font-size: clamp(22px, 2.5vw, 36px);
-  padding-right: 48px;
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.marq span::after {
-  content: "✦";
-  font-size: 0.5em;
-  color: var(--orange);
-}
-
-@keyframes marq {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* Manifesto Section (Scroll Text Scrubbing) */
-.manifesto-section {
-  padding-block: clamp(80px, 16vh, 180px);
-  border-bottom: 1px solid var(--line);
-}
-
-.manifesto-inner {
-  max-width: 980px;
-}
-
-.manifesto-tag {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-bottom: 24px;
-  display: block;
-}
-
-.manifesto-text {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(32px, 4.8vw, 68px);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--ink3-lg);
-}
-
-.manifesto-text .w {
-  color: var(--ink3-lg);
-  transition: color 0.3s ease;
-}
-
-.manifesto-text .w.on {
-  color: var(--ink);
-}
-
-/* Brand Hero Video Showcase */
-.brand-hero {
-  position: relative;
-  height: 80svh;
-  min-height: 520px;
-  overflow: hidden;
-  background-color: #000;
-  border-bottom: 1px solid var(--line);
-}
-
-.brand-hero video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-  will-change: transform;
-}
-
-.brand-hero .veil {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
-  pointer-events: none;
-}
-
-.brand-hero-caption {
-  position: absolute;
-  bottom: 40px;
-  left: 24px;
-  right: 24px;
-  color: #fff;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-@media (min-width: 768px) {
-  .brand-hero-caption {
-    left: 48px;
-    right: 48px;
-  }
-}
-
-.brand-hero-title {
-  font-family: var(--serif);
-  font-size: clamp(28px, 4vw, 56px);
-  line-height: 1;
-  font-weight: 400;
-}
-
-.brand-hero-sub {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-}
-
-/* Dynamic SVG Flowchart Section */
-.flow-section {
-  padding-block: clamp(80px, 12vh, 140px);
-  border-bottom: 1px solid var(--line);
-  background-color: var(--bg2);
-}
-
-.section-label {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--navy);
-  margin-bottom: 16px;
-  display: block;
-}
-
-.section-head-title {
-  font-family: var(--serif);
-  font-size: clamp(36px, 5vw, 64px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  margin-bottom: 48px;
-}
-
-.flow {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  padding-block: 40px;
-  margin-top: 24px;
-}
-
-@media (max-width: 900px) {
-  .flow {
-    flex-direction: column;
-    gap: 48px;
-  }
-}
-
-.flow svg.links {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.flow svg.links path {
-  fill: none;
-  stroke: var(--rule);
-  stroke-width: 1.5px;
-  stroke-dasharray: 6 8;
-  animation: 1.6s linear infinite march;
-}
-
-.flow svg.links path.hot {
-  stroke: var(--orange);
-  stroke-width: 2px;
-}
-
-@keyframes march {
-  to { stroke-dashoffset: -28; }
-}
-
-.node {
-  z-index: 1;
-  aspect-ratio: 1;
-  width: clamp(140px, 14vw, 190px);
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 8px;
-  box-shadow: 0 4px 20px -4px rgba(0,0,0,0.06);
-  transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
-  cursor: pointer;
-}
-
-.node:hover {
-  border-color: var(--navy);
-  transform: translateY(-6px);
-}
-
-.node b {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(20px, 2.2vw, 32px);
-  line-height: 1.1;
-  color: var(--ink);
-}
-
-.node small {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  line-height: 1.4;
-  max-width: 18ch;
-}
-
-/* Interactive Expedition Console */
-.console-section {
-  padding-block: clamp(80px, 12vh, 140px);
-  border-bottom: 1px solid var(--line);
-}
-
-.console-wrap {
-  border-radius: var(--r-lg);
-  background: #101010;
-  color: #f2f2f0;
-  border: 1px solid #2a2a2a;
-  box-shadow: 0 24px 64px -16px rgba(0,0,0,0.4);
-  overflow: hidden;
-  position: relative;
-  aspect-ratio: 16 / 10;
-  min-height: 480px;
-}
-
-.console-grid {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: 1fr;
-}
-
-@media (max-width: 768px) {
-  .console-grid {
-    grid-template-columns: repeat(8, 1fr);
-  }
-}
-
-.console-grid .c {
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.8s ease;
-}
-
-.console-grid .c.on {
-  background: var(--navy);
-  transition: background 0.12s ease;
-}
-
-.console-grid .c.p {
-  background: rgba(28, 72, 109, 0.55);
-}
-
-.console-grid .c.w {
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.console-grid .c.o {
-  background: var(--orange);
-  transition: background 0.15s ease;
-}
-
-.console-hud {
-  position: absolute;
-  top: 24px;
-  left: 28px;
-  right: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-  pointer-events: none;
-  z-index: 2;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 16px;
-}
-
-.console-clock {
-  color: var(--orange);
-  font-weight: 700;
-}
-
-.console-log {
-  position: absolute;
-  top: 80px;
-  left: 28px;
-  right: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.05em;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.console-log div {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.console-log div span {
-  color: var(--navy);
-  margin-right: 12px;
-}
-
-.console-log div.show {
-  opacity: 1;
-  transform: none;
-}
-
-/* Editorial Portfolio Cards (#work) */
-.work-section {
-  padding-block: clamp(80px, 12vh, 140px);
-  border-bottom: 1px solid var(--line);
-  background-color: var(--bg2);
-}
-
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 48px;
-}
-
-@media (min-width: 768px) {
-  .work-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.work-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.work-thumb {
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  aspect-ratio: 16 / 11;
-  border: 1px solid var(--line);
-  background: var(--bg3);
-}
-
-.work-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.work-card:hover .work-thumb img {
-  transform: scale(1.04);
-}
-
-.work-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink3);
-}
-
-.work-title {
-  font-family: var(--serif);
-  font-size: clamp(28px, 3vw, 42px);
-  font-weight: 400;
-  line-height: 1.1;
-  color: var(--ink);
-}
-
-.work-desc {
-  font-size: 15px;
-  color: var(--ink2);
-  line-height: 1.6;
-}
-
-/* Timeline & Schedule Section */
-.itinerary-section {
-  padding-block: clamp(80px, 12vh, 140px);
-  border-bottom: 1px solid var(--line);
-}
-
-.tabs-row {
-  display: flex;
-  gap: 12px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 16px;
-  margin-bottom: 40px;
-  overflow-x: auto;
-}
-
-.tab-btn {
-  font-family: var(--serif);
-  font-size: 24px;
-  color: var(--ink3);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 8px 16px;
-  position: relative;
-  transition: color 0.2s ease;
-  white-space: nowrap;
-}
-
-.tab-btn.active {
-  color: var(--ink);
-}
-
-.tab-btn.active::after {
-  content: "";
-  position: absolute;
-  bottom: -17px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: var(--navy);
-}
-
-.day-box {
-  display: none;
-}
-
-.day-box.active {
-  display: block;
-}
-
-.timeline-rows {
-  display: flex;
-  flex-direction: column;
-}
-
-.trow {
-  display: grid;
-  grid-template-columns: 100px minmax(0, 1fr) 140px;
-  gap: 24px;
-  padding-block: 24px;
-  border-bottom: 1px solid var(--line);
-  align-items: baseline;
-}
-
-@media (max-width: 640px) {
-  .trow {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-}
-
-.trow-time {
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--navy);
-}
-
-.trow-content h4 {
-  font-family: var(--serif);
-  font-size: 26px;
-  font-weight: 400;
-  margin-bottom: 6px;
-  color: var(--ink);
-}
-
-.trow-content p {
-  font-size: 15px;
-  color: var(--ink2);
-}
-
-.trow-cost {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--orange);
-  text-align: right;
-}
-
-@media (max-width: 640px) {
-  .trow-cost {
-    text-align: left;
-  }
-}
-
-/* FAQ Section */
-.faq-section {
-  padding-block: clamp(80px, 12vh, 140px);
-  border-bottom: 1px solid var(--line);
-  background-color: var(--bg2);
-}
-
-.faq-rows {
-  display: flex;
-  flex-direction: column;
-}
-
-.faq-item {
-  border-bottom: 1px solid var(--line);
-}
-
-.faq-q {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-block: 28px;
-  background: transparent;
-  border: none;
-  font-family: var(--serif);
-  font-size: clamp(22px, 2.5vw, 32px);
-  font-weight: 400;
-  color: var(--ink);
-  cursor: pointer;
-  text-align: left;
-}
-
-.faq-q span.plus {
-  font-family: var(--sans);
-  font-size: 24px;
-  transition: transform 0.3s ease;
-  color: var(--ink3);
-}
-
-.faq-item.open .faq-q span.plus {
-  transform: rotate(45deg);
-  color: var(--navy);
-}
-
-.faq-a {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s ease;
-}
-
-.faq-item.open .faq-a {
-  grid-template-rows: 1fr;
-}
-
-.faq-a-inner {
-  overflow: hidden;
-}
-
-.faq-a-inner p {
-  padding-bottom: 28px;
-  font-size: 16px;
-  color: var(--ink2);
-  line-height: 1.7;
-  max-width: 800px;
-}
-
-/* Footer */
-.site-footer {
-  padding-block: 80px 48px;
-  background-color: var(--bg);
-}
-
-.footer-top {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  margin-bottom: 64px;
-}
-
-@media (min-width: 768px) {
-  .footer-top {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-}
-
-.footer-mast {
-  font-family: var(--serif);
-  font-size: clamp(36px, 6vw, 84px);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-}
-
-.footer-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border-top: 1px solid var(--line);
-  padding-top: 32px;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--ink3);
-}
-
-@media (min-width: 768px) {
-  .footer-bottom {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-  </style>
-  <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('mds_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved ? saved : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
-    })();
-  </script>
 </head>
-<body>
+<body id="top">
 
-  <!-- MDS Style Preloader -->
-  <aside id="loader" aria-label="Đang tải trang">
+  <!-- 1. PRELOADER -->
+  <div id="loader" aria-hidden="true">
     <div class="box">
-      <div class="n">
-        <span id="ln">0</span>
-        <small>%</small>
-      </div>
-      <div class="bar">
-        <i id="lbar" style="--p: 0%;"></i>
-      </div>
+      <div class="n"><span id="ln">0</span><small>%</small></div>
+      <div class="bar"><i id="lbar" style="--p: 0%;"></i></div>
+      <div class="tag">THẬP TỨ TOUR // QUY NHƠN 4N3Đ</div>
     </div>
-    <span class="tag">EXPEDITION · QUY NHƠN 4N3Đ</span>
-  </aside>
+  </div>
 
-  <!-- Site Header -->
-  <header class="site-header">
-    <div class="container header-row">
-      <a href="#top" class="brand-mark">
-        <span class="brand-dot"></span>
-        <span>Thập Tứ Tour · 10A4</span>
-      </a>
+  <!-- 2. AMBIENT TORCH SPOTLIGHT -->
+  <div id="torch" aria-hidden="true"></div>
 
-      <nav aria-label="Menu chính">
-        <ul class="nav-links">
-          <li><a href="#ve-chung-toi">Tuyên ngôn</a></li>
-          <li><a href="#tuyen-diem">Tuyến điểm</a></li>
-          <li><a href="#console">Console</a></li>
-          <li><a href="#danh-thang">Danh thắng</a></li>
-          <li><a href="#lich-trinh">Lịch trình</a></li>
-          <li><a href="#faq">Hỏi đáp</a></li>
-        </ul>
-      </nav>
-
-      <div class="header-meta">
-        <div class="weather-badge">
-          <span>Quy Nhơn 28°C</span>
-          <span style="color: var(--orange);">● Biển êm</span>
-        </div>
-        <button type="button" class="theme-btn" id="themeToggleBtn" aria-label="Chuyển chế độ sáng tối">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
+  <!-- 3. NAVIGATION -->
+  <nav>
+    <a class="brand brand-wordmark" href="#top" aria-label="Thập Tứ Tour trang chủ">
+      <span class="mark" aria-hidden="true"></span>
+      <span>THẬP TỨ <span class="gold">TOUR</span></span>
+    </a>
+    <div class="links">
+      <a href="#shift">Hành trình</a>
+      <div class="dd">
+        <button type="button" class="dd-t" aria-haspopup="true" aria-expanded="false">
+          Danh thắng <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
         </button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <!-- Hero Section -->
-    <section class="hero" id="top">
-      <div class="container">
-        <div class="hero-meta-strip">
-          <span>01 / KHỞI HÀNH TỪ TP.HCM</span>
-          <span>✦</span>
-          <span>4 NGÀY 3 ĐÊM</span>
-          <span>✦</span>
-          <span>KHÁCH SẠN ODIN 4 SAO</span>
-        </div>
-
-        <h1 class="hero-title">
-          <span class="w"><span>Thiên Đường</span></span>
-          <span class="w"><span><em>Biển Đảo</em></span></span>
-          <span class="w"><span>Quy Nhơn 4N3Đ</span></span>
-        </h1>
-
-        <div class="hero-body-grid">
-          <div class="hero-desc">
-            Cẩm nang trải nghiệm làn nước ngọc bích tại <mark class="hl-navy">Kỳ Co hoang sơ</mark>, đón làn gió lộng trên cung đường vách đá <mark class="hl-orange">Eo Gió kỳ vĩ</mark> và tìm về đồi thi nhân Ghềnh Ráng Tiên Sa thơ mộng.
-          </div>
-
-          <div class="hero-specs-board">
-            <div class="spec-cell">
-              <span class="spec-k">Thời lượng</span>
-              <span class="spec-v">4N3Đ</span>
-            </div>
-            <div class="spec-cell">
-              <span class="spec-k">Lưu trú</span>
-              <span class="spec-v">Odin 4★</span>
-            </div>
-            <div class="spec-cell">
-              <span class="spec-k">Phương tiện</span>
-              <span class="spec-v">Giường nằm</span>
-            </div>
-            <div class="spec-cell">
-              <span class="spec-k">Dự toán tự túc</span>
-              <span class="spec-v">5.920.000đ</span>
-            </div>
+        <div class="dd-m">
+          <div class="dd-p">
+            <a href="#work"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></span><span>Bãi biển Kỳ Co</span></a>
+            <a href="#work"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg></span><span>Danh thắng Eo Gió</span></a>
+            <a href="#work"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path></svg></span><span>Ghềnh Ráng Tiên Sa</span></a>
+            <a href="#work"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path></svg></span><span>ExploraScience Vũ Trụ</span></a>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Dual Infinite Marquee Ticker -->
-    <div class="marq-wrap" aria-hidden="true">
-      <div class="marq" id="marq1">
-        <span>BÃI BIỂN KỲ CO</span>
-        <span>DANH THẮNG EO GIÓ</span>
-        <span>GHỀNH RÁNG TIÊN SA</span>
-        <span>BÃI ĐÁ TRỨNG HOÀNG HẬU</span>
-        <span>TỊNH XÁ NGỌC HÒA</span>
-        <span>BÃI BIỂN KỲ CO</span>
-        <span>DANH THẮNG EO GIÓ</span>
-        <span>GHỀNH RÁNG TIÊN SA</span>
-        <span>BÃI ĐÁ TRỨNG HOÀNG HẬU</span>
-        <span>TỊNH XÁ NGỌC HÒA</span>
-      </div>
-      <div class="marq r" id="marq2">
-        <span>HẢI SẢN LỘC BIỂN</span>
-        <span>BÚN CÁ NGỌC LIÊN</span>
-        <span>NEM CHẢ LỢI</span>
-        <span>EXPLORASCIENCE QUY NHƠN</span>
-        <span>BÁNH XÈO TÔM NHẢY</span>
-        <span>HẢI SẢN LỘC BIỂN</span>
-        <span>BÚN CÁ NGỌC LIÊN</span>
-        <span>NEM CHẢ LỢI</span>
-        <span>EXPLORASCIENCE QUY NHƠN</span>
-        <span>BÁNH XÈO TÔM NHẢY</span>
-      </div>
+      <a href="#work">Điểm đến</a>
+      <a href="#why">Tiêu chuẩn</a>
+      <a href="#tech">Giám sát viễn chinh</a>
+      <a href="#quotes">Cảm nhận</a>
+      <a href="#team">Đội ngũ</a>
+      <a href="#contact">Hỏi đáp</a>
+      <a class="login" href="#shift">Cẩm Nang 4N3Đ</a>
     </div>
+    <button class="burger" id="open" aria-label="Mở menu" aria-controls="menu" aria-expanded="false">Menu <i></i></button>
+  </nav>
 
-    <!-- Editorial Manifesto Section (Scroll Text Scrubbing) -->
-    <section class="manifesto-section" id="ve-chung-toi">
-      <div class="container manifesto-inner">
-        <span class="manifesto-tag">CẢM HỨNG HÀNH TRÌNH</span>
-        <h2 class="manifesto-text" id="mani">
-          Biển Quy Nhơn không ồn ào vội vã. Nơi đây giữ trọn nét hoang sơ của những bãi cát vàng trải dài, làn nước biển hai màu lam bích và những vách đá sừng sững tạc vào chân trời. Một hành trình chạm đến tự do và thanh thản của tuổi trẻ.
-        </h2>
-      </div>
-    </section>
+  <!-- 4. FULLSCREEN MENU -->
+  <div id="menu" aria-hidden="true">
+    <button class="close" id="closeMenu" aria-label="Đóng menu">Đóng <i></i></button>
+    <ul>
+      <li><a href="#shift">Về hành trình</a></li>
+      <li class="m-ind">
+        <details>
+          <summary>Danh thắng Quy Nhơn</summary>
+          <div>
+            <a href="#work"><span>Bãi Biển Kỳ Co (San hô Hòn Sẹo)</span></a>
+            <a href="#work"><span>Eo Gió Nhơn Lý (Cung đường đá hùng vĩ)</span></a>
+            <a href="#work"><span>Ghềnh Ráng Tiên Sa &amp; Bãi Trứng</span></a>
+            <a href="#work"><span>Trung Tâm Khám Phá Khoa Học ExploraScience</span></a>
+            <a href="#work"><span>Làng Chài Nhơn Hải &amp; Đồi Cát Phương Mai</span></a>
+          </div>
+        </details>
+      </li>
+      <li><a href="#work">Điểm đến nổi bật</a></li>
+      <li><a href="#why">Tiêu chuẩn &amp; Nguyên tắc</a></li>
+      <li><a href="#tech">Giám sát viễn chinh (Expedition Console)</a></li>
+      <li><a href="#quotes">Cảm nhận du khách</a></li>
+      <li><a href="#team">Đội ngũ điều phối</a></li>
+      <li><a href="#contact">Tra cứu &amp; Hỏi đáp</a></li>
+    </ul>
+    <div class="foot"><span>TP.HCM / Quy Nhơn, Bình Định</span><a class="eml">contact [at] thaptutour.vn</a></div>
+  </div>
 
-    <!-- Brand Hero Video Showcase with Parallax -->
+  <!-- MAIN WRAPPER -->
+  <main id="top">
+
+    <!-- 5. BRAND HERO VIDEO SHOWCASE -->
     <section class="brand-hero">
-      <video id="brandVideo" autoplay muted loop playsinline poster="about-quynhon.jpg">
-        <source src="quy-nhon.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="auto" poster="hero-bg.jpg" aria-label="Thập Tứ Tour Quy Nhơn showreel" src="quy-nhon.mp4">
       </video>
       <div class="veil"></div>
-      <div class="brand-hero-caption">
+      <div class="bh-inner wrap">
+        <p class="bh-tag">Hành trình viễn chinh biển đảo Quy Nhơn 4 ngày 3 đêm — Odin Hotel 4 sao &amp; Kỳ Co, Eo Gió</p>
+        <div class="cue" style="color:rgba(255,255,255,.7)">Cuộn xuống <i></i></div>
+      </div>
+    </section>
+
+    <!-- 6. MONUMENTAL EDITORIAL HERO -->
+    <section class="hero wrap">
+      <h1 aria-label="Khám phá biển đảo kỳ vĩ Quy Nhơn 4 ngày 3 đêm">
+        <span class="ln"><span class="w"><span>Khám Phá</span></span></span>
+        <span class="ln"><span class="w"><span>Biển Đảo Kỳ Vĩ</span></span></span>
+        <span class="ln"><span class="w"><span>Quy Nhơn 4N3Đ &amp;</span></span></span>
+        <span class="ln"><span class="w"><span>Hải Trình Nguyên Bản</span></span></span>
+      </h1>
+      <div class="foot">
+        <p>Thập Tứ Tour hân hạnh giới thiệu cẩm nang hải trình Quy Nhơn 4 ngày 3 đêm khởi hành từ TP. Hồ Chí Minh. Hành trình được thiết kế tinh tế theo phong cách nghỉ dưỡng viễn chinh: lưu trú tại khách sạn Odin tiêu chuẩn 4 sao trung tâm phố biển, cano cao tốc vượt sóng Kỳ Co, đón gió đại dương tại Eo Gió và chiêm ngưỡng bầu trời vũ trụ tại ExploraScience.</p>
+        <div class="chips" aria-label="Tiêu chuẩn chuyến đi">
+          <div class="ctitle serif">Tiêu Chuẩn Hải Trình</div>
+          <div class="row"><span class="lbl">Dịch vụ</span><div class="cl"><span>Khách sạn Odin 4★</span><span>Xe Limousine VIP</span><span>Cano cao tốc mới</span><span>Hải sản tươi sống</span></div></div>
+          <div class="row"><span class="lbl">Tuyến điểm</span><div class="cl"><span>Kỳ Co</span><span>Eo Gió</span><span>Ghềnh Ráng</span><span>ExploraScience</span><span>Tháp Đôi</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. HERO MEDIA -->
+    <section class="hero-media wrap">
+      <div class="fig reveal" data-speed="0.1">
+        <img src="images/mds/overwater-villas-aerial.D3wbRsq7_1kKOng.webp" alt="Vịnh biển Quy Nhơn nhìn từ trên cao" loading="lazy" decoding="async">
+      </div>
+    </section>
+
+    <!-- 8. TRAVELER SHIFT & INTERACTIVE FLOW -->
+    <section class="shift wrap" id="shift">
+      <div class="shead up">
+        <div class="eyebrow">Hành trình chuyển dịch</div>
+        <h2><b>Du khách hiện đại đã thay đổi.</b> <span>Họ tìm kiếm chiều sâu trải nghiệm, sự thư thái và cảnh sắc thiên nhiên nguyên bản.</span></h2>
+        <p>Không còn những chuyến đi hối hả chụp ảnh rồi vội vã rời đi. Người lữ hành ngày nay bắt đầu từ sự tò mò khám phá, chạm vào làn nước trong vắt màu ngọc bích của Kỳ Co, đón bình minh đầu tiên trên vách đá Eo Gió và lắng đọng cùng di sản thi ca Ghềnh Ráng.</p>
+      </div>
+      <div class="flow up" aria-label="Sơ đồ hành trình Quy Nhơn">
+        <div class="col">
+          <div class="node trav" tabindex="0" aria-label="Du khách khởi hành">
+            <div class="bubble" aria-hidden="true">Tôi muốn khám phá Quy Nhơn trọn vẹn nhất!</div>
+            <svg viewBox="0 0 48 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <g class="hat"><path d="M12 10h24M18 10a6 3 0 0 1 12 0"></path></g>
+              <circle cx="24" cy="19" r="6"></circle>
+              <path d="M24 25v18M14 32l10-3M24 43l-7 13M24 43l7 13"></path>
+              <g class="arm"><path d="M24 29l10 3"></path></g>
+              <rect x="34" y="31" width="9" height="8" rx="1.5"></rect>
+              <path d="M36.5 31v-2h4v2"></path>
+            </svg>
+            <small>Du Khách</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="node ai" tabindex="0" aria-label="Quy Nhơn 4N3Đ Hub">
+            <div class="def"><b>4N3Đ</b><small>Lộ Trình Chuẩn</small></div>
+            <div class="models" aria-hidden="true">
+              <small>Tuyến điểm nổi bật</small>
+              <ul>
+                <li>Bãi Biển Kỳ Co</li>
+                <li>Danh Thắng Eo Gió</li>
+                <li>Ghềnh Ráng Tiên Sa</li>
+                <li>ExploraScience</li>
+                <li>Tháp Đôi Chăm Pa</li>
+                <li>Làng Chài Nhơn Lý</li>
+                <li>Đồi Cát Phương Mai</li>
+                <li>Odin Hotel 4 Sao</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col stack">
+          <div class="node soc"><b>Kỳ Co</b><small>Biển ngọc &amp; San hô Hòn Sẹo</small></div>
+          <div class="node soc"><b>Eo Gió</b><small>Eo biển lộng gió đẹp nhất VN</small></div>
+        </div>
+        <div class="col">
+          <div class="wall"><span>Bức tường an tâm &amp; chu toàn</span></div>
+        </div>
+        <div class="col stack">
+          <div class="node end"><b>Odin 4★</b><small>Nghỉ dưỡng phố biển</small></div>
+          <div class="node end direct"><b>Trải Nghiệm</b><small>Ẩm thực &amp; Văn hóa</small></div>
+        </div>
+      </div>
+      <p class="fnote up">Thập Tứ Tour chu toàn trọn vẹn từng điểm chạm, <i>hoàn toàn không có phí ẩn hay áp lực mua sắm.</i></p>
+    </section>
+
+    <!-- 9. EDITORIAL MANIFESTO -->
+    <section class="manifesto wrap">
+      <h2 id="mani">Chúng tôi là người bạn đồng hành tin cậy trên từng hải trình biển đảo miền Trung.</h2>
+    </section>
+
+    <!-- 10. APPROACH -->
+    <section class="approach wrap">
+      <div class="fig reveal" data-speed="0.12">
+        <img src="images/mds/villa-sunset.tDCwY5QO_1HPoUh.webp" alt="Hoàng hôn trên vịnh biển Quy Nhơn" loading="lazy" decoding="async">
+      </div>
+      <div class="txt">
+        <div class="eyebrow up">Phương thức tổ chức</div>
+        <p class="up">Mỗi chi tiết trong hành trình đều được tuyển chọn kỹ lưỡng: từ chiếc cano rẽ sóng êm ái, bữa trưa hải sản 7 món tươi ngon đánh bắt tại làng chài Nhơn Lý, cho đến khoảng thời gian tĩnh lặng ngắm hoàng hôn buông xuống vịnh Quy Nhơn từ ban công khách sạn Odin 4 sao.</p>
+        <p class="up muted" style="font-size:15px">Trải nghiệm nhân văn, tôn trọng thiên nhiên hoang sơ và bảo đảm sự thư giãn tuyệt đối cho mỗi du khách.</p>
+        <a class="lnk up" href="#why">Khám phá tiêu chuẩn chuyến đi <i></i></a>
+      </div>
+    </section>
+
+    <!-- 11. CULTURAL MARQUEE -->
+    <section class="logos" aria-label="Điểm đến & Đối tác">
+      <div class="eyebrow">Dấu ấn danh lam &amp; đối tác đồng hành tại Bình Định</div>
+      <div class="marq" id="marq1"></div>
+      <div class="marq r" id="marq2"></div>
+      <script id="brands" type="application/json">[
+        "Bãi Biển Kỳ Co", "Danh Thắng Eo Gió", "Khách Sạn Odin 4 Sao", "Ghềnh Ráng Tiên Sa",
+        "Trung Tâm ExploraScience", "Tháp Đôi Chăm Pa", "Làng Chài Nhơn Lý", "Làng Chài Nhơn Hải",
+        "Đồi Cát Phương Mai", "Bãi Trứng Hoàng Hậu", "Mộ Thi Sĩ Hàn Mặc Tử", "Cano Cao Tốc Đời Mới",
+        "Ẩm Thực Hải Sản Làng Chài", "Bảo Tàng Quang Trung"
+      ]</script>
+    </section>
+
+    <!-- 12. SELECTED DESTINATIONS (WORK) -->
+    <section class="work wrap" id="work">
+      <div class="head up">
+        <div class="eyebrow">Điểm đến tiêu biểu</div>
+        <a class="lnk" href="#contact">Hỏi đáp lịch trình chi tiết <i></i></a>
+      </div>
+
+      <!-- Project 1: Kỳ Co -->
+      <article class="proj">
+        <div class="fig reveal" data-speed="0.16">
+          <img src="images/mds/maldives-island.D2N54XQx_11L1XH.webp" alt="Bãi biển Kỳ Co trong xanh" loading="lazy" decoding="async">
+        </div>
+        <div class="meta up">
+          <div class="eyebrow">Hải trình ngày 2</div>
+          <h3>Bãi Biển Kỳ Co — Maldives Thu Nhỏ Của Việt Nam</h3>
+          <p>Được mệnh danh là đệ nhất bãi tắm Quy Nhơn, Kỳ Co mê hoặc du khách bởi dải cát trắng mịn màng ôm trọn làn nước biển trong suốt có thể nhìn thấy đáy cát. Hành trình đưa du khách lướt cano cao tốc vượt sóng, lặn ngắm rạn san hô rực rỡ tại Hòn Sẹo và tận hưởng bầu không khí biển cả hoang sơ hiếm có.</p>
+          <a class="lnk" href="#shift">Xem vị trí trong lịch trình <i></i></a>
+        </div>
+      </article>
+
+      <!-- Project 2: Eo Gió -->
+      <article class="proj alt">
+        <div class="fig reveal" data-speed="0.14">
+          <img src="images/mds/ubud-valley.Bjmh7w7p_Z2fgn4f.webp" alt="Cung đường Eo Gió đón sóng" loading="lazy" decoding="async">
+        </div>
+        <div class="meta up">
+          <div class="eyebrow">Hải trình ngày 2</div>
+          <h3>Danh Thắng Eo Gió — Cung Đường Đá Đón Gió Đại Dương</h3>
+          <p>Nơi được mệnh danh là điểm đón hoàng hôn đẹp nhất Việt Nam, nơi những rặng núi đá uốn lượn ôm trọn bờ biển tạo nên một eo biển lộng gió kỳ vĩ. Lối đi bộ bằng đá với hàng rào đỏ gạch uốn quanh sườn núi mang lại góc nhìn ngoạn mục và những bức ảnh lưu niệm vô giá.</p>
+          <a class="lnk" href="#shift">Xem vị trí trong lịch trình <i></i></a>
+        </div>
+      </article>
+
+      <!-- Project 3: Ghềnh Ráng Tiên Sa -->
+      <article class="proj">
+        <div class="fig reveal" data-speed="0.16">
+          <img src="about-quynhon.jpg" alt="Ghềnh Ráng Tiên Sa và Bãi Trứng" loading="lazy" decoding="async">
+        </div>
+        <div class="meta up">
+          <div class="eyebrow">Hải trình ngày 3</div>
+          <h3>Ghềnh Ráng Tiên Sa &amp; Bãi Trứng Hoàng Hậu</h3>
+          <p>Nằm ngay sát mép nước phố biển Quy Nhơn, Ghềnh Ráng là bản hòa ca giữa đá, sóng và thi ca. Nơi đây lưu giữ dấu tích thi sĩ tài hoa Hàn Mặc Tử, cùng Bãi Trứng độc nhất vô nhị với hàng triệu viên đá cuội khổng lồ nhẵn bóng như những quả trứng chim kỳ vĩ dưới chân sóng vỗ.</p>
+          <a class="lnk" href="#shift">Xem vị trí trong lịch trình <i></i></a>
+        </div>
+      </article>
+
+      <!-- Project 4: ExploraScience -->
+      <article class="proj alt">
+        <div class="fig reveal" data-speed="0.14">
+          <img src="hero-bg.jpg" alt="Trung tâm khám phá khoa học ExploraScience" loading="lazy" decoding="async">
+        </div>
+        <div class="meta up">
+          <div class="eyebrow">Hải trình ngày 3</div>
+          <h3>ExploraScience — Tổ Hợp Khám Phá Vũ Trụ Độc Bản</h3>
+          <p>Tổ hợp không gian khoa học đầu tiên tại Việt Nam và thứ hai tại Đông Nam Á. Với nhà chiếu hình vũ trụ mái vòm hiện đại, đài thiên văn và 7 phòng trưng bày chủ đề tương tác, nơi đây mở ra chân trời kiến thức đầy cảm hứng cho mọi lứa tuổi từ trẻ nhỏ đến người lớn.</p>
+          <a class="lnk" href="#shift">Xem vị trí trong lịch trình <i></i></a>
+        </div>
+      </article>
+    </section>
+
+    <!-- 13. BLEED PANORAMIC FIGURE 1 -->
+    <section class="bleed fig reveal" data-speed="0.18">
+      <img src="images/mds/beach-lagoon.C-M0dd6u_Z2lR5XN.webp" alt="Toàn cảnh bờ biển miền Trung" loading="lazy" decoding="async">
+      <div class="cap"><small>Sứ mệnh</small>Hành trình lưu giữ những khoảnh khắc nguyên sơ và thi vị nhất của biển Quy Nhơn.</div>
+    </section>
+
+    <!-- 14. STATS SECTION -->
+    <section class="stats wrap">
+      <div class="up"><b data-count="4">0<small>N3Đ</small></b><span>Hải trình trọn vẹn cảm xúc</span></div>
+      <div class="up"><b data-count="4">0<small>★</small></b><span>Khách sạn Odin trung tâm biển</span></div>
+      <div class="up"><b data-count="100">0<small>%</small></b><span>Hải sản bản địa tươi ngon</span></div>
+      <div class="up"><b data-count="0">0<small>phí</small></b><span>Không bán tour / Không phí ẩn</span></div>
+    </section>
+
+    <!-- 15. METHOD / ACCORDION LEDGER -->
+    <section class="method wrap" id="why">
+      <div class="head up">
+        <div class="eyebrow">Nguyên tắc hành trình</div>
+        <h2 class="sec">Tại sao chuyến đi này được yêu mến?</h2>
+      </div>
+      <ol class="ledger" id="ledger">
+        <li class="arow up">
+          <span class="y">01</span>
+          <div class="a">
+            <b>Nhịp độ thư thái, không chạy sô dồn dập</b>
+            <div class="desc" style="color:var(--ink2);font-size:15px;margin-top:6px;line-height:1.6;">
+              Mỗi điểm đến đều có đủ thời gian để bạn thả mình tận hưởng, tắm biển Kỳ Co, chụp ảnh Eo Gió hay nhâm nhi tách cà phê view biển Ghềnh Ráng mà <mark class="hl-navy">không hề có sự giục giã</mark>.
+            </div>
+          </div>
+          <span class="r">Cân bằng</span>
+        </li>
+        <li class="arow up">
+          <span class="y">02</span>
+          <div class="a">
+            <b>Nghỉ dưỡng tiêu chuẩn 4 sao tại Odin Hotel</b>
+            <div class="desc" style="color:var(--ink2);font-size:15px;margin-top:6px;line-height:1.6;">
+              Khách sạn Odin 4 sao tọa lạc tại vị trí đắc địa trung tâm thành phố Quy Nhơn, cách bãi biển chỉ vài bước chân, phòng ốc hiện đại, hồ bơi và bữa sáng buffet phong phú.
+            </div>
+          </div>
+          <span class="r">Lưu trú</span>
+        </li>
+        <li class="arow up">
+          <span class="y">03</span>
+          <div class="a">
+            <b>Ẩm thực hải sản 7 món chế biến nóng hổi</b>
+            <div class="desc" style="color:var(--ink2);font-size:15px;margin-top:6px;line-height:1.6;">
+              Thưởng thức hải sản tươi rói vừa cập bến làng chài Nhơn Lý: ốc biển hấp sả, tôm nướng muối ớt, mực lá chiên mắm, cá nướng giấy bạc và cháo hải sản đậm đà hương vị biển đảo.
+            </div>
+          </div>
+          <span class="r">Ẩm thực</span>
+        </li>
+        <li class="arow up">
+          <span class="y">04</span>
+          <div class="a">
+            <b>Văn hóa Chăm Pa &amp; Di sản thi ca sâu sắc</b>
+            <div class="desc" style="color:var(--ink2);font-size:15px;margin-top:6px;line-height:1.6;">
+              Hành trình đưa bạn tìm hiểu văn hóa độc đáo qua quần thể Tháp Đôi rêu phong từ thế kỷ XII, lắng đọng cùng cuộc đời thi sĩ tài hoa Hàn Mặc Tử tại Ghềnh Ráng Tiên Sa.
+            </div>
+          </div>
+          <span class="r">Văn hóa</span>
+        </li>
+        <li class="arow up">
+          <span class="y">05</span>
+          <div class="a">
+            <b>An toàn biển đảo &amp; Chu toàn từng chi tiết</b>
+            <div class="desc" style="color:var(--ink2);font-size:15px;margin-top:6px;line-height:1.6;">
+              Cano cao tốc trang bị áo phao đầy đủ cho từng thành viên, xe du lịch đời mới máy lạnh êm ái, hướng dẫn viên tận tâm am hiểu cội nguồn văn hóa Bình Định.
+            </div>
+          </div>
+          <span class="r">An toàn</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 16. PROPRIETARY RETRO-TECH EXPEDITION CONSOLE -->
+    <section class="tech wrap" id="tech">
+      <div class="console up" id="console">
+        <div class="grid" id="cgrid"></div>
+        <div class="log" id="clog"></div>
+        <div class="foot">
+          <div class="l"><span class="dot"></span><span id="cclock">00:00:00</span></div>
+          <div class="r">EXPEDITION RADAR // QUY NHON OPS</div>
+        </div>
+      </div>
+      <div class="desc">
+        <div class="eyebrow up">Hệ thống giám sát viễn chinh</div>
+        <h2 class="up">Theo dõi thời tiết &amp; hải trình thời gian thực.</h2>
+        <p class="up">Nhằm mang lại chuyến đi hoàn hảo nhất, hệ thống thông tin thực địa của Thập Tứ Tour liên tục đồng bộ dữ liệu thời tiết, cấp độ sóng biển Kỳ Co, hướng gió Eo Gió và thủy triều để điều chỉnh lịch trình từng ngày một cách tối ưu nhất.</p>
+        <ul class="tech-list">
+          <li class="up">
+            <b><i class="ic" style="background:#1c486d"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 2v12M2 8h12"/></svg></i><span class="nm">Marine Radar</span></b>
+            <span>Dự báo độ cao sóng biển, vận tốc gió và điều kiện lặn san hô tại Hòn Sẹo theo từng khung giờ.</span>
+          </li>
+          <li class="up">
+            <b><i class="ic" style="background:#e6872d"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg></i><span class="nm">Comfort Index</span></b>
+            <span>Kiểm soát nhiệt độ nắng nóng, bố trí thời gian nghỉ ngơi tại khách sạn Odin 4 sao giúp đoàn luôn tràn đầy sinh lực.</span>
+          </li>
+          <li class="up">
+            <b><i class="ic" style="background:#4a4a46"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5"><path d="M2 4h12M2 8h12M2 12h8"/></svg></i><span class="nm">Local Network</span></b>
+            <span>Kết nối trực tiếp mạng lưới ngư dân cano làng chài Nhơn Lý, bảo đảm hải sản tươi sống đánh bắt trong ngày.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 17. TRAVELLER QUOTES / TESTIMONIALS -->
+    <section class="quotes wrap" id="quotes">
+      <div class="quote up">
+        <p>"Nước biển Kỳ Co trong vắt màu ngọc bích, đồ ăn hải sản ở làng chài ngon và tươi không tưởng. Cảm ơn Thập Tứ Tour đã chuẩn bị chuyến đi <mark class="hl-navy">vô cùng chỉn chu và ấm áp</mark> cho cả gia đình tôi."</p>
+        <div><b>Nguyễn Hoàng Quân</b><small>Du khách TP. Hồ Chí Minh</small></div>
+      </div>
+      <div class="quote up">
+        <p>"Khách sạn Odin 4 sao ở ngay trung tâm, đi dạo biển đêm hay ăn ốc chợ đêm rất tiện. Thích nhất là không khí <mark class="hl-orange">thư thái, không hề có cảm giác bị ép mua sắm</mark> như những tour thông thường."</p>
+        <div><b>Trần Minh Thảo</b><small>Du khách Quận 1, TP.HCM</small></div>
+      </div>
+      <div class="quote up">
+        <p>"Eo Gió đẹp đến ngỡ ngàng, đứng trên vách đá lộng gió nhìn sóng vỗ bờ cát trắng mà thấy lòng nhẹ nhõm. Một chuyến đi <mark class="hl-navy">đáng nhớ và đáng tiền từng khoảnh khắc</mark>."</p>
+        <div><b>Phạm Thanh Tùng</b><small>Nhiếp ảnh gia tự do</small></div>
+      </div>
+      <a class="lnk up" href="#contact" style="grid-column:1/-1;justify-self:start">Chia sẻ cảm nhận của bạn <i></i></a>
+    </section>
+
+    <!-- 18. TEAM -->
+    <section class="team wrap" id="team">
+      <div class="head up">
+        <div><div class="eyebrow">Đội ngũ đồng hành</div><h2 class="sec">Những người kiến tạo hải trình</h2></div>
+        <a class="lnk" href="#contact">Gặp gỡ đội ngũ <i></i></a>
+      </div>
+      <div class="fig reveal office" data-speed="0.12">
+        <img src="images/mds/overwater-villas-aerial.D3wbRsq7_1kKOng.webp" alt="Vịnh biển Quy Nhơn" loading="lazy" decoding="async">
+      </div>
+      <div class="grid4">
+        <div class="person up">
+          <div class="ph"><img src="images/mds/daniel.BWiOIHtj_2925QE.webp" alt="Minh Tuấn" loading="lazy" decoding="async"></div>
+          <b>Minh Tuấn</b><span>Trưởng Đoàn &amp; Điều Phối Hành Trình</span>
+        </div>
+        <div class="person up">
+          <div class="ph"><img src="images/mds/raymond.B3oc-lxB_fINwP.webp" alt="Bác Bảy Hải" loading="lazy" decoding="async"></div>
+          <b>Bác Bảy Hải</b><span>Thuyền Trưởng Cano Kỳ Co (Nhơn Lý)</span>
+        </div>
+        <div class="person up">
+          <div class="ph"><img src="images/mds/kim.B25W6wf1_Zbs9x1.webp" alt="Thu Hà" loading="lazy" decoding="async"></div>
+          <b>Thu Hà</b><span>Chuyên Viên Thuyết Minh Văn Hóa Chăm Pa</span>
+        </div>
+        <div class="person up">
+          <div class="ph"><img src="images/mds/james.BW0w1EQI_1SCVp8.webp" alt="Quang Huy" loading="lazy" decoding="async"></div>
+          <b>Quang Huy</b><span>Hỗ Trợ Hình Ảnh &amp; Flycam Kỷ Niệm</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 19. BLEED FIGURE 2 -->
+    <section class="bleed fig reveal" data-speed="0.18">
+      <img src="images/mds/beach-lagoon.C-M0dd6u_Z2lR5XN.webp" alt="Biển hoàng hôn Quy Nhơn" loading="lazy" decoding="async">
+      <div class="cap"><small>Khám phá</small>Quy Nhơn — Nơi đất trời biển cả hòa quyện cùng lòng hiếu khách miền Trung.</div>
+    </section>
+
+    <!-- 20. CONTACT & INQUIRY ARCHIVE -->
+    <section class="contact wrap" id="contact">
+      <div class="up">
+        <div class="eyebrow" style="margin-bottom:24px">Tra cứu &amp; Hỏi đáp</div>
+        <h2>Bắt đầu tìm hiểu chuyến đi.</h2>
+        <p>Bạn cần giải đáp thắc mắc về thời tiết, hành lý cần mang hay lịch trình chi tiết 4N3Đ? Đội ngũ Thập Tứ Tour luôn sẵn sàng lắng nghe và chia sẻ chân thành nhất. Lưu ý: Trang web hoạt động phi thương mại, chỉ cung cấp thông tin lịch trình và cẩm nang, không nhận đặt cọc hay bán tour trực tuyến.</p>
+      </div>
+      <form id="f" class="up" novalidate>
+        <div class="two">
+          <label for="fn"><span class="lt">Họ và tên đệm <em>*</em></span><input id="fn" name="first" type="text" placeholder="Nguyễn Văn" required></label>
+          <label for="lnm"><span class="lt">Tên gọi <em>*</em></span><input id="lnm" name="last" type="text" placeholder="An" required></label>
+        </div>
+        <div class="two">
+          <label for="email"><span class="lt">Địa chỉ Email <em>*</em></span><input id="email" name="email" type="email" placeholder="an.nguyen@email.com" required></label>
+          <label for="phone"><span class="lt">Số điện thoại / Zalo</span><input id="phone" name="phone" type="tel" placeholder="0901 234 567"></label>
+        </div>
         <div>
-          <span class="brand-hero-sub">THƯỚC PHIM HÀNH TRÌNH</span>
-          <h3 class="brand-hero-title">Khám Phá Vẻ Đẹp Xứ Nẫu</h3>
+          <label for="topic"><span class="lt">Chủ đề cần tư vấn</span>
+            <select id="topic" name="topic">
+              <option value="schedule">Chi tiết lịch trình từng ngày (4N3Đ)</option>
+              <option value="hotel">Tiêu chuẩn phòng khách sạn Odin 4 sao</option>
+              <option value="weather">Thời tiết &amp; Điều kiện lặn san hô Kỳ Co</option>
+              <option value="food">Thực đơn hải sản làng chài &amp; ăn chay</option>
+              <option value="other">Thắc mắc khác</option>
+            </select>
+          </label>
         </div>
-        <span class="brand-hero-sub">LỚP 10A4 · THPT LƯƠNG THẾ VINH</span>
-      </div>
+        <div>
+          <label for="msg"><span class="lt">Nội dung câu hỏi</span>
+            <textarea id="msg" name="message" rows="4" placeholder="Nhập câu hỏi hoặc yêu cầu cần hỗ trợ..."></textarea>
+          </label>
+        </div>
+        <button type="submit" class="btn" style="margin-top:20px;padding:16px 36px;background:var(--ink);color:#fff;border:none;border-radius:40px;cursor:pointer;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;">
+          Gửi câu hỏi tư vấn <i>&rarr;</i>
+        </button>
+      </form>
     </section>
 
-    <!-- Dynamic SVG Flowchart Section -->
-    <section class="flow-section" id="tuyen-diem">
-      <div class="container">
-        <span class="section-label">HÀNH TRÌNH TUYẾN ĐIỂM</span>
-        <h2 class="section-head-title">Sơ đồ kết nối các trạm dừng chân</h2>
-        
-        <div class="flow" id="flowWrap">
-          <!-- The SVG bezier curves are dynamically rendered by JavaScript -->
-          <div class="node">
-            <small>02:00 XUẤT PHÁT</small>
-            <b>TP.HCM</b>
-            <small>Xe giường nằm</small>
-          </div>
-          <div class="node">
-            <small>12:00 ĐẾN NƠI</small>
-            <b>Quy Nhơn</b>
-            <small>Khách sạn Odin 4 sao</small>
-          </div>
-          <div class="node">
-            <small>NGÀY 2 SÁNG</small>
-            <b>Kỳ Co</b>
-            <small>Cano & Lặn san hô</small>
-          </div>
-          <div class="node">
-            <small>NGÀY 2 CHIỀU</small>
-            <b>Eo Gió</b>
-            <small>Vách đá & Tịnh Xá</small>
-          </div>
-          <div class="node">
-            <small>NGÀY 3</small>
-            <b>Ghềnh Ráng</b>
-            <small>Đá trứng & Vũ trụ</small>
-          </div>
-          <div class="node">
-            <small>NGÀY 4 KẾT THÚC</small>
-            <b>TP.HCM</b>
-            <small>Về lại điểm đón</small>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Interactive Expedition Console Terminal -->
-    <section class="console-section" id="console">
-      <div class="container">
-        <span class="section-label">HỆ THỐNG GIÁM SÁT THỜI GIAN THỰC</span>
-        <h2 class="section-head-title">Expedition Console & Status</h2>
-
-        <div class="console-wrap">
-          <!-- 12x9 Interactive LED Grid -->
-          <div class="console-grid" id="cgrid"></div>
-          
-          <div class="console-hud">
-            <span>EXPEDITION MONITOR // QUY NHON 4N3D</span>
-            <span class="console-clock" id="cclock">00:00:00</span>
-          </div>
-
-          <div class="console-log" id="clog"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Curated Editorial Destinations Showcase (#work) -->
-    <section class="work-section" id="danh-thang">
-      <div class="container">
-        <span class="section-label">DANH THẮNG TIÊU BIỂU</span>
-        <h2 class="section-head-title">Những điểm đến đắt giá nhất</h2>
-
-        <div class="work-grid">
-          <!-- Card 1 -->
-          <article class="work-card">
-            <div class="work-thumb">
-              <img src="hero-bg.jpg" alt="Bãi biển Kỳ Co trong xanh" loading="lazy">
-            </div>
-            <div class="work-meta">
-              <span>01 / BÃI BIỂN KỲ CO</span>
-              <span>NGÀY 2</span>
-            </div>
-            <h3 class="work-title">Thiên đường biển xanh ngọc bích hai màu</h3>
-            <p class="work-desc">Được mệnh danh là Maldives của Việt Nam, nơi bạn trải nghiệm lướt cano cao tốc trên sóng bạc, đắm mình dưới làn nước mát lạnh và lặn ngắm rạn san hô Bãi Dứa đầy màu sắc.</p>
-          </article>
-
-          <!-- Card 2 -->
-          <article class="work-card">
-            <div class="work-thumb">
-              <img src="about-quynhon.jpg" alt="Danh thắng Eo Gió lộng gió" loading="lazy">
-            </div>
-            <div class="work-meta">
-              <span>02 / DANH THẮNG EO GIÓ</span>
-              <span>NGÀY 2</span>
-            </div>
-            <h3 class="work-title">Cung đường tản bộ ven vách đá ngoạn mục</h3>
-            <p class="work-desc">Vòng cung vách đá cheo leo ôm trọn eo biển lộng gió với hàng rào sơn trắng đỏ uốn lượn ven mép nước, tạo nên góc ngắm hoàng hôn biển trác tuyệt nhất xứ Nẫu.</p>
-          </article>
-
-          <!-- Card 3 -->
-          <article class="work-card">
-            <div class="work-thumb">
-              <img src="hero-bg.jpg" alt="Ghềnh Ráng Tiên Sa và bãi đá trứng" loading="lazy">
-            </div>
-            <div class="work-meta">
-              <span>03 / GHỀNH RÁNG TIÊN SA</span>
-              <span>NGÀY 3</span>
-            </div>
-            <h3 class="work-title">Bãi đá trứng Hoàng Hậu và đồi thi nhân</h3>
-            <p class="work-desc">Nơi hàng ngàn viên đá cuội nhẵn mịn như quả trứng chim khổng lồ xếp chồng ven biển, dẫn lối lên ngọn đồi viếng nơi yên nghỉ của nhà thơ Hàn Mặc Tử tài hoa.</p>
-          </article>
-
-          <!-- Card 4 -->
-          <article class="work-card">
-            <div class="work-thumb">
-              <img src="about-quynhon.jpg" alt="Ẩm thực hải sản Quy Nhơn" loading="lazy">
-            </div>
-            <div class="work-meta">
-              <span>04 / MỸ VỊ BIỂN ĐẢO</span>
-              <span>XUYÊN SUỐT TOUR</span>
-            </div>
-            <h3 class="work-title">Đại tiệc hải sản tươi sống và món dân dã</h3>
-            <p class="work-desc">Từ tô bún cá thu Ngọc Liên ngọt thanh, nem nướng lụi than hồng đến các bữa tiệc hải sản tôm hùm, cua huỳnh đế, ốc nhảy trên bờ biển đường Xuân Diệu.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Itinerary Timeline Section -->
-    <section class="itinerary-section" id="lich-trinh">
-      <div class="container">
-        <span class="section-label">LỊCH TRÌNH CHI TIẾT</span>
-        <h2 class="section-head-title">Kế hoạch khám phá 4 ngày 3 đêm</h2>
-
-        <div class="tabs-row" role="tablist">
-          <button type="button" class="tab-btn active" data-day="day1" role="tab" aria-selected="true">Ngày 01: Chạm Biển</button>
-          <button type="button" class="tab-btn" data-day="day2" role="tab" aria-selected="false">Ngày 02: Kỳ Co · Eo Gió</button>
-          <button type="button" class="tab-btn" data-day="day3" role="tab" aria-selected="false">Ngày 03: Ghềnh Ráng · Vũ Trụ</button>
-          <button type="button" class="tab-btn" data-day="day4" role="tab" aria-selected="false">Ngày 04: Chợ Đầm · Trở Về</button>
-        </div>
-
-        <!-- Day 1 -->
-        <div class="day-box active" id="day1">
-          <div class="timeline-rows">
-            <div class="trow">
-              <div class="trow-time">02:00</div>
-              <div class="trow-content">
-                <h4>Khởi hành từ TP.HCM</h4>
-                <p>Xe giường nằm cao cấp đón đoàn, khởi hành xuôi theo quốc lộ về thành phố biển miền Trung.</p>
-              </div>
-              <div class="trow-cost">Theo lịch trình</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">07:00</div>
-              <div class="trow-content">
-                <h4>Dừng chân ăn sáng</h4>
-                <p>Điểm tâm nhẹ phở bò, bún bò hoặc cơm tấm tại trạm dừng chân ven đường.</p>
-              </div>
-              <div class="trow-cost">50.000đ / người</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">12:00</div>
-              <div class="trow-content">
-                <h4>Đến Khách sạn Odin Quy Nhơn</h4>
-                <p>Gửi hành lý tại sảnh lễ tân 4 sao, ăn trưa đặc sản bún cá Ngọc Liên hoặc nem chả Lợi trứ danh.</p>
-              </div>
-              <div class="trow-cost">65.000đ / phần</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">16:00</div>
-              <div class="trow-content">
-                <h4>Nhận phòng & dạo biển Xuân Diệu</h4>
-                <p>Nghỉ ngơi lấy lại năng lượng, tắm biển tại bãi cát trung tâm và ngắm hoàng hôn thành phố.</p>
-              </div>
-              <div class="trow-cost">Tự do thư giãn</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">18:30</div>
-              <div class="trow-content">
-                <h4>Bữa tối hải sản & dạo chợ đêm</h4>
-                <p>Thưởng thức tiệc hải sản tươi rói tại quán Lộc Biển, sau đó tản bộ mua sắm quà tại chợ đêm.</p>
-              </div>
-              <div class="trow-cost">150.000đ - 450.000đ</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 2 -->
-        <div class="day-box" id="day2">
-          <div class="timeline-rows">
-            <div class="trow">
-              <div class="trow-time">06:30</div>
-              <div class="trow-content">
-                <h4>Ăn sáng tại khách sạn Odin</h4>
-                <p>Dùng bữa sáng buffet miễn phí tại khách sạn, chuẩn bị nón và kem chống nắng.</p>
-              </div>
-              <div class="trow-cost">Miễn phí KS</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">08:15</div>
-              <div class="trow-content">
-                <h4>Cano cao tốc sang đảo Kỳ Co</h4>
-                <p>Lướt sóng ra bãi tắm nước trong hai màu lam ngọc, lặn ngắm san hô Bãi Dứa đầy màu sắc.</p>
-              </div>
-              <div class="trow-cost">450.000đ - 490.000đ</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">12:30</div>
-              <div class="trow-content">
-                <h4>Đại tiệc hải sản làng chài Nhơn Lý</h4>
-                <p>Thực đơn 8 món biển tươi sống: mực hấp gừng, tôm nướng muối ớt, lẩu cá bớp và hàu nướng mỡ hành.</p>
-              </div>
-              <div class="trow-cost">Bao gồm cano</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">14:30</div>
-              <div class="trow-content">
-                <h4>Chiêm bái Tịnh Xá Ngọc Hòa & Check-in Eo Gió</h4>
-                <p>Viếng tượng Phật đôi Quan Thế Âm cao nhất Việt Nam, tản bộ ngắm biển trên cung đường vách đá kỳ vĩ.</p>
-              </div>
-              <div class="trow-cost">Vé tham quan</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">18:00</div>
-              <div class="trow-content">
-                <h4>Thưởng thức ẩm thực đường phố</h4>
-                <p>Bánh xèo tôm nhảy giòn rụm, bánh bèo chén, nem nướng hoặc câu mực đêm tự túc.</p>
-              </div>
-              <div class="trow-cost">Tự do trải nghiệm</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 3 -->
-        <div class="day-box" id="day3">
-          <div class="timeline-rows">
-            <div class="trow">
-              <div class="trow-time">07:00</div>
-              <div class="trow-content">
-                <h4>Ăn sáng bánh hỏi lòng heo xứ Nẫu</h4>
-                <p>Đặc sản nức tiếng người Bình Định ăn kèm cháo lòng nóng hổi và chén nước mắm nguyên chất.</p>
-              </div>
-              <div class="trow-cost">45.000đ / phần</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">08:30</div>
-              <div class="trow-content">
-                <h4>Tham quan Ghềnh Ráng Tiên Sa</h4>
-                <p>Chiêm ngưỡng bãi đá trứng Hoàng Hậu tròn mịn, viếng mộ nhà thơ Hàn Mặc Tử trên đồi thi nhân.</p>
-              </div>
-              <div class="trow-cost">Vé danh thắng</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">13:45</div>
-              <div class="trow-content">
-                <h4>Khám phá Trung tâm ExploraScience</h4>
-                <p>Nhà chiếu hình vũ trụ vòm tròn hiện đại, các phòng thực nghiệm thiên văn học tương tác sống động.</p>
-              </div>
-              <div class="trow-cost">Vé khoa học</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">18:30</div>
-              <div class="trow-content">
-                <h4>Bữa tiệc Gala chia tay đoàn</h4>
-                <p>Gặp mặt đầm ấm, cùng ôn lại những kỷ niệm đẹp trong chuyến đi biển cùng bạn bè.</p>
-              </div>
-              <div class="trow-cost">Ấm cúng</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 4 -->
-        <div class="day-box" id="day4">
-          <div class="timeline-rows">
-            <div class="trow">
-              <div class="trow-time">07:30</div>
-              <div class="trow-content">
-                <h4>Cà phê sớm ven biển</h4>
-                <p>Nhâm nhi tách cà phê tại Surf Bar, lắng nghe tiếng sóng vỗ dịu êm của buổi bình minh biển.</p>
-              </div>
-              <div class="trow-cost">Thảnh thơi</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">09:00</div>
-              <div class="trow-content">
-                <h4>Mua sắm đặc sản Chợ Đầm</h4>
-                <p>Chọn mua bánh ít lá gai, tré rơm Bình Định, mực rim me, nem chua Chợ Huyện làm quà lưu niệm.</p>
-              </div>
-              <div class="trow-cost">Tự túc quà tặng</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">11:30</div>
-              <div class="trow-content">
-                <h4>Trả phòng Khách sạn Odin</h4>
-                <p>Kiểm tra hành lý cá nhân, hoàn tất thủ tục trả phòng 4 sao và dùng bữa trưa nhẹ.</p>
-              </div>
-              <div class="trow-cost">Hoàn tất lưu trú</div>
-            </div>
-            <div class="trow">
-              <div class="trow-time">13:00</div>
-              <div class="trow-content">
-                <h4>Lên xe khởi hành về lại TP.HCM</h4>
-                <p>Xe đón đoàn trở về TP.HCM, khép lại hành trình 4 ngày 3 đêm đầy ắp niềm vui và kỷ niệm gắn kết.</p>
-              </div>
-              <div class="trow-cost">Về lại điểm đón</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Accordion Section -->
-    <section class="faq-section" id="faq">
-      <div class="container">
-        <span class="section-label">HỎI ĐÁP HÀNH TRÌNH</span>
-        <h2 class="section-head-title">Những thắc mắc thường gặp</h2>
-
-        <div class="faq-rows">
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>Thời gian xe giường nằm di chuyển từ TP.HCM đến Quy Nhơn mất bao lâu?</span>
-              <span class="plus">+</span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                <p>Xe giường nằm cao cấp xuất phát lúc 02:00 sáng và đến Quy Nhơn vào khoảng 12:00 trưa (mất khoảng 10 tiếng bao gồm thời gian dừng nghỉ ăn sáng dọc đường). Xe có điều hòa êm ái, rèm che riêng tư và cổng sạc USB.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>Khách sạn Odin có vị trí thế nào và có gần biển không?</span>
-              <span class="plus">+</span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                <p>Khách sạn Odin đạt chuẩn 4 sao tọa lạc ngay trung tâm thành phố biển Quy Nhơn, chỉ cách bãi tắm Xuân Diệu 3 phút đi bộ. Khách sạn có hồ bơi tầng thượng ngắm toàn cảnh vịnh biển và tiệc buffet sáng phong phú.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>Nếu gặp thời tiết biển động thì cano ra đảo Kỳ Co xử lý thế nào?</span>
-              <span class="plus">+</span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                <p>Trong trường hợp biển có sóng lớn ảnh hưởng an toàn cano, đoàn sẽ chuyển sang phương án di chuyển bằng đường bộ qua cung đường đèo ngắm cảnh để vào đảo Kỳ Co, đảm bảo an toàn tuyệt đối mà vẫn trải nghiệm trọn vẹn danh thắng.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>Chi phí ăn uống hải sản tại Quy Nhơn có đắt đỏ không?</span>
-              <span class="plus">+</span>
-            </button>
-            <div class="faq-a">
-              <div class="faq-a-inner">
-                <p>Hải sản và ẩm thực tại Quy Nhơn rất phải chăng so với các thành phố du lịch khác. Các món bún cá, nem chả chỉ từ 40.000đ đến 65.000đ mỗi phần. Các bữa tiệc hải sản tươi sống phong phú dao động từ 150.000đ đến 350.000đ mỗi người.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- Editorial Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <span class="section-label" style="color: var(--orange);">EXPEDITION ARCHIVE</span>
-          <h2 class="footer-mast">Thập Tứ Tour</h2>
-          <p style="color: var(--ink2); margin-top: 12px; font-size: 18px;">Lớp 10A4 · THPT Lương Thế Vinh TP.HCM</p>
-        </div>
-        <div style="text-align: right;">
-          <p style="font-family: var(--serif); font-size: 32px; color: var(--navy); margin-bottom: 8px;">Quy Nhơn 4N3Đ</p>
-          <p style="font-family: var(--mono); font-size: 13px; color: var(--ink3);">KỲ CO · EO GIÓ · GHỀNH RÁNG</p>
-        </div>
+  <!-- 21. FOOTER -->
+  <footer class="wrap">
+    <div class="top">
+      <div>
+        <div class="mail"><a class="eml">contact [at] thaptutour.vn</a></div>
+        <div class="muted" style="font-size:13px;margin-top:8px"><a href="tel:+84901234567">+84 (0) 90 123 4567</a></div>
       </div>
-
-      <div class="footer-bottom">
-        <span>Bản quyền 2026 Thập Tứ Tour · Thiết kế theo phong cách MDS Collective Luxury Editorial</span>
-        <span>Biển xanh ngọc bích · Nắng vàng xứ Nẫu</span>
+      <div class="cols">
+        <div><b>TP. Hồ Chí Minh</b>Điểm tập kết đón đoàn<br>Khởi hành thuận tiện</div>
+        <div><b>Quy Nhơn, Bình Định</b>Khách sạn Odin 4 Sao<br>Trực diện bãi biển</div>
+        <div><b>Tuyến điểm</b>Bãi biển Kỳ Co<br>Eo Gió Nhơn Lý<br>Ghềnh Ráng Tiên Sa<br>ExploraScience<br>Tháp Đôi Chăm Pa</div>
+        <div><b>Cẩm nang</b>Thời điểm lý tưởng<br>Hành lý khuyên dùng<br>An toàn biển đảo</div>
+        <div><b>Kết nối</b><a href="#contact">Facebook</a><br><a href="#contact">Zalo Official</a><br><a href="#contact">Instagram</a></div>
       </div>
+    </div>
+    <div class="bot">
+      <span>© 2026 Thập Tứ Tour. Cẩm nang hành trình biển đảo Quy Nhơn 4N3Đ.</span>
+      <nav class="fnav" aria-label="Footer">
+        <a href="#shift">Hành trình</a><span aria-hidden="true"> / </span>
+        <a href="#work">Điểm đến</a><span aria-hidden="true"> / </span>
+        <a href="#why">Tiêu chuẩn</a><span aria-hidden="true"> / </span>
+        <a href="#tech">Giám sát biển</a><span aria-hidden="true"> / </span>
+        <a href="#quotes">Cảm nhận</a><span aria-hidden="true"> / </span>
+        <a href="#team">Đội ngũ</a><span aria-hidden="true"> / </span>
+        <a href="#contact">Hỏi đáp</a>
+      </nav>
     </div>
   </footer>
 
-  <!-- Local GSAP & ScrollTrigger Engine -->
+  <!-- GSAP & ScrollTrigger (Local, Zero-CDN dependency) -->
   <script src="js/gsap.min.js"></script>
   <script src="js/ScrollTrigger.min.js"></script>
+
+  <!-- MDS Interactive Engine -->
   <script src="js/main.js"></script>
 </body>
 </html>
