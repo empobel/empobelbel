@@ -1,7 +1,7 @@
 /**
  * Thập Tứ Tour - Main JavaScript
  * Built with Animate UI & Hallmark standards
- * Zero external libraries, 100% native Web APIs
+ * Informational travel guide - Zero external libraries
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const isOpen = item.classList.contains('open');
 
-      // Optional: close other open items for a neat accordion experience
+      // Close other open items
       document.querySelectorAll('.faq-item.open').forEach(openItem => {
         if (openItem !== item) {
           openItem.classList.remove('open');
@@ -142,42 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. Booking Form Validation & Confirmation Modal Dialog
-  const bookingForm = document.getElementById('bookingForm');
-  const confirmModal = document.getElementById('confirmModal');
-  const modalCloseBtn = document.getElementById('modalCloseBtn');
-  const modalOkBtn = document.getElementById('modalOkBtn');
-
-  if (bookingForm && confirmModal) {
-    bookingForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // Simple HTML5 validation passed
-      confirmModal.classList.add('open');
-      bookingForm.reset();
-    });
-
-    const closeModal = () => {
-      confirmModal.classList.remove('open');
-    };
-
-    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
-    if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
-
-    confirmModal.addEventListener('click', (e) => {
-      if (e.target === confirmModal) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && confirmModal.classList.contains('open')) {
-        closeModal();
-      }
-    });
-  }
-
-  // 7. Smooth Anchor Scrolling
+  // 6. Smooth Anchor Scrolling
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
