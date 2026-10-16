@@ -1,1604 +1,196 @@
-/* ===================================================
-   main.js - Logic hiển thị website Thập Tứ Tour
-   Chỉ giới thiệu các địa danh du lịch Quy Nhơn & Về tụi tôi
-   Hoàn toàn phi lợi nhuận, không có giá tiền / đăng ký tour
-   =================================================== */
-
-/* ===== PHẦN CHUNG (tất cả trang) ===== */
-
-// Hamburger menu mobile
-const hamburger = document.getElementById('hamburger');
-const nav = document.getElementById('nav');
-if (hamburger && nav) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    nav.classList.toggle('open');
-  });
-
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      nav.classList.remove('open');
-    });
-  });
-}
-
-// Nút back to top - Tự ẩn khi cuộn xuống đọc, chỉ hiện khi cuộn ngược lên trên mobile
-const backToTopBtn = document.getElementById('backToTop');
-if (backToTopBtn) {
-  let lastScrollY = window.scrollY;
-
-  window.addEventListener('scroll', () => {
-    const currentScrollY = window.scrollY;
-
-    if (currentScrollY > 400) {
-      if (window.innerWidth <= 768) {
-        // Trên mobile: khi người dùng đang lướt xuống đọc bài -> ẩn đi để KHÔNG BAO GIỜ che chữ/thẻ
-        if (currentScrollY > lastScrollY + 6) {
-          backToTopBtn.classList.remove('show');
-        } 
-        // Khi người dùng vuốt ngược lên để quay lại -> hiển thị lại nút
-        else if (currentScrollY < lastScrollY - 6) {
-          backToTopBtn.classList.add('show');
-        }
-      } else {
-        // Desktop màn rộng -> hiện bình thường
-        backToTopBtn.classList.add('show');
-      }
-    } else {
-      backToTopBtn.classList.remove('show');
-    }
-
-    lastScrollY = currentScrollY;
-  }, { passive: true });
-
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-
-/* ===== TRANG CHỦ (index.html) ===== */
-
-let currentCategory = 'all';
-let currentSearch = '';
-
 /**
- * Render danh mục địa danh (Biển đảo, Thiên nhiên, Văn hóa) kèm số lượng địa điểm
+ * Thập Tứ Tour - Main JavaScript
+ * Built with Animate UI & Hallmark standards
+ * Zero external libraries, 100% native Web APIs
  */
-function renderCategories() {
-  const grid = document.getElementById('categoryGrid');
-  if (!grid || typeof TOURS === 'undefined') return;
 
-  const categories = (typeof getLocalizedCategories === 'function') ? getLocalizedCategories() : CATEGORIES;
-  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  const totalCount = tours.length;
-  const catAllName = (typeof t === 'function') ? t('cat_all') : 'Tất cả địa danh';
-  const placesSuffix = (typeof t === 'function') ? t('cat_places_count') : 'địa điểm';
-
-  let html = `
-    <div class="category-card tilt-card reveal-on-scroll ${currentCategory === 'all' ? 'active' : ''}" data-category="all">
-      <div class="cat-icon-wrap">
-        <span class="cat-icon">🌍</span>
-      </div>
-      <span class="cat-name">${catAllName}</span>
-      <span class="cat-count">${totalCount} ${placesSuffix}</span>
-    </div>
-  `;
-
-  categories.forEach(cat => {
-    const count = tours.filter(t => t.category === cat.id).length;
-    html += `
-      <div class="category-card tilt-card reveal-on-scroll ${currentCategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
-        <div class="cat-icon-wrap">
-          <span class="cat-icon">${cat.icon}</span>
-        </div>
-        <span class="cat-name">${cat.name}</span>
-        <span class="cat-count">${count} ${placesSuffix}</span>
-      </div>
-    `;
-  });
-
-  grid.innerHTML = html;
-
-  grid.querySelectorAll('.category-card').forEach(card => {
-    card.addEventListener('click', () => {
-      grid.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      currentCategory = card.dataset.category;
-      applyFilters();
-
-      // Cuộn êm ái xuống phần địa điểm nổi bật để người dùng quan sát kết quả
-      const destSection = document.getElementById('dia-diem');
-      if (destSection) {
-        const top = destSection.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    });
-  });
-
-  if (typeof triggerScrollReveal === 'function') {
-    setTimeout(triggerScrollReveal, 30);
-  }
-}
-
-/**
- * Render danh sách thẻ địa danh Quy Nhơn (gắn liền mốc thời gian ghé thăm)
- */
-function renderTourCards(tours) {
-  const grid = document.getElementById('tourGrid');
-  if (!grid) return;
-
-  if (tours.length === 0) {
-    const noTitle = (typeof t === 'function') ? t('no_places_title') : 'Không tìm thấy địa điểm phù hợp';
-    const noSub = (typeof t === 'function') ? t('no_places_sub') : 'Vui lòng thử tìm kiếm với từ khóa khác hoặc chọn mục "Tất cả địa danh".';
-    grid.innerHTML = `
-      <div class="no-tours">
-        <span class="no-tours-icon">🔍</span>
-        <h3>${noTitle}</h3>
-        <p>${noSub}</p>
-      </div>
-    `;
-    return;
-  }
-
-  const categories = (typeof getLocalizedCategories === 'function') ? getLocalizedCategories() : CATEGORIES;
-  const getCatName = (catId) => {
-    const cat = categories.find(c => c.id === catId);
-    return cat ? cat.name : '';
-  };
-  const visitPrefix = (typeof t === 'function') ? t('visit_prefix') : 'Ghé thăm:';
-  const btnText = (typeof t === 'function') ? t('btn_view_place') : 'Xem chi tiết địa điểm';
-
-  let html = '';
-  tours.forEach(tour => {
-    // Render các thẻ tag nhỏ
-    let tagsHtml = '';
-    if (tour.tags && tour.tags.length > 0) {
-      tagsHtml = `<div class="tour-tags">${tour.tags.map(tag => `<span class="tour-tag-pill">${tag}</span>`).join('')}</div>`;
-    }
-
-    // Badge thời gian ghé thăm
-    let visitBadge = '';
-    if (tour.visitTime) {
-      visitBadge = `
-        <div class="tour-visittime-tag">
-          <span class="visittime-icon">⏰</span>
-          <span><strong>${visitPrefix}</strong> ${tour.visitTime}</span>
-        </div>
-      `;
-    }
-
-    html += `
-      <div class="tour-card tilt-card reveal-on-scroll" onclick="window.location.href='tour-detail.html?id=${tour.id}'">
-        <div class="tour-card-img">
-          <img src="${tour.image}" alt="${tour.name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-          <span class="tour-card-badge">${getCatName(tour.category)}</span>
-        </div>
-        <div class="tour-card-body">
-          <h3>${tour.name}</h3>
-          ${visitBadge}
-          <div class="tour-card-info">
-            <span>📍 ${tour.location}</span>
-            <span>⏱️ ${tour.duration}</span>
-          </div>
-          ${tagsHtml}
-          <div class="tour-card-footer">
-            <button class="btn-detail btn-detail-full" type="button">${btnText} <span class="btn-arrow">→</span></button>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  grid.innerHTML = html;
-
-  if (typeof triggerScrollReveal === 'function') {
-    setTimeout(triggerScrollReveal, 30);
-  }
-}
-
-/**
- * Chuyển đổi ngày trong lịch trình (đồng bộ tab và cuộn trang mượt mà)
- */
-function switchTimelineDay(targetDay) {
-  const day = parseInt(targetDay);
-  if (isNaN(day) || day < 1 || day > 4) return;
-
-  // Cập nhật tab active ở trên
-  const timelineTabs = document.getElementById('timelineTabs');
-  if (timelineTabs) {
-    const tabBtns = timelineTabs.querySelectorAll('.timeline-tab-btn');
-    tabBtns.forEach(btn => {
-      btn.classList.toggle('active', parseInt(btn.dataset.day) === day);
-    });
-  }
-
-  // Render lại timeline cho ngày tương ứng
-  renderTimeline(day);
-
-  // Cuộn trang mượt mà lên phần tab ngày 1, ngày 2, ngày 3, ngày 4
-  const targetTabs = document.getElementById('timelineTabs');
-  if (targetTabs) {
-    const yOffset = -80; // Trừ độ cao navbar cố định (70px) + khoảng đệm thẩm mỹ 10px
-    const y = targetTabs.getBoundingClientRect().top + window.pageYOffset + yOffset;
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-  }
-}
-
-/**
- * Render Lịch trình chuyến đi (Timeline 4 Ngày 3 Đêm)
- */
-function renderTimeline(dayNumber = 1) {
-  const container = document.getElementById('timelineContainer');
-  if (!container || typeof TIMELINE_DATA === 'undefined') return;
-
-  const timelineData = (typeof getLocalizedTimeline === 'function') ? getLocalizedTimeline() : TIMELINE_DATA;
-  const dayData = timelineData.find(d => d.day === parseInt(dayNumber)) || timelineData[0];
-  if (!dayData) return;
-
-  const placeLinkPrefix = (typeof t === 'function') ? t('timeline_place_link') : '📍 <strong>Địa điểm trong chuyến đi:</strong>';
-  const weatherTitle = (typeof t === 'function') ? t('weather_plan_title') : 'Phương Án Dự Phòng Khi Thời Tiết Xấu / Trời Mưa';
-  const dayBadgePrefix = (typeof t === 'function') ? t('day_badge_prefix') : 'LỊCH TRÌNH NGÀY';
-
-  let eventsHtml = '';
-  dayData.events.forEach((ev) => {
-    let placeLinkHtml = '';
-    if (ev.highlightPlaceId && ev.placeName) {
-      placeLinkHtml = `
-        <div class="timeline-place-tag">
-          <a href="tour-detail.html?id=${ev.highlightPlaceId}" title="Bấm xem giới thiệu chi tiết">
-            ${placeLinkPrefix} ${ev.placeName} <span class="arrow-icon">→</span>
-          </a>
-        </div>
-      `;
-    }
-
-    eventsHtml += `
-      <div class="timeline-item reveal-on-scroll">
-        <div class="timeline-marker">
-          <div class="timeline-icon-box">${ev.icon || '📍'}</div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content tilt-card">
-          <div class="timeline-time-badge">${ev.time}</div>
-          <h3 class="timeline-event-title">${ev.title}</h3>
-          <p class="timeline-event-desc">${ev.desc}</p>
-          ${placeLinkHtml}
-        </div>
-      </div>
-    `;
-  });
-
-  // Khối phương án trời mưa / thời tiết xấu
-  let weatherHtml = '';
-  if (dayData.weatherPlan) {
-    let solutionsHtml = '';
-    dayData.weatherPlan.solutions.forEach(sol => {
-      solutionsHtml += `
-        <div class="weather-sol-item">
-          <span class="sol-badge">⚡ ${sol.title}:</span>
-          <p>${sol.detail}</p>
-        </div>
-      `;
-    });
-
-    weatherHtml = `
-      <div class="weather-plan-box tilt-card reveal-on-scroll">
-        <div class="weather-header">
-          <span class="weather-icon">🌧️</span>
-          <div>
-            <h4>${weatherTitle}</h4>
-            <p class="weather-condition">${dayData.weatherPlan.condition}</p>
-          </div>
-        </div>
-        <div class="weather-solutions-list">
-          ${solutionsHtml}
-        </div>
-      </div>
-    `;
-  }
-
-  // Khối điều hướng chuyển ngày ở chân trang (Next, Prev, First, Last)
-  const currentDayNum = parseInt(dayData.day);
-  const totalDays = timelineData.length || 4;
-  const isFirst = currentDayNum <= 1;
-  const isLast = currentDayNum >= totalDays;
-
-  const isEn = (typeof getCurrentLang === 'function') && getCurrentLang() === 'en';
-  const labelFirst = (typeof t === 'function') ? t('nav_first_day') : (isEn ? 'First Day' : 'Về ngày đầu');
-  const labelPrev = (typeof t === 'function') ? t('nav_prev_day') : (isEn ? 'Previous Day' : 'Ngày trước đó');
-  const labelNext = (typeof t === 'function') ? t('nav_next_day') : (isEn ? 'Next Day' : 'Ngày tiếp theo');
-  const labelLast = (typeof t === 'function') ? t('nav_last_day') : (isEn ? 'Last Day' : 'Đến ngày cuối');
-  const indicatorPrefix = (typeof t === 'function') ? t('nav_indicator_day') : (isEn ? 'Day' : 'Ngày');
-
-  const svgFirst = `<svg class="nav-arrow-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>`;
-  const svgPrev = `<svg class="nav-arrow-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>`;
-  const svgNext = `<svg class="nav-arrow-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
-  const svgLast = `<svg class="nav-arrow-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>`;
-
-  const navHtml = `
-    <div class="timeline-bottom-nav reveal-on-scroll">
-      <div class="nav-indicator-wrap">
-        <span class="indicator-badge">🗓️ ${indicatorPrefix} ${currentDayNum} / ${totalDays}</span>
-      </div>
-      <div class="nav-buttons-wrap">
-        <div class="nav-group-left">
-          <button type="button" class="timeline-nav-btn btn-first" data-target="1" ${isFirst ? 'disabled' : ''} title="${labelFirst}">
-            ${svgFirst}
-            <span class="nav-text">${labelFirst}</span>
-          </button>
-          <button type="button" class="timeline-nav-btn btn-prev" data-target="${currentDayNum - 1}" ${isFirst ? 'disabled' : ''} title="${labelPrev}">
-            ${svgPrev}
-            <span class="nav-text">${labelPrev}</span>
-          </button>
-        </div>
-        <div class="nav-group-right">
-          <button type="button" class="timeline-nav-btn btn-next" data-target="${currentDayNum + 1}" ${isLast ? 'disabled' : ''} title="${labelNext}">
-            <span class="nav-text">${labelNext}</span>
-            ${svgNext}
-          </button>
-          <button type="button" class="timeline-nav-btn btn-last" data-target="${totalDays}" ${isLast ? 'disabled' : ''} title="${labelLast}">
-            <span class="nav-text">${labelLast}</span>
-            ${svgLast}
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  container.innerHTML = `
-    <div class="timeline-day-header reveal-on-scroll">
-      <div class="timeline-day-badge">${dayBadgePrefix} ${dayData.day}</div>
-      <h3>${dayData.title}</h3>
-      <p class="timeline-day-summary">${dayData.dateSummary}</p>
-    </div>
-    <div class="timeline-list">
-      ${eventsHtml}
-    </div>
-    ${navHtml}
-    ${weatherHtml}
-  `;
-
-  // Gắn sự kiện click cho các nút điều hướng chuyển ngày
-  const navBtns = container.querySelectorAll('.timeline-nav-btn');
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.target;
-      if (target && !btn.disabled) {
-        switchTimelineDay(target);
-      }
-    });
-  });
-
-  if (typeof triggerScrollReveal === 'function') {
-    setTimeout(triggerScrollReveal, 30);
-  }
-}
-
-/**
- * Cập nhật badge thông tin bộ lọc danh mục / từ khóa
- */
-function updateActiveFilterBadge(resultCount) {
-  const badgeWrap = document.getElementById('activeFilterBadge');
-  if (!badgeWrap) return;
-
-  if (currentCategory === 'all' && !currentSearch) {
-    badgeWrap.innerHTML = '';
-    badgeWrap.style.display = 'none';
-    return;
-  }
-
-  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
-  const categories = (typeof getLocalizedCategories === 'function') ? getLocalizedCategories() : CATEGORIES;
-
-  let catLabel = isEn ? 'All Destinations' : 'Tất cả địa danh';
-  if (currentCategory && currentCategory !== 'all') {
-    const cat = categories.find(c => c.id === currentCategory);
-    catLabel = cat ? `${cat.icon} ${cat.name}` : currentCategory;
-  }
-
-  const viewingPrefix = isEn ? 'Showing:' : 'Đang xem:';
-  const keywordPrefix = isEn ? 'Keyword:' : 'Từ khóa:';
-  const placesSuffix = isEn ? 'matching places' : 'địa điểm phù hợp';
-  const clearText = isEn ? '✕ View all' : '✕ Xem tất cả';
-
-  let filterDesc = `${viewingPrefix} <strong>${catLabel}</strong>`;
-  if (currentSearch) {
-    filterDesc += ` • ${keywordPrefix} "<em>${currentSearch}</em>"`;
-  }
-  filterDesc += ` (${resultCount} ${placesSuffix})`;
-
-  badgeWrap.innerHTML = `
-    <div class="filter-pill">
-      <span>${filterDesc}</span>
-      <button type="button" class="btn-clear-filter" id="btnClearFilter" title="${isEn ? 'Reset filter' : 'Xem lại tất cả'}">${clearText}</button>
-    </div>
-  `;
-  badgeWrap.style.display = 'block';
-
-  const clearBtn = document.getElementById('btnClearFilter');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      currentCategory = 'all';
-      currentSearch = '';
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.value = '';
-      const catCards = document.querySelectorAll('.category-card');
-      catCards.forEach(c => {
-        c.classList.toggle('active', c.dataset.category === 'all');
-      });
-      applyFilters();
-    });
-  }
-}
-
-/**
- * Lọc theo danh mục & tìm kiếm từ khóa
- */
-function applyFilters() {
-  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  let result = tours;
-
-  // Lọc theo danh mục
-  if (currentCategory && currentCategory !== 'all') {
-    result = result.filter(t => t.category === currentCategory);
-  }
-
-  // Lọc theo từ khóa tìm kiếm
-  if (currentSearch) {
-    const kw = currentSearch.toLowerCase();
-    result = result.filter(t =>
-      t.name.toLowerCase().includes(kw) ||
-      t.location.toLowerCase().includes(kw) ||
-      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(kw))) ||
-      t.description.toLowerCase().includes(kw) ||
-      (t.visitTime && t.visitTime.toLowerCase().includes(kw))
-    );
-  }
-
-  renderTourCards(result);
-  updateActiveFilterBadge(result.length);
-}
-
-/**
- * Khởi tạo trang chủ
- */
-function initHomePage() {
-  const tourGrid = document.getElementById('tourGrid');
-  if (!tourGrid) return;
-
-  const currentTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  renderCategories();
-  renderTourCards(currentTours);
-
-  // Khởi tạo Timeline tabs & view
-  const timelineTabs = document.getElementById('timelineTabs');
-  if (timelineTabs) {
-    const tabBtns = timelineTabs.querySelectorAll('.timeline-tab-btn');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const day = btn.dataset.day;
-        renderTimeline(day);
-      });
-    });
-    renderTimeline(1);
-  }
-
-  const searchInput = document.getElementById('searchInput');
-  let searchTimeout;
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        currentSearch = e.target.value.trim();
-        applyFilters();
-      }, 250);
-    });
-  }
-}
-
-
-/* ===== TRANG GIỚI THIỆU CHI TIẾT ĐỊA DANH (tour-detail.html) ===== */
-
-function getTourIdFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('id');
-}
-
-/**
- * Render trang bài viết giới thiệu địa danh (hoàn toàn không có giá tiền)
- */
-function renderTourDetail(tour) {
-  const main = document.getElementById('tourDetailMain');
-  if (!main) return;
-
-  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
-  const siteTitle = (typeof t === 'function') ? t('logo_title') : 'Thập Tứ Tour';
-  document.title = `${siteTitle} | ${tour.name}`;
-  const breadcrumbName = document.getElementById('breadcrumbName');
-  if (breadcrumbName) breadcrumbName.textContent = tour.name;
-
-  // Lấy 3 địa danh khác gợi ý xem tiếp
-  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  const otherTours = allTours.filter(t => t.id !== tour.id).slice(0, 3);
-
-  // Labels từ hệ thống đa ngôn ngữ
-  const visitTitle = (typeof t === 'function') ? t('detail_visit_title') : 'Mốc thời gian ghé thăm trong chuyến đi:';
-  const locLabel = (typeof t === 'function') ? t('detail_location') : 'Vị trí:';
-  const durLabel = (typeof t === 'function') ? t('detail_duration') : 'Thời lượng:';
-  const tagLabel = (typeof t === 'function') ? t('detail_tags') : 'Đặc trưng:';
-  const bestTimeTitle = (typeof t === 'function') ? t('detail_best_time') : 'Thời điểm đẹp nhất';
-  const bestTimeDesc = (typeof t === 'function') ? t('detail_best_time_desc') : 'Tháng 3 - Tháng 9 (mùa khô, biển êm, trời trong xanh rực rỡ)';
-  const transTitle = (typeof t === 'function') ? t('detail_transport') : 'Phương tiện di chuyển';
-  const transDesc = (typeof t === 'function') ? t('detail_transport_desc') : 'Xe máy, ô tô hoặc cano / thuyền tùy điểm đến';
-  const expTitle = (typeof t === 'function') ? t('detail_experience') : 'Trải nghiệm chính';
-  const expDesc = (typeof t === 'function') ? t('detail_experience_desc') : 'Ngắm cảnh biển đảo hoang sơ, check-in vách đá, thưởng ngoạn di tích';
-  const descHeading = (typeof t === 'function') ? t('detail_desc_heading') : '✨ Vẻ đẹp đặc trưng của';
-  const itinHeading = (typeof t === 'function') ? t('detail_itinerary_heading') : '📋 Lịch trình tham quan trong chuyến đi';
-  const dayBadgeText = (typeof t === 'function') ? t('detail_day_badge') : 'Ngày';
-  const highHeading = (typeof t === 'function') ? t('detail_highlights_heading') : '🌟 Điểm nổi bật chuyến đi';
-  const tipsHeading = (typeof t === 'function') ? t('detail_tips_heading') : '🎒 Lưu ý & Chuẩn bị khi đi';
-  const backPlacesText = (typeof t === 'function') ? t('detail_back_places') : '← Quay lại danh sách địa điểm nổi bật';
-  const backTimelineText = (typeof t === 'function') ? t('detail_back_timeline') : '🗓️ Xem toàn bộ lịch trình 4 ngày 3 đêm →';
-  const relatedHeading = (typeof t === 'function') ? t('detail_related_heading') : 'Khám phá thêm các điểm đến khác trong chuyến đi';
-  const relatedBtnText = (typeof t === 'function') ? t('detail_related_btn') : 'Khám phá địa danh →';
-
-  let html = `
-    <!-- Ảnh bìa và tiêu đề địa danh -->
-    <div class="place-header reveal-on-scroll">
-      <div class="place-image-wrap">
-        <img class="place-hero-img" src="${tour.image}" alt="${tour.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-      </div>
-      <div class="place-title-box">
-        <h1>${tour.name}</h1>
-        ${tour.visitTime ? `
-        <div class="visit-schedule-banner">
-          <span class="schedule-icon">⏰</span>
-          <div>
-            <strong>${visitTitle}</strong>
-            <span class="schedule-time-text">${tour.visitTime}</span>
-          </div>
-        </div>
-        ` : ''}
-        <div class="place-meta">
-          <span>📍 <strong>${locLabel}</strong> ${tour.location}</span>
-          <span>🕐 <strong>${durLabel}</strong> ${tour.duration}</span>
-          <span>🌊 <strong>${tagLabel}</strong> ${tour.tags ? tour.tags.join(' • ') : (isEn ? 'Quy Nhon Coastal Scenery' : 'Cảnh sắc Quy Nhơn')}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hộp thông tin nhanh -->
-    <div class="quick-facts-card reveal-on-scroll">
-      <div class="fact-item tilt-card">
-        <span class="fact-icon">🌅</span>
-        <div>
-          <h4>${bestTimeTitle}</h4>
-          <p>${bestTimeDesc}</p>
-        </div>
-      </div>
-      <div class="fact-item tilt-card">
-        <span class="fact-icon">🛵</span>
-        <div>
-          <h4>${transTitle}</h4>
-          <p>${transDesc}</p>
-        </div>
-      </div>
-      <div class="fact-item tilt-card">
-        <span class="fact-icon">📸</span>
-        <div>
-          <h4>${expTitle}</h4>
-          <p>${expDesc}</p>
-        </div>
-      </div>
-      <div class="fact-item tilt-card">
-        <span class="fact-icon">🏷️</span>
-        <div>
-          <h4>${isEn ? 'Tour Package' : 'Gói tour trải nghiệm'}</h4>
-          <p>${isEn ? 'Included in full 4D3N tour (5,920,000&nbsp;VND / student)' : 'Nằm trong tour trọn gói 4N3Đ (5.920.000đ / người)'}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Giới thiệu chi tiết cảnh đẹp -->
-    <div class="place-section reveal-on-scroll">
-      <h2>${descHeading} ${tour.name}</h2>
-      <div class="place-description">
-        ${tour.description}
-      </div>
-    </div>
-
-    <!-- Lịch trình khám phá gợi ý -->
-    <div class="place-section reveal-on-scroll">
-      <h2>${itinHeading}</h2>
-      <div class="itinerary-list">
-  `;
-
-  tour.itinerary.forEach(item => {
-    html += `
-      <div class="itinerary-card tilt-card">
-        <div class="itinerary-badge">
-          <span>${dayBadgeText}</span>
-          <strong>${item.day}</strong>
-        </div>
-        <div class="itinerary-body">
-          <h3>${item.title}</h3>
-          <p>${item.detail}</p>
-        </div>
-      </div>
-    `;
-  });
-
-  html += `
-      </div>
-    </div>
-
-    <!-- Trải nghiệm nổi bật & Lưu ý khi tham quan -->
-    <div class="place-section reveal-on-scroll">
-      <h2>${tipsHeading}</h2>
-      <div class="includes-excludes-grid">
-        <div class="info-card info-includes tilt-card">
-          <h3>${highHeading}</h3>
-          <ul>
-  `;
-  if (tour.highlights) {
-    tour.highlights.forEach(item => {
-      html += `<li>${item}</li>`;
-    });
-  }
-  html += `
-          </ul>
-        </div>
-        <div class="info-card info-excludes tilt-card">
-          <h3>${tipsHeading}</h3>
-          <ul>
-  `;
-  if (tour.tips) {
-    tour.tips.forEach(item => {
-      html += `<li>${item}</li>`;
-    });
-  }
-  html += `
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Nút quay lại -->
-    <div class="back-action-wrap reveal-on-scroll">
-      <a href="index.html#dia-diem" class="btn-back-home">${backPlacesText}</a>
-      <a href="index.html#lich-trinh" class="btn-back-timeline">${backTimelineText}</a>
-    </div>
-
-    <!-- Gợi ý các địa danh khác -->
-    <div class="related-places reveal-on-scroll">
-      <h2>${relatedHeading}</h2>
-      <div class="related-grid">
-  `;
-
-  otherTours.forEach(t => {
-    html += `
-      <div class="related-card tilt-card" onclick="window.location.href='tour-detail.html?id=${t.id}'">
-        <div class="related-img-wrap">
-          <img src="${t.image}" alt="${t.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-        </div>
-        <div class="related-body">
-          <h4>${t.name}</h4>
-          <p>📍 ${t.location}</p>
-          <span class="related-link">${relatedBtnText}</span>
-        </div>
-      </div>
-    `;
-  });
-
-  html += `
-      </div>
-    </div>
-  `;
-
-  main.innerHTML = html;
-
-  if (typeof triggerScrollReveal === 'function') {
-    setTimeout(triggerScrollReveal, 40);
-  }
-  if (typeof initTiltEffect === 'function') {
-    initTiltEffect();
-  }
-}
-
-/**
- * Khởi tạo trang chi tiết địa danh
- */
-function initTourDetailPage() {
-  const tourDetailMain = document.getElementById('tourDetailMain');
-  if (!tourDetailMain) return;
-
-  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
-  const tourId = getTourIdFromUrl();
-  if (!tourId) {
-    const notFoundTitle = isEn ? 'Destination not found!' : 'Không tìm thấy địa danh!';
-    const notFoundLink = isEn ? '← Click here to view all destinations' : '← Bấm vào đây để xem danh sách các địa danh';
-    tourDetailMain.innerHTML = `
-      <div class="no-tours">
-        <h2>${notFoundTitle}</h2>
-        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
-      </div>
-    `;
-    return;
-  }
-
-  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  const tour = allTours.find(t => t.id === parseInt(tourId));
-  if (!tour) {
-    const notFoundTitle = isEn ? 'Destination does not exist!' : 'Địa danh không tồn tại!';
-    const notFoundLink = isEn ? '← Click here to view all destinations' : '← Bấm vào đây để xem danh sách các địa danh';
-    tourDetailMain.innerHTML = `
-      <div class="no-tours">
-        <h2>${notFoundTitle}</h2>
-        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
-      </div>
-    `;
-    return;
-  }
-
-  renderTourDetail(tour);
-}
-
-/**
- * Cập nhật nội dung các nút tab lịch trình (Ngày 1 / 2 / 3 / 4)
- */
-function updateTimelineTabs(lang) {
-  const tabsContainer = document.getElementById('timelineTabs');
-  if (!tabsContainer) return;
-
-  const tabData = {
-    vi: [
-      { day: 1, badge: 'Ngày 1', title: 'Khởi hành & Biển Quy Nhơn' },
-      { day: 2, badge: 'Ngày 2', title: 'Kỳ Co – Eo Gió & Tịnh Xá' },
-      { day: 3, badge: 'Ngày 3', title: 'ExploraScience & Ghềnh Ráng' },
-      { day: 4, badge: 'Ngày 4', title: 'Check-in kỉ niệm & Về TP.HCM' }
-    ],
-    en: [
-      { day: 1, badge: 'Day 1', title: 'Departure & Quy Nhon Beach' },
-      { day: 2, badge: 'Day 2', title: 'Ky Co – Eo Gio & Pagoda' },
-      { day: 3, badge: 'Day 3', title: 'ExploraScience & Ghenh Rang' },
-      { day: 4, badge: 'Day 4', title: 'Farewell Photos & Back to HCMC' }
-    ]
-  };
-
-  const currentTabs = tabData[lang] || tabData.vi;
-  const tabBtns = tabsContainer.querySelectorAll('.timeline-tab-btn');
-  tabBtns.forEach((btn, index) => {
-    const data = currentTabs[index];
-    if (data) {
-      const badge = btn.querySelector('.tab-day-badge');
-      const title = btn.querySelector('.tab-day-title');
-      if (badge) badge.textContent = data.badge;
-      if (title) title.textContent = data.title;
-    }
-  });
-}
-
-/**
- * Cập nhật dòng chữ chạy ngang (Marquee ticker)
- */
-function updateMarqueeTicker(lang) {
-  const marqueeBoxes = document.querySelectorAll('.marquee-track .marquee-content');
-  if (!marqueeBoxes || marqueeBoxes.length === 0) return;
-
-  const contentVI = `
-    <span>🌊 THẬP TỨ TOUR</span>
-    <span class="dot">•</span>
-    <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
-    <span class="dot">•</span>
-    <span>💰 GIÁ CẢ TOUR: 5.920.000đ / NGƯỜI</span>
-    <span class="dot">•</span>
-    <span>🏖️ KỲ CO - EO GIÓ - TỊNH XÁ NGỌC HÒA</span>
-    <span class="dot">•</span>
-    <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
-    <span class="dot">•</span>
-    <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
-    <span class="dot">•</span>
-    <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
-    <span class="dot">•</span>
-    <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
-    <span class="dot">•</span>
-    <span>🥞 BÁNH XÈO TÔM NHẢY DIÊN HỒNG</span>
-    <span class="dot">•</span>
-    <span>🦞 HẢI SẢN LỘC BIỂN & CÂU MỰC ĐÊM</span>
-    <span class="dot">•</span>
-    <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
-    <span class="dot">•</span>
-    <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
-    <span class="dot">•</span>
-    <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
-    <span class="dot">•</span>
-  `;
-
-  const contentEN = `
-    <span>🌊 THAP TU TOUR</span>
-    <span class="dot">•</span>
-    <span>🎓 CLASS 10A4 LUONG THE VINH (2026)</span>
-    <span class="dot">•</span>
-    <span>💰 ALL-INCLUSIVE TOUR: 5,920,000 VND / PERSON</span>
-    <span class="dot">•</span>
-    <span>🏖️ KY CO - EO GIO & NGOC HOA PAGODA</span>
-    <span class="dot">•</span>
-    <span>🌄 GHENH RANG TIEN SA HILLSIDE</span>
-    <span class="dot">•</span>
-    <span>🏛️ BINH DINH GENERAL MUSEUM</span>
-    <span class="dot">•</span>
-    <span>🍲 COM MAU RETRO RESTAURANT</span>
-    <span class="dot">•</span>
-    <span>🍜 NGOC LIEN FISH NOODLES & NEM LOI</span>
-    <span class="dot">•</span>
-    <span>🥞 DIEN HONG CRISPY SHRIMP PANCAKES</span>
-    <span class="dot">•</span>
-    <span>🦞 LOC BIEN SEAFOOD & SQUID FISHING</span>
-    <span class="dot">•</span>
-    <span>🚀 EXPLORASCIENCE SPACE CENTER</span>
-    <span class="dot">•</span>
-    <span>☂️ UMBRELLAS & RAINCOATS READY</span>
-    <span class="dot">•</span>
-    <span>🏨 ODIN HOTEL QUY NHON</span>
-    <span class="dot">•</span>
-  `;
-
-  const chosenContent = lang === 'en' ? contentEN : contentVI;
-  marqueeBoxes.forEach(box => {
-    box.innerHTML = chosenContent;
-  });
-}
-
-/**
- * Khởi tạo trình phát Video Quy Nhơn
- */
-function initQuyNhonVideo() {
-  const video = document.getElementById('quynhonVideo');
-  const overlay = document.getElementById('videoPlayOverlay');
-  const playBtn = document.getElementById('videoPlayBtn');
-  if (!video || !overlay) return;
-
-  const handlePlay = (e) => {
-    if (e) e.stopPropagation();
-    overlay.classList.add('is-hidden');
-    video.play().catch(() => {});
-  };
-
-  if (playBtn) playBtn.addEventListener('click', handlePlay);
-  overlay.addEventListener('click', handlePlay);
-
-  video.addEventListener('play', () => {
-    overlay.classList.add('is-hidden');
-  });
-
-  video.addEventListener('ended', () => {
-    overlay.classList.remove('is-hidden');
-  });
-}
-
-/**
- * Khởi tạo hiệu ứng động cho Vỏ hộp bao quanh Video (Dynamic Shell)
- * - Vỏ hộp bao ngoài (Shell) nghiêng 3D mượt mà theo chuột qua LERP 60-120fps
- * - Video bên trong TUYỆT ĐỐI CỐ ĐỊNH PHẲNG 100%, không bị xoay hay giật lag
- */
-function initVideoDynamicShell() {
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-
-  const wrapper = document.getElementById('videoShowcaseWrapper');
-  const shell = document.getElementById('videoDynamicShell');
-  if (!wrapper || !shell) return;
-
-  let isHover = false;
-  let animId = null;
-  let wrapRect = null;
-
-  const updateRect = () => {
-    wrapRect = wrapper.getBoundingClientRect();
-  };
-
-  window.addEventListener('resize', updateRect, { passive: true });
-  window.addEventListener('scroll', updateRect, { passive: true });
-
-  let targetRotX = 0;
-  let targetRotY = 0;
-  let currentRotX = 0;
-  let currentRotY = 0;
-
-  let targetGlareX = 50;
-  let targetGlareY = 50;
-  let currentGlareX = 50;
-  let currentGlareY = 50;
-
-  const renderLoop = () => {
-    const lerp = 0.085;
-    const diffX = targetRotX - currentRotX;
-    const diffY = targetRotY - currentRotY;
-    const diffGX = targetGlareX - currentGlareX;
-    const diffGY = targetGlareY - currentGlareY;
-
-    let hasChange = false;
-
-    if (Math.abs(diffX) > 0.005 || Math.abs(diffY) > 0.005) {
-      currentRotX += diffX * lerp;
-      currentRotY += diffY * lerp;
-      shell.style.transform = `perspective(1200px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg) scale(1.008)`;
-      hasChange = true;
-    } else if (!isHover && (currentRotX !== 0 || currentRotY !== 0)) {
-      currentRotX = 0;
-      currentRotY = 0;
-      shell.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)';
-      hasChange = true;
-    }
-
-    if (Math.abs(diffGX) > 0.05 || Math.abs(diffGY) > 0.05) {
-      currentGlareX += diffGX * 0.1;
-      currentGlareY += diffGY * 0.1;
-      shell.style.setProperty('--mouse-x', `${currentGlareX.toFixed(1)}%`);
-      shell.style.setProperty('--mouse-y', `${currentGlareY.toFixed(1)}%`);
-      hasChange = true;
-    }
-
-    if (isHover || hasChange) {
-      animId = requestAnimationFrame(renderLoop);
-    } else {
-      animId = null;
-    }
-  };
-
-  const startLoop = () => {
-    if (!animId) {
-      animId = requestAnimationFrame(renderLoop);
-    }
-  };
-
-  wrapper.addEventListener('mouseenter', () => {
-    isHover = true;
-    updateRect();
-    startLoop();
-  });
-
-  wrapper.addEventListener('mousemove', (e) => {
-    if (!wrapRect) updateRect();
-    const x = e.clientX - wrapRect.left;
-    const y = e.clientY - wrapRect.top;
-    const centerX = wrapRect.width / 2;
-    const centerY = wrapRect.height / 2;
-
-    targetGlareX = (x / wrapRect.width) * 100;
-    targetGlareY = (y / wrapRect.height) * 100;
-
-    // Góc nghiêng vỏ hộp vừa vặn, mềm mại (2.2 độ)
-    targetRotX = -((y - centerY) / centerY) * 2.2;
-    targetRotY = ((x - centerX) / centerX) * 2.2;
-
-    startLoop();
-  }, { passive: true });
-
-  wrapper.addEventListener('mouseleave', () => {
-    isHover = false;
-    targetRotX = 0;
-    targetRotY = 0;
-    targetGlareX = 50;
-    targetGlareY = 50;
-    startLoop();
-  });
-}
-
-function updateThemeToggleUI(theme, lang) {
-  const btn = document.getElementById('themeToggle');
-  if (!btn) return;
-  const currentLang = lang || ((typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi');
-  const isDark = theme === 'dark';
-  let label = '';
-  if (typeof t === 'function') {
-    label = isDark ? t('theme_toggle_light') : t('theme_toggle_dark');
-  }
-  if (!label) {
-    label = isDark
-      ? (currentLang === 'en' ? 'Switch to light mode' : 'Chuyển sang chế độ sáng')
-      : (currentLang === 'en' ? 'Switch to dark mode' : 'Chuyển sang chế độ tối');
-  }
-  btn.setAttribute('title', label);
-  btn.setAttribute('aria-label', label);
-}
-
-/**
- * Khởi tạo bộ chuyển đổi giao diện Sáng / Tối (Light / Dark Theme)
- */
-function initThemeToggle() {
-  const btn = document.getElementById('themeToggle');
-  if (!btn) return;
-
-  const getCurrentTheme = () => document.documentElement.getAttribute('data-theme') || 'light';
-  updateThemeToggleUI(getCurrentTheme());
-
-  btn.addEventListener('click', () => {
-    const currentTheme = getCurrentTheme();
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    try {
-      localStorage.setItem('thap_tu_theme', newTheme);
-    } catch (e) {}
-    updateThemeToggleUI(newTheme);
-
-    // Hiệu ứng tương tác nảy nhẹ
-    btn.style.transform = 'scale(0.85) rotate(15deg)';
-    setTimeout(() => {
-      btn.style.transform = '';
-    }, 180);
-  });
-
-  // Tự động đồng bộ theo hệ thống nếu người dùng chưa tự bấm chọn theme
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Theme Toggle (Dark / Light Mode)
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
       try {
-        if (!localStorage.getItem('thap_tu_theme')) {
-          const autoTheme = e.matches ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', autoTheme);
-          updateThemeToggleUI(autoTheme);
-        }
-      } catch (err) {}
+        localStorage.setItem('thap_tu_theme', newTheme);
+      } catch (e) {}
     });
   }
-}
 
-/**
- * Khởi tạo bộ chuyển đổi ngôn ngữ (Language Switcher)
- */
-function initLanguageSwitcher() {
-  const currentLang = (typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi';
+  // 2. Video Player Showcase
+  const video = document.getElementById('quyNhonVideo');
+  const videoPlayBtn = document.getElementById('videoPlayBtn');
+  const videoOverlay = document.getElementById('videoOverlay');
 
-  // Đồng bộ trạng thái giao diện và thuộc tính lang
-  document.documentElement.lang = currentLang;
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === currentLang);
-    btn.addEventListener('click', (e) => {
-      const targetLang = e.currentTarget.dataset.lang;
-      if (typeof switchLanguage === 'function') {
-        switchLanguage(targetLang);
-      }
-    });
-  });
-
-  // Nếu người dùng đã chọn English trước đó, áp dụng ngay tức thì
-  if (currentLang === 'en' && typeof switchLanguage === 'function') {
-    switchLanguage('en');
-  } else {
-    updateTimelineTabs('vi');
-    updateMarqueeTicker('vi');
-  }
-}
-
-
-/* ===================================================
-   DYNAMIC INTERACTIVE FEATURES (Phong cách theforgottentoys.com)
-   - Magic Custom Cursor (chấm tròn + vòng tròn lerp + magnetic hover)
-   - Scroll Progress Indicator
-   - 3D Interactive Card Tilt & Dynamic Glare
-   - Scroll-triggered Reveal Animations (IntersectionObserver)
-   - Hero Mouse-track Parallax
-   =================================================== */
-
-/**
- * 1. Thanh tiến trình cuộn trang (Scroll Progress Bar)
- */
-function initScrollProgress() {
-  const progressBar = document.getElementById('scrollProgress');
-  if (!progressBar) return;
-
-  const updateProgress = () => {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = `${Math.min(100, Math.max(0, scrollPercent))}%`;
-  };
-
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-}
-
-/**
- * 2. Con trỏ chuột tương tác sáng tạo (Magic Cursor)
- * Chỉ kích hoạt trên thiết bị dùng chuột (pointer: fine)
- */
-function initMagicCursor() {
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  if (!dot || !ring) return;
-
-  // Kiểm tra nếu là thiết bị cảm ứng thì ẩn con trỏ tùy biến
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-    dot.style.display = 'none';
-    ring.style.display = 'none';
-    return;
-  }
-
-  let mouseX = -100;
-  let mouseY = -100;
-  let ringX = -100;
-  let ringY = -100;
-  let isHovering = false;
-  let isDown = false;
-  let isVisible = false;
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    // Khi di chuột vào khung Video: ẩn con trỏ ảo để con trỏ phần cứng (Native Cursor) thao tác tức thì 144Hz-240Hz, không độ trễ
-    const isOverVideo = !!(e.target && e.target.closest('.video-player-wrap'));
-    if (isOverVideo) {
-      if (isVisible) {
-        isVisible = false;
-        dot.style.opacity = '0';
-        ring.style.opacity = '0';
-      }
-      return;
-    }
-
-    // Khi di chuột ra ngoài khu vực video (hoặc quay lại trang): hiện lại con trỏ ảo tức thì
-    if (!isVisible) {
-      isVisible = true;
-      ringX = mouseX;
-      ringY = mouseY;
-      dot.style.opacity = '1';
-      ring.style.opacity = '1';
-    }
-
-    // Dot bám sát tức thì không độ trễ
-    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-
-    // Xử lý hover toàn cục bằng closest() - HOÀN TOÀN KHÔNG BAO GIỜ BỊ NHẤP NHÁY
-    const interactiveEl = e.target && e.target.closest('a, button, .tour-card, .category-card, .timeline-tab-btn, input, select');
-    const shouldHover = !!interactiveEl;
-    if (shouldHover !== isHovering) {
-      isHovering = shouldHover;
-      if (isHovering) {
-        ring.classList.add('cursor-hover');
-        dot.classList.add('cursor-hover');
-      } else {
-        ring.classList.remove('cursor-hover');
-        dot.classList.remove('cursor-hover');
-      }
-    }
-  }, { passive: true });
-
-  window.addEventListener('mousedown', () => {
-    isDown = true;
-    ring.classList.add('cursor-down');
-    dot.classList.add('cursor-down');
-  });
-
-  window.addEventListener('mouseup', () => {
-    isDown = false;
-    ring.classList.remove('cursor-down');
-    dot.classList.remove('cursor-down');
-  });
-
-  document.addEventListener('mouseleave', () => {
-    isVisible = false;
-    dot.style.opacity = '0';
-    ring.style.opacity = '0';
-  });
-
-  // Vòng tròn ring lướt theo chuột với hiệu ứng gia tốc mượt mà (lerp)
-  const renderCursor = () => {
-    ringX += (mouseX - ringX) * 0.18;
-    ringY += (mouseY - ringY) * 0.18;
-
-    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) scale(${isHovering ? 1.5 : isDown ? 0.8 : 1})`;
-    requestAnimationFrame(renderCursor);
-  };
-  requestAnimationFrame(renderCursor);
-}
-
-/**
- * 3. Hiệu ứng nghiêng 3D theo chuột (3D Interactive Tilt)
- */
-function initTiltEffect() {
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-
-  const attachTilt = () => {
-    const cards = document.querySelectorAll('.tilt-card, .tour-card, .category-card, .weather-plan-box, .timeline-content');
-    cards.forEach(card => {
-      if (card.dataset.tiltBound) return;
-      if (card.classList.contains('video-showcase-card')) return; // Video showcase đã có controller chuyên biệt siêu mượt
-      card.dataset.tiltBound = 'true';
-
-      let rect = null;
-      const updateCardRect = () => { rect = card.getBoundingClientRect(); };
-
-      card.addEventListener('mouseenter', () => {
-        updateCardRect();
-        card.style.transition = 'transform 0.1s ease-out';
+  if (video && videoPlayBtn && videoOverlay) {
+    const playVideo = () => {
+      video.play().then(() => {
+        videoOverlay.style.opacity = '0';
+        videoOverlay.style.pointerEvents = 'none';
+      }).catch(err => {
+        console.warn('Video play interrupted:', err);
       });
-
-      card.addEventListener('mousemove', (e) => {
-        if (!rect) updateCardRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = -((y - centerY) / centerY) * 4;
-        const rotateY = ((x - centerX) / centerX) * 4;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(5px)`;
-        card.style.setProperty('--mouse-x', `${((x / rect.width) * 100).toFixed(1)}%`);
-        card.style.setProperty('--mouse-y', `${((y / rect.height) * 100).toFixed(1)}%`);
-      });
-
-      card.addEventListener('mouseleave', () => {
-        // Trả về vị trí ban đầu mượt mà
-        card.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-        setTimeout(() => {
-          if (!card.matches(':hover')) {
-            card.style.transition = '';
-            card.style.transform = '';
-          }
-        }, 460);
-      });
-    });
-  };
-
-  attachTilt();
-
-  if (typeof MutationObserver !== 'undefined') {
-    const observer = new MutationObserver(() => {
-      attachTilt();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-}
-
-/**
- * 3b. Hiệu ứng nam châm hút theo chuột cho nút Địa Điểm (Magnetic Follow)
- */
-function initMagneticElements() {
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-
-  const attachMagnetic = () => {
-    const magneticItems = document.querySelectorAll('.timeline-place-tag a');
-    magneticItems.forEach(item => {
-      if (item.dataset.magneticBound) return;
-      item.dataset.magneticBound = 'true';
-
-      item.addEventListener('mouseenter', () => {
-        item.style.transition = 'none';
-      });
-
-      item.addEventListener('mousemove', (e) => {
-        const rect = item.getBoundingClientRect();
-        const relX = e.clientX - rect.left - rect.width / 2;
-        const relY = e.clientY - rect.top - rect.height / 2;
-        // Hút theo chuột nhẹ nhàng: di chuyển tối đa 5px ngang, 3px dọc
-        const moveX = (relX / (rect.width / 2)) * 5;
-        const moveY = (relY / (rect.height / 2)) * 3;
-        item.style.transform = `translate3d(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px, 0)`;
-      });
-
-      item.addEventListener('mouseleave', () => {
-        item.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
-        item.style.transform = 'translate3d(0, 0, 0)';
-      });
-    });
-  };
-
-  attachMagnetic();
-
-  if (typeof MutationObserver !== 'undefined') {
-    const observer = new MutationObserver(() => {
-      attachMagnetic();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-}
-
-/**
- * 3c. Hiệu ứng nghiêng 3D con quay hồi chuyển trên điện thoại (Device Orientation Gyroscope Tilt)
- * Tự động đồng bộ góc nghiêng vật lý của điện thoại (trái/phải, trước/sau) với thẻ card 3D
- * Hỗ trợ mượt mà cả Android (tự động) & iOS Safari (cấp quyền qua cú chạm đầu tiên)
- */
-function initDeviceOrientationTilt() {
-  // Chỉ kích hoạt trên thiết bị cảm ứng / điện thoại
-  const isTouchDevice = 'ontouchstart' in window || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
-  if (!isTouchDevice) return;
-
-  let hasOrientationEvent = false;
-  let isListening = false;
-  let animFrameId = null;
-
-  // Góc mục tiêu từ cảm biến điện thoại
-  let targetRotX = 0;
-  let targetRotY = 0;
-  let targetGlareX = 50;
-  let targetGlareY = 50;
-
-  // Góc hiện tại (được làm mượt bằng LERP để chuyển động siêu êm, loại bỏ hoàn toàn rung giật của tay)
-  let currentRotX = 0;
-  let currentRotY = 0;
-  let currentGlareX = 50;
-  let currentGlareY = 50;
-
-  let isActivelyMoving = false;
-  let idleCounter = 0;
-
-  // Tập hợp các thẻ đang hiển thị trong màn hình để tối ưu hóa hiệu năng 60-120fps
-  const visibleCards = new Set();
-
-  // IntersectionObserver phát hiện thẻ nào đang nằm trong khung nhìn màn hình
-  const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        visibleCards.add(entry.target);
-        entry.target.classList.add('gyro-active');
-      } else {
-        visibleCards.delete(entry.target);
-        entry.target.classList.remove('gyro-active');
-        // Trả thẻ về trạng thái phẳng khi ra khỏi khung nhìn
-        entry.target.style.transform = '';
-      }
-    });
-  }, {
-    rootMargin: '40px 0px 40px 0px',
-    threshold: 0.05
-  });
-
-  const observeCards = () => {
-    const cards = document.querySelectorAll(
-      '.tilt-card, .tour-card, .category-card, .fact-item, .weather-plan-box, .timeline-content, .about-us-card, .related-card, .itinerary-card'
-    );
-    cards.forEach(card => {
-      if (!card.dataset.gyroObserved) {
-        card.dataset.gyroObserved = 'true';
-        cardObserver.observe(card);
-      }
-    });
-  };
-
-  observeCards();
-
-  if (typeof MutationObserver !== 'undefined') {
-    const mutationObs = new MutationObserver(() => {
-      observeCards();
-    });
-    mutationObs.observe(document.body, { childList: true, subtree: true });
-  }
-
-  // Vòng lặp Render 60-120fps sử dụng requestAnimationFrame và LERP
-  const updateTiltLoop = () => {
-    const lerp = 0.085;
-    const diffX = targetRotX - currentRotX;
-    const diffY = targetRotY - currentRotY;
-
-    if (Math.abs(diffX) > 0.005 || Math.abs(diffY) > 0.005) {
-      currentRotX += diffX * lerp;
-      currentRotY += diffY * lerp;
-      currentGlareX += (targetGlareX - currentGlareX) * lerp;
-      currentGlareY += (targetGlareY - currentGlareY) * lerp;
-      isActivelyMoving = true;
-      idleCounter = 0;
-    } else {
-      idleCounter++;
-      if (idleCounter > 30) {
-        isActivelyMoving = false;
-      }
-    }
-
-    if (isActivelyMoving && visibleCards.size > 0) {
-      const transformValue = `perspective(850px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg)`;
-      const gx = `${currentGlareX.toFixed(1)}%`;
-      const gy = `${currentGlareY.toFixed(1)}%`;
-
-      visibleCards.forEach(card => {
-        // Chỉ áp dụng khi thẻ đã hiển thị (đã hoàn thành hoặc không có animation cuộn che khuất)
-        if (card.classList.contains('is-revealed') || card.closest('.timeline-day-header, .place-header')) {
-          card.style.transform = transformValue;
-          card.style.setProperty('--mouse-x', gx);
-          card.style.setProperty('--mouse-y', gy);
-        }
-      });
-    }
-
-    animFrameId = requestAnimationFrame(updateTiltLoop);
-  };
-
-  // Xử lý dữ liệu con quay hồi chuyển
-  const handleOrientation = (e) => {
-    if (e.gamma === null && e.beta === null) return;
-
-    if (!hasOrientationEvent) {
-      hasOrientationEvent = true;
-      document.body.classList.add('gyro-active');
-      if (!animFrameId) {
-        animFrameId = requestAnimationFrame(updateTiltLoop);
-      }
-    }
-
-    let gamma = e.gamma || 0; // Trục nghiêng trái (-90) / phải (+90)
-    let beta = e.beta || 0;   // Trục nghiêng trước (-180) / sau (+180)
-
-    // Tự động nhận diện hướng màn hình ngang (Landscape) nếu người dùng xoay ngang điện thoại
-    const orientationAngle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
-    if (orientationAngle === 90) {
-      const temp = gamma;
-      gamma = -beta;
-      beta = temp;
-    } else if (orientationAngle === -90 || orientationAngle === 270) {
-      const temp = gamma;
-      gamma = beta;
-      beta = -temp;
-    }
-
-    // Góc nghiêng tự nhiên của người dùng khi cầm điện thoại là khoảng 45°
-    const deltaBeta = beta - 45;
-    const maxAngle = 9.5; // Giới hạn góc nghiêng tối đa để chữ và ảnh vẫn rõ ràng, sang trọng
-
-    // Tính toán góc nghiêng 3D
-    targetRotX = Math.max(-maxAngle, Math.min(maxAngle, deltaBeta * 0.32));
-    targetRotY = Math.max(-maxAngle, Math.min(maxAngle, gamma * 0.32));
-
-    // Tính toán tọa độ phản quang vệt sáng (Glare Sheen)
-    const rawGlareX = 50 + (gamma / 28) * 40;
-    const rawGlareY = 50 + (deltaBeta / 28) * 40;
-    targetGlareX = Math.max(10, Math.min(90, rawGlareX));
-    targetGlareY = Math.max(10, Math.min(90, rawGlareY));
-
-    // Đánh thức vòng lặp nếu đang tạm dừng
-    if (!isActivelyMoving) {
-      isActivelyMoving = true;
-      idleCounter = 0;
-    }
-  };
-
-  const startOrientationListener = () => {
-    if (isListening) return;
-    isListening = true;
-    window.addEventListener('deviceorientation', handleOrientation, { passive: true });
-    if (!animFrameId) {
-      animFrameId = requestAnimationFrame(updateTiltLoop);
-    }
-  };
-
-  // Kiểm tra hỗ trợ iOS Safari 13+ (Yêu cầu xin quyền DeviceOrientationEvent.requestPermission)
-  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    const handleFirstGesture = () => {
-      DeviceOrientationEvent.requestPermission()
-        .then(permissionState => {
-          if (permissionState === 'granted') {
-            startOrientationListener();
-          }
-        })
-        .catch(() => {
-          // Người dùng từ chối hoặc lỗi bảo mật, duy trì hiển thị tĩnh bình thường
-        });
     };
 
-    window.addEventListener('touchstart', handleFirstGesture, { once: true, passive: true });
-    window.addEventListener('click', handleFirstGesture, { once: true, passive: true });
-  } else if ('DeviceOrientationEvent' in window) {
-    // Android Chrome & trình duyệt chuẩn: khởi chạy trực tiếp ngay lập tức
-    startOrientationListener();
-  }
+    const pauseVideo = () => {
+      video.pause();
+      videoOverlay.style.opacity = '1';
+      videoOverlay.style.pointerEvents = 'auto';
+    };
 
-  // Tạm dừng khi chuyển tab để bảo vệ pin và CPU
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      if (animFrameId) {
-        cancelAnimationFrame(animFrameId);
-        animFrameId = null;
+    videoPlayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playVideo();
+    });
+
+    video.addEventListener('click', () => {
+      if (video.paused) {
+        playVideo();
+      } else {
+        pauseVideo();
       }
-    } else if (isListening && !animFrameId) {
-      animFrameId = requestAnimationFrame(updateTiltLoop);
-    }
-  });
-}
+    });
 
-/**
- * 4. Hiệu ứng cuộn trang xuất hiện mượt (Scroll Reveal Animations)
- */
-let scrollRevealObserver = null;
-
-function triggerScrollReveal() {
-  const elements = document.querySelectorAll(
-    '.reveal-on-scroll, .section-title, .timeline-item, .tour-card, .category-card, .weather-plan-box, .about-us-card, .umbrella-alert-banner, .timeline-tabs, .timeline-day-header, .place-header, .quick-facts-card, .place-section, .itinerary-card, .related-places, .related-card'
-  );
-
-  if (!('IntersectionObserver' in window)) {
-    elements.forEach(el => el.classList.add('is-revealed'));
-    return;
+    video.addEventListener('ended', () => {
+      videoOverlay.style.opacity = '1';
+      videoOverlay.style.pointerEvents = 'auto';
+    });
   }
 
-  // Tự động hiển thị ngay các phần tử đã nằm trong tầm nhìn (đặc biệt tối ưu cho mobile)
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  elements.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < vh + 60 && rect.bottom > -60) {
-      el.classList.add('is-revealed');
-    }
-  });
+  // 3. Timeline Day Tabs Switching (Animate UI spring.selection)
+  const tabBtns = document.querySelectorAll('.timeline-tabs .tab-btn');
+  const dayPanels = document.querySelectorAll('.day-panel');
 
-  if (!scrollRevealObserver) {
-    const isMobile = window.innerWidth <= 768;
-    scrollRevealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-revealed');
-          scrollRevealObserver.unobserve(entry.target);
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetDay = btn.getAttribute('data-day');
+      if (!targetDay) return;
+
+      // Update active tab button
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      // Update active day panel
+      dayPanels.forEach(panel => {
+        if (panel.id === targetDay) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
         }
       });
-    }, {
-      threshold: isMobile ? 0.02 : 0.08,
-      rootMargin: isMobile ? '0px 0px 80px 0px' : '0px 0px 30px 0px'
+    });
+  });
+
+  // 4. FAQ Accordion (Animate UI transition.disclosure)
+  const faqTriggers = document.querySelectorAll('.faq-trigger');
+  faqTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.faq-item');
+      if (!item) return;
+
+      const isOpen = item.classList.contains('open');
+
+      // Optional: close other open items for a neat accordion experience
+      document.querySelectorAll('.faq-item.open').forEach(openItem => {
+        if (openItem !== item) {
+          openItem.classList.remove('open');
+          const t = openItem.querySelector('.faq-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (isOpen) {
+        item.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      } else {
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // 5. Packing Checklist with localStorage persistence
+  const checklist = document.getElementById('packingChecklist');
+  if (checklist) {
+    const STORAGE_KEY = 'thap_tu_packing_state';
+    let savedState = {};
+
+    try {
+      savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch (e) {}
+
+    const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+      const key = cb.getAttribute('data-check');
+      if (key && savedState[key] !== undefined) {
+        cb.checked = savedState[key];
+      }
+
+      cb.addEventListener('change', () => {
+        if (key) {
+          savedState[key] = cb.checked;
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedState));
+          } catch (e) {}
+        }
+      });
     });
   }
 
-  elements.forEach(el => {
-    if (!el.classList.contains('is-revealed') && !el.dataset.observed) {
-      el.dataset.observed = 'true';
-      scrollRevealObserver.observe(el);
-    }
-  });
-}
+  // 6. Booking Form Validation & Confirmation Modal Dialog
+  const bookingForm = document.getElementById('bookingForm');
+  const confirmModal = document.getElementById('confirmModal');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const modalOkBtn = document.getElementById('modalOkBtn');
 
-function initScrollReveal() {
-  triggerScrollReveal();
+  if (bookingForm && confirmModal) {
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-  if (typeof MutationObserver !== 'undefined') {
-    const domObserver = new MutationObserver(() => {
-      triggerScrollReveal();
+      // Simple HTML5 validation passed
+      confirmModal.classList.add('open');
+      bookingForm.reset();
     });
-    domObserver.observe(document.body, { childList: true, subtree: true });
+
+    const closeModal = () => {
+      confirmModal.classList.remove('open');
+    };
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+    if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
+
+    confirmModal.addEventListener('click', (e) => {
+      if (e.target === confirmModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && confirmModal.classList.contains('open')) {
+        closeModal();
+      }
+    });
   }
-}
 
-/**
- * 5. Hiệu ứng Hero Parallax & Mouse Track 3D
- */
-function initHeroParallax() {
-  const hero = document.querySelector('.hero');
-  if (!hero || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
+  // 7. Smooth Anchor Scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#' || !targetId) return;
 
-  const title = hero.querySelector('.hero-title-dynamic');
-  const badge = hero.querySelector('.floating-badge');
-  const glow = hero.querySelector('.hero-bg-floating-glow');
-
-  hero.addEventListener('mousemove', (e) => {
-    const rect = hero.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-    if (title) title.style.transform = `translate3d(${x * 14}px, ${y * 10}px, 0)`;
-    if (badge) badge.style.transform = `translate3d(${x * -8}px, ${y * -6}px, 0)`;
-    if (glow) glow.style.transform = `translate3d(${x * 35}px, ${y * 25}px, 0)`;
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        targetEl.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
   });
-
-  hero.addEventListener('mouseleave', () => {
-    if (title) title.style.transform = 'translate3d(0, 0, 0)';
-    if (badge) badge.style.transform = 'translate3d(0, 0, 0)';
-    if (glow) glow.style.transform = 'translate3d(0, 0, 0)';
-  });
-}
-
-/* ===== KHỞI TẠO KHI TẢI TRANG ===== */
-document.addEventListener('DOMContentLoaded', () => {
-  initThemeToggle();
-  initQuyNhonVideo();
-  initVideoDynamicShell();
-  initHomePage();
-  initTourDetailPage();
-  initLanguageSwitcher();
-  initScrollProgress();
-  initMagicCursor();
-  initTiltEffect();
-  initMagneticElements();
-  initDeviceOrientationTilt();
-  initScrollReveal();
-  initHeroParallax();
 });
-
