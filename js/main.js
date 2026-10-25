@@ -8,17 +8,17 @@
 /* ===== PHẦN CHUNG (tất cả trang) ===== */
 
 // Hamburger menu mobile
-const mobileMenuBtn = document.getElementById('mobileMenuBtn') || document.getElementById('hamburger');
+const hamburger = document.getElementById('hamburger') || document.getElementById('hamburger');
 const nav = document.getElementById('nav');
-if (mobileMenuBtn && nav) {
-  mobileMenuBtn.addEventListener('click', () => {
-    mobileMenuBtn.classList.toggle('active');
+if (hamburger && nav) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
     nav.classList.toggle('open');
   });
 
   nav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      mobileMenuBtn.classList.remove('active');
+      hamburger.classList.remove('active');
       nav.classList.remove('open');
     });
   });
@@ -839,7 +839,9 @@ function initMagicCursor() {
       targetScale = isDown ? 0.72 : (isHovering ? 1.55 : 1.0);
       currentScale += (targetScale - currentScale) * 0.22;
 
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      // Dot và Ring luôn luôn đồng tâm tuyệt đối 100% tại (ringX, ringY)
+      // Dot không bao giờ bị lệch tâm hay văng ra ngoài vòng tròn
+      dot.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0)`;
       ring.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0) scale(${currentScale.toFixed(2)})`;
     }
 

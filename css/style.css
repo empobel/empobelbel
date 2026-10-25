@@ -3330,7 +3330,7 @@ img {
   --accent-hover: #f59e0b;
   --text: #f1f5f9;
   --text-light: #94a3b8;
-  --white: #151f32;
+  --white: #ffffff;
   --gray-50: #0b1320;
   --gray-100: #162032;
   --gray-200: #26354d;
@@ -4186,4 +4186,181 @@ img {
   color: #0b1320;
   border-color: #38bdf8;
   box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+}
+
+
+/* ===== DARK THEME ENHANCEMENTS & HIGH CONTRAST FIXES ===== */
+
+/* Header Logo Text trong Dark Mode */
+[data-theme="dark"] .header .logo span,
+[data-theme="dark"] .logo span {
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Toàn bộ văn bản Hero trong Dark Mode */
+[data-theme="dark"] .hero {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .hero h1,
+[data-theme="dark"] .hero .hero-title-dynamic {
+  color: #ffffff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7) !important;
+}
+
+[data-theme="dark"] .hero p {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
+}
+
+[data-theme="dark"] .hero-btn-outline {
+  color: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .hero-btn-outline:hover {
+  background: #ffffff !important;
+  color: #0b1320 !important;
+  border-color: #ffffff !important;
+}
+
+/* LỊCH TRÌNH CHI TIẾT NỔI BẬT CAO TRONG DARK MODE */
+[data-theme="dark"] .timeline-content {
+  background: linear-gradient(145deg, #13243d 0%, #182e4e 100%) !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.45) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  padding: 22px 26px !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+[data-theme="dark"] .timeline-content:hover {
+  background: linear-gradient(145deg, #182e4e 0%, #1e385f 100%) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.35) !important;
+  transform: translateY(-4px) !important;
+}
+
+[data-theme="dark"] .timeline-time-badge {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  color: #07111e !important;
+  font-weight: 800 !important;
+  font-size: 0.9rem !important;
+  padding: 5px 16px !important;
+  border-radius: 50px !important;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  display: inline-block !important;
+}
+
+[data-theme="dark"] .timeline-event-title {
+  color: #ffffff !important;
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  margin-top: 10px !important;
+  margin-bottom: 8px !important;
+}
+
+[data-theme="dark"] .timeline-event-desc {
+  color: #e2e8f0 !important;
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+}
+
+[data-theme="dark"] .timeline-place-tag a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(56, 189, 248, 0.16) !important;
+  border: 1px solid rgba(56, 189, 248, 0.5) !important;
+  color: #7dd3fc !important;
+  padding: 8px 16px !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  margin-top: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme="dark"] .timeline-place-tag a:hover {
+  background: rgba(56, 189, 248, 0.32) !important;
+  border-color: #38bdf8 !important;
+  color: #ffffff !important;
+  transform: translateX(4px) !important;
+}
+
+[data-theme="dark"] .timeline-day-header .timeline-day-pill {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.45) !important;
+}
+
+[data-theme="dark"] .timeline-day-header .timeline-day-title {
+  color: #f1f5f9 !important;
+  font-size: 1.65rem !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="dark"] .timeline-marker .timeline-icon-box {
+  background: #0f2744 !important;
+  border: 2px solid #38bdf8 !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45) !important;
+  font-size: 1.3rem !important;
+}
+
+[data-theme="dark"] .timeline-line {
+  background: linear-gradient(180deg, #38bdf8, rgba(56, 189, 248, 0.25)) !important;
+  width: 3px !important;
+}
+
+/* Thẻ thống kê trong Dark Mode */
+[data-theme="dark"] .stat-box {
+  background: #142236 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .stat-box:hover {
+  background: #192b45 !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 12px rgba(56, 189, 248, 0.25) !important;
+}
+
+[data-theme="dark"] .stat-box .stat-number {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .stat-box.highlight-stat .stat-number {
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .stat-box .stat-label {
+  color: #cbd5e1 !important;
+}
+
+/* Con trỏ chuột trong Dark Mode */
+[data-theme="dark"] .cursor-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.95);
+}
+
+[data-theme="dark"] .cursor-ring {
+  border-color: rgba(56, 189, 248, 0.85);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+[data-theme="dark"] .cursor-ring.cursor-hover {
+  border-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.2);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+}
+
+[data-theme="dark"] .cursor-dot.cursor-hover {
+  background: #fbbf24;
+  box-shadow: 0 0 14px #fbbf24;
 }
