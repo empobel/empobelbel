@@ -277,7 +277,8 @@ function renderTimeline(dayNumber = 1) {
   container.innerHTML = `
     <div class="timeline-day-header reveal-on-scroll">
       <span class="timeline-day-pill">${dayBadgePrefix} ${dayData.day}</span>
-      <h3 class="timeline-day-title">${dayData.theme}</h3>
+      <h3 class="timeline-day-title">${dayData.title || ''}</h3>
+      ${dayData.dateSummary ? `<p class="timeline-day-summary">${dayData.dateSummary}</p>` : ''}
     </div>
     <div class="timeline-tree">
       ${eventsHtml}

@@ -2368,7 +2368,7 @@ img {
   border-radius: var(--radius);
   padding: 40px;
   box-shadow: var(--shadow-lg);
-  border: 1px solid var(--gray-200);
+  border: 2px solid var(--gray-200);
   position: relative;
 }
 
@@ -2380,6 +2380,7 @@ img {
   border-bottom: 2px dashed var(--gray-200);
 }
 
+.timeline-day-pill,
 .timeline-day-badge {
   display: inline-block;
   background: linear-gradient(135deg, var(--accent), var(--accent-hover));
@@ -2462,18 +2463,20 @@ img {
 /* Nội dung sự kiện */
 .timeline-content {
   flex: 1;
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm);
+  background: var(--white);
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius);
   padding: 22px 25px;
-  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   position: relative;
 }
 
 .timeline-content:hover {
   background: var(--white);
-  border-color: var(--primary-light);
-  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+  box-shadow: 0 10px 24px rgba(3, 105, 161, 0.16);
+  transform: translateY(-3px);
 }
 
 .timeline-time-badge {
@@ -3649,16 +3652,6 @@ img {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-[data-theme="dark"] .timeline-content {
-  background: #151f32;
-  border-color: #26354d;
-}
-
-[data-theme="dark"] .timeline-content:hover {
-  background: #19273f;
-  border-color: #38bdf8;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-}
 
 [data-theme="dark"] .timeline-event-title {
   color: #f1f5f9;
@@ -4229,19 +4222,34 @@ img {
 }
 
 /* LỊCH TRÌNH CHI TIẾT NỔI BẬT CAO TRONG DARK MODE */
+[data-theme="dark"] .timeline-section {
+  background: #070d18 !important;
+}
+
+[data-theme="dark"] .timeline-container {
+  background: #0b1424 !important;
+  border: 2px solid #1e3352 !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] .timeline-day-header {
+  border-bottom: 2px dashed rgba(56, 189, 248, 0.25) !important;
+}
+
+/* Hộp bao quanh mỗi mốc thời gian chi tiết - viền dày 2px và nổi bật rõ ràng */
 [data-theme="dark"] .timeline-content {
-  background: linear-gradient(145deg, #13243d 0%, #182e4e 100%) !important;
-  border: 1.5px solid rgba(56, 189, 248, 0.45) !important;
+  background: linear-gradient(145deg, #13233c 0%, #1a3152 100%) !important;
+  border: 2px solid rgba(56, 189, 248, 0.6) !important;
   border-radius: var(--radius) !important;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
   padding: 22px 26px !important;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease !important;
 }
 
 [data-theme="dark"] .timeline-content:hover {
-  background: linear-gradient(145deg, #182e4e 0%, #1e385f 100%) !important;
+  background: linear-gradient(145deg, #182e4e 0%, #22436e 100%) !important;
   border-color: #38bdf8 !important;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.4) !important;
   transform: translateY(-4px) !important;
 }
 
