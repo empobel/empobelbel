@@ -4156,6 +4156,15 @@ img {
   color: #e2e8f0;
 }
 
+/* Dải chuyển tiếp lượn sóng: ẩn trong dark mode để triệt tiêu hoàn toàn vệt trắng cắt ngang màn hình */
+[data-theme="dark"] .section-divider-curve {
+  display: none !important;
+}
+
+[data-theme="dark"] .section-divider-curve svg path {
+  fill: #0a0f1d !important;
+}
+
 /* === 7. CHI PHÍ TRỌN GÓI (TOUR COST CARD) === */
 [data-theme="dark"] .tour-cost-card {
   background: #111c34 !important;
@@ -4557,6 +4566,30 @@ img {
 
 [data-theme="dark"] .fact-item p {
   color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .visit-schedule-banner {
+  background: #182849 !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.45) !important;
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .visit-schedule-banner strong {
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .schedule-time-text {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .info-includes {
+  background: #15273f !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+[data-theme="dark"] .info-excludes {
+  background: #1a273e !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.35) !important;
 }
 
 [data-theme="dark"] .breadcrumb {
