@@ -679,96 +679,17 @@ function initMagicCursor() {
 }
 
 /**
- * 3. Hiệu ứng nghiêng 3D theo chuột (3D Interactive Tilt)
+ * 3. Hiệu ứng nổi lên mượt mà khi hover (loại bỏ hoàn toàn góc nghiêng chìm xuống)
  */
 function initTiltEffect() {
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-
-  const attachTilt = () => {
-    const cards = document.querySelectorAll('.tilt-card, .tour-card, .category-card, .weather-plan-box, .timeline-content');
-    cards.forEach(card => {
-      if (card.dataset.tiltBound) return;
-      card.dataset.tiltBound = 'true';
-
-      card.addEventListener('mouseenter', () => {
-        // Tắt CSS transition khi đang rê chuột để tilt bám mượt tức thì không bị giật lag
-        card.style.transition = 'none';
-      });
-
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = -((y - centerY) / centerY) * 4.5;
-        const rotateY = ((x - centerX) / centerX) * 4.5;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(5px)`;
-        card.style.setProperty('--mouse-x', `${((x / rect.width) * 100).toFixed(1)}%`);
-        card.style.setProperty('--mouse-y', `${((y / rect.height) * 100).toFixed(1)}%`);
-      });
-
-      card.addEventListener('mouseleave', () => {
-        // Trả về vị trí ban đầu mượt mà
-        card.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-      });
-    });
-  };
-
-  attachTilt();
-
-  if (typeof MutationObserver !== 'undefined') {
-    const observer = new MutationObserver(() => {
-      attachTilt();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
+  // Đã chuyển toàn bộ hiệu ứng sang nổi lên (float up) mượt mà bằng CSS translateY
 }
 
 /**
- * 3b. Hiệu ứng nam châm hút theo chuột cho nút Địa Điểm (Magnetic Follow)
+ * 3b. Nút Địa Điểm nổi lên mượt mà (không hút lệch theo chuột)
  */
 function initMagneticElements() {
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-
-  const attachMagnetic = () => {
-    const magneticItems = document.querySelectorAll('.timeline-place-tag a');
-    magneticItems.forEach(item => {
-      if (item.dataset.magneticBound) return;
-      item.dataset.magneticBound = 'true';
-
-      item.addEventListener('mouseenter', () => {
-        item.style.transition = 'none';
-      });
-
-      item.addEventListener('mousemove', (e) => {
-        const rect = item.getBoundingClientRect();
-        const relX = e.clientX - rect.left - rect.width / 2;
-        const relY = e.clientY - rect.top - rect.height / 2;
-        // Hút theo chuột nhẹ nhàng: di chuyển tối đa 5px ngang, 3px dọc
-        const moveX = (relX / (rect.width / 2)) * 5;
-        const moveY = (relY / (rect.height / 2)) * 3;
-        item.style.transform = `translate3d(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px, 0)`;
-      });
-
-      item.addEventListener('mouseleave', () => {
-        item.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
-        item.style.transform = 'translate3d(0, 0, 0)';
-      });
-    });
-  };
-
-  attachMagnetic();
-
-  if (typeof MutationObserver !== 'undefined') {
-    const observer = new MutationObserver(() => {
-      attachMagnetic();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
+  // Nút địa điểm chỉ nổi lên bằng CSS
 }
 
 /**
