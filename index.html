@@ -1,40 +1,34 @@
 <!DOCTYPE html>
-<html lang="vi" class="js">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thập Tứ Tour - Khám Phá Quy Nhơn | Lớp 10A4 THPT Lương Thế Vinh TP.HCM</title>
-  <meta name="description" content="Website cẩm nang giới thiệu hành trình tour du lịch Quy Nhơn 4 ngày 3 đêm của học sinh Lớp 10A4 THPT Lương Thế Vinh TP.HCM: Kỳ Co, Eo Gió, Ghềnh Ráng Tiên Sa, ExploraScience.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="hero-bg.jpg" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Thanh tiến trình cuộn trang -->
-  <div class="scroll-progress-bar" id="scrollProgress" aria-hidden="true"></div>
+  <!-- ===== THANH TIẾN TRÌNH CUỘN TRANG ===== -->
+  <div class="scroll-progress-bar" id="scrollProgress"></div>
 
-  <!-- Con trỏ chuột tương tác (Magic Cursor) -->
-  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+  <!-- ===== CON TRỎ CHUỘT TƯƠNG TÁC (MAGIC CURSOR) ===== -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- Header -->
+  <!-- ===== HEADER ===== -->
   <header class="header">
     <div class="container">
-      <a href="index.html" class="logo" aria-label="Thập Tứ Tour Trang chủ">
-        <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image" width="40" height="40">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image">
         <span>Thập Tứ Tour</span>
       </a>
-      <button class="hamburger" id="hamburger" aria-label="Mở menu" aria-expanded="false">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
       </button>
-      <nav class="nav" id="nav" aria-label="Điều hướng chính">
+      <nav class="nav" id="nav">
         <ul class="nav-list">
           <li><a href="index.html" class="active">Trang chủ</a></li>
           <li><a href="#ve-tui-toi">Về chúng tôi</a></li>
@@ -45,93 +39,93 @@
     </div>
   </header>
 
-  <!-- Hero Banner -->
+  <!-- ===== HERO BANNER VỚI HIỆU ỨNG PARALLAX ===== -->
   <section class="hero" id="top">
-    <div class="hero-bg-floating-glow" aria-hidden="true"></div>
+    <div class="hero-bg-floating-glow"></div>
     <div class="hero-content">
-      <div class="project-badge-pill">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-        <span>Dự án học sinh Lớp 10A4 · THPT Lương Thế Vinh TP.HCM</span>
+      <div class="project-badge-pill floating-badge">
+        🎓 Dự án học sinh Lớp 10A4 • THPT Lương Thế Vinh TP.HCM
       </div>
       <h1 class="hero-title-dynamic">Khám Phá Vẻ Đẹp<br><span class="hero-gradient-text">Quy Nhơn - Bình Định</span></h1>
       <p>Cùng tụi mình dạo quanh xứ Nẫu mộng mơ: từ làn nước trong xanh ngọc bích Kỳ Co, Eo Gió lộng gió, ẩm thực hải sản phố biển đến trải nghiệm vũ trụ kỳ thú tại ExploraScience.</p>
       <div class="hero-buttons">
-        <a href="#lich-trinh" class="hero-btn">Xem lịch trình chuyến đi</a>
-        <a href="#dia-diem" class="hero-btn-outline">
-          <span>Địa điểm nổi bật</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <a href="#lich-trinh" class="hero-btn pulse-glow">Xem lịch trình chuyến đi</a>
+        <a href="#dia-diem" class="hero-btn-outline">Địa điểm nổi bật →</a>
       </div>
     </div>
   </section>
 
-  <!-- Marquee Ticker -->
-  <div class="marquee-ticker-wrap" aria-label="Điểm nhấn hành trình">
+  <!-- ===== MARQUEE TICKER (DẢI CHỮ CHẠY VÔ TẬN) ===== -->
+  <div class="marquee-ticker-wrap">
     <div class="marquee-track">
       <div class="marquee-content">
-        <span>Thập Tứ Tour</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Lớp 10A4 THPT Lương Thế Vinh (2026)</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Kỳ Co - Eo Gió</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Ghềnh Ráng Tiên Sa - Đồi Thi Nhân</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Bảo tàng Tổng hợp Bình Định</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Nhà hàng Cơm Mậu Quy Nhơn</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Bún cá Ngọc Liên và Nem chả Lợi</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Hải sản Xuân Diệu</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Khám phá vũ trụ ExploraScience</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <span>Khách sạn Odin Quy Nhơn</span>
-        <span class="dot" aria-hidden="true">•</span>
+        <span>🌊 THẬP TỨ TOUR</span>
+        <span class="dot">•</span>
+        <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
+        <span class="dot">•</span>
+        <span>🏖️ KỲ CO - EO GIÓ</span>
+        <span class="dot">•</span>
+        <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
+        <span class="dot">•</span>
+        <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
+        <span class="dot">•</span>
+        <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
+        <span class="dot">•</span>
+        <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
+        <span class="dot">•</span>
+        <span>🦞 HẢI SẢN XUÂN DIỆU DUY MẬP</span>
+        <span class="dot">•</span>
+        <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
+        <span class="dot">•</span>
+        <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
+        <span class="dot">•</span>
+        <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
+        <span class="dot">•</span>
       </div>
       <div class="marquee-content" aria-hidden="true">
-        <span>Thập Tứ Tour</span>
+        <span>🌊 THẬP TỨ TOUR</span>
         <span class="dot">•</span>
-        <span>Lớp 10A4 THPT Lương Thế Vinh (2026)</span>
+        <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
         <span class="dot">•</span>
-        <span>Kỳ Co - Eo Gió</span>
+        <span>🏖️ KỲ CO - EO GIÓ</span>
         <span class="dot">•</span>
-        <span>Ghềnh Ráng Tiên Sa - Đồi Thi Nhân</span>
+        <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
         <span class="dot">•</span>
-        <span>Bảo tàng Tổng hợp Bình Định</span>
+        <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
         <span class="dot">•</span>
-        <span>Nhà hàng Cơm Mậu Quy Nhơn</span>
+        <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
         <span class="dot">•</span>
-        <span>Bún cá Ngọc Liên và Nem chả Lợi</span>
+        <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
         <span class="dot">•</span>
-        <span>Hải sản Xuân Diệu</span>
+        <span>🦞 HẢI SẢN XUÂN DIỆU DUY MẬP</span>
         <span class="dot">•</span>
-        <span>Khám phá vũ trụ ExploraScience</span>
+        <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
         <span class="dot">•</span>
-        <span>Khách sạn Odin Quy Nhơn</span>
+        <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
+        <span class="dot">•</span>
+        <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
         <span class="dot">•</span>
       </div>
     </div>
   </div>
 
-  <!-- Về Chúng Tôi -->
+  <!-- ===== VỀ TỤI TÔI ===== -->
   <section class="about-us-section" id="ve-tui-toi">
     <div class="container">
-      <div class="section-title">
+      <div class="section-title reveal-on-scroll">
         <h2>Về Chúng Tôi</h2>
         <p>Câu chuyện nhỏ đằng sau trang web Thập Tứ Tour</p>
       </div>
       
-      <div class="about-us-card">
+      <div class="about-us-card tilt-card reveal-on-scroll">
         <div class="about-us-content">
-          <span class="school-tag">Lớp 10A4 (Khóa 2026, THPT Lương Thế Vinh TP.HCM)</span>
-          <h3>Chào mọi người, tụi mình là Thập Tứ Tour!</h3>
+          <span class="school-tag">🏫 Lớp 10A4 • Năm 2026 • THPT Lương Thế Vinh TP.HCM</span>
+          <h3>Chào mọi người, tụi mình là Thập Tứ Tour! 👋</h3>
           <p>
             Tụi mình là một nhóm học sinh đến từ <strong>lớp 10A4 (khóa 2026), trường THPT Lương Thế Vinh - TP. Hồ Chí Minh</strong>. Xuất phát từ niềm say mê vẻ đẹp biển đảo miền Trung và mong muốn áp dụng công nghệ lập trình web thuần, tụi mình đã xây dựng website này như một cẩm nang giới thiệu du lịch Quy Nhơn thật sinh động và gần gũi.
           </p>
           <p>
-            Mục tiêu của website này rất đơn giản: chia sẻ kinh nghiệm, giới thiệu các điểm đến tuyệt đẹp của Quy Nhơn để bất cứ ai đang có ý định ghé thăm xứ Nẫu đều có thể dễ dàng tìm hiểu và lên kế hoạch cho chuyến đi của mình. Tụi mình <strong>không kinh doanh hay nhận đặt tour</strong>, trang web là sản phẩm học tập phi lợi nhuận.
+            Mục tiêu của website này rất đơn giản: <em>chia sẻ kinh nghiệm, giới thiệu các điểm đến tuyệt đẹp của Quy Nhơn</em> để bất cứ ai đang có ý định ghé thăm xứ Nẫu đều có thể dễ dàng tìm hiểu và lên kế hoạch cho chuyến đi của mình. Tụi mình <strong>không kinh doanh hay nhận đặt tour</strong>, trang web là sản phẩm học tập.
           </p>
 
           <div class="about-stats-grid">
@@ -151,51 +145,56 @@
         </div>
 
         <div class="about-us-image-box">
-          <img src="about-quynhon.jpg" alt="Toàn cảnh biển đảo Quy Nhơn" class="about-us-img" width="800" height="600" loading="lazy">
+          <img src="about-quynhon.jpg" alt="Toàn cảnh biển đảo Quy Nhơn" class="about-us-img">
           <div class="about-image-caption">
-            <span>Toàn cảnh Cù Lao Xanh - Quy Nhơn, Bình Định</span>
+            <span>🌊 Toàn cảnh Cù Lao Xanh - Quy Nhơn, Bình Định</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Lịch trình chi tiết -->
+  <!-- Dải chuyển tiếp phân cách mềm mại giữa 2 phần -->
+  <div class="section-divider-curve">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#ffffff" d="M0,35 C280,80 540,10 820,50 C1100,90 1300,30 1440,55 L1440,80 L0,80 Z"></path>
+    </svg>
+  </div>
+
+  <!-- ===== LỊCH TRÌNH CHUYẾN ĐI (TIMELINE 4 NGÀY 3 ĐÊM) ===== -->
   <section class="timeline-section" id="lich-trinh">
     <div class="container">
-      <div class="section-title">
-        <span class="section-badge">Lộ trình thực tế 4N3Đ</span>
+      <div class="section-title reveal-on-scroll">
+        <span class="section-badge">🗓️ Lộ trình thực tế 4N3Đ</span>
         <h2>Lịch Trình Chi Tiết 4 Ngày 3 Đêm</h2>
-        <p>Hành trình trọn vẹn khám phá Quy Nhơn: chi tiết từng mốc giờ, địa điểm dừng chân, ẩm thực đặc sản và phương án dự phòng thời tiết</p>
+        <p>Hành trình trọn vẹn khám phá Quy Nhơn: chi tiết từng mốc giờ, địa điểm dừng chân, ẩm thực đặc sản & phương án dự phòng thời tiết</p>
       </div>
 
       <!-- Banner hỗ trợ dù & áo mưa -->
-      <div class="umbrella-alert-banner">
-        <span class="umbrella-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10c0 .55.45 1 1 1h8v6a2 2 0 0 0 4 0v-1a1 1 0 0 0-2 0v1a0 0 0 0 1 0 0v-6h8c.55 0 1-.45 1-1A10 10 0 0 0 12 2z"/></svg>
-        </span>
+      <div class="umbrella-alert-banner floating-badge reveal-on-scroll">
+        <span class="umbrella-icon">☂️</span>
         <div class="umbrella-text">
-          <strong>Lưu ý chu đáo từ Thập Tứ Tour:</strong> Đoàn luôn chuẩn bị sẵn dù che và áo mưa tiện lợi để hỗ trợ tận tình cho các thành viên trong suốt chuyến đi!
+          <strong>Lưu ý chu đáo từ Thập Tứ Tour:</strong> Đoàn luôn chuẩn bị sẵn <strong>dù che và áo mưa tiện lợi</strong> để hỗ trợ tận tình cho các thành viên trong suốt chuyến đi!
         </div>
       </div>
 
       <!-- Tabs chuyển Ngày 1 / 2 / 3 / 4 -->
-      <div class="timeline-tabs" id="timelineTabs" role="tablist" aria-label="Các ngày trong lịch trình">
-        <button class="timeline-tab-btn active" data-day="1" type="button" role="tab" aria-selected="true" aria-controls="timelineContainer">
+      <div class="timeline-tabs reveal-on-scroll" id="timelineTabs">
+        <button class="timeline-tab-btn active" data-day="1" type="button">
           <span class="tab-day-badge">Ngày 1</span>
-          <span class="tab-day-title">Khởi hành và Biển Quy Nhơn</span>
+          <span class="tab-day-title">Khởi hành & Biển Quy Nhơn</span>
         </button>
-        <button class="timeline-tab-btn" data-day="2" type="button" role="tab" aria-selected="false" aria-controls="timelineContainer">
+        <button class="timeline-tab-btn" data-day="2" type="button">
           <span class="tab-day-badge">Ngày 2</span>
-          <span class="tab-day-title">Kỳ Co - Eo Gió và Phố đêm</span>
+          <span class="tab-day-title">Kỳ Co – Eo Gió & Phố đêm</span>
         </button>
-        <button class="timeline-tab-btn" data-day="3" type="button" role="tab" aria-selected="false" aria-controls="timelineContainer">
+        <button class="timeline-tab-btn" data-day="3" type="button">
           <span class="tab-day-badge">Ngày 3</span>
-          <span class="tab-day-title">Ghềnh Ráng Tiên Sa và Dạo phố</span>
+          <span class="tab-day-title">Ghềnh Ráng Tiên Sa & Dạo phố</span>
         </button>
-        <button class="timeline-tab-btn" data-day="4" type="button" role="tab" aria-selected="false" aria-controls="timelineContainer">
+        <button class="timeline-tab-btn" data-day="4" type="button">
           <span class="tab-day-badge">Ngày 4</span>
-          <span class="tab-day-title">Check-in kỉ niệm và Về TP.HCM</span>
+          <span class="tab-day-title">Check-in kỉ niệm & Về TP.HCM</span>
         </button>
       </div>
 
@@ -206,10 +205,10 @@
     </div>
   </section>
 
-  <!-- Danh mục khám phá -->
+  <!-- ===== DANH MỤC ĐỊA DANH ===== -->
   <section class="categories" id="categories">
     <div class="container">
-      <div class="section-title">
+      <div class="section-title reveal-on-scroll">
         <h2>Khám phá theo danh mục</h2>
         <p>Lựa chọn loại hình cảnh sắc Quy Nhơn bạn muốn tìm hiểu</p>
       </div>
@@ -219,26 +218,24 @@
     </div>
   </section>
 
-  <!-- Tìm kiếm địa danh nổi bật -->
+  <!-- ===== TÌM KIẾM ĐỊA DANH NỔI BẬT ===== -->
   <section class="search-filter" id="dia-diem">
     <div class="container">
-      <div class="section-title">
+      <div class="section-title reveal-on-scroll" style="margin-bottom: 25px;">
+        <span class="section-badge">📍 Điểm dừng chân</span>
         <h2>Địa Điểm Nổi Bật Trong Chuyến Đi</h2>
         <p>Các địa danh đoàn sẽ ghé thăm cùng mốc thời gian xuất hiện trong lịch trình</p>
       </div>
-      <div class="search-filter-bar">
+      <div class="search-filter-bar reveal-on-scroll">
         <div class="search-input-wrap">
-          <span class="search-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          </span>
-          <input type="text" id="searchInput" placeholder="Tìm kiếm địa điểm: Kỳ Co, Eo Gió, Khách sạn Odin, Xuân Diệu, Bún cá Ngọc Liên, ExploraScience..." aria-label="Tìm kiếm địa điểm du lịch">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Tìm kiếm địa điểm: Kỳ Co, Eo Gió, Khách sạn Odin, Xuân Diệu, Bún cá Ngọc Liên, ExploraScience...">
         </div>
-        <div id="activeFilterBadge" class="active-filter-badge-wrap"></div>
       </div>
     </div>
   </section>
 
-  <!-- Danh sách địa điểm -->
+  <!-- ===== DANH SÁCH ĐỊA ĐIỂM ===== -->
   <section class="tours-section">
     <div class="container">
       <div class="tour-grid" id="tourGrid">
@@ -247,13 +244,13 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-about">
           <div class="logo">
-            <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image" width="40" height="40">
+            <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image">
             <span>Thập Tứ Tour</span>
           </div>
           <p>
@@ -261,35 +258,33 @@
           </p>
         </div>
         <div>
-          <div style="font-weight:700;font-size:1.1rem;margin-bottom:16px;">Liên kết nhanh</div>
+          <h3>Liên kết nhanh</h3>
           <ul class="footer-links">
             <li><a href="#top">Trang chủ</a></li>
-            <li><a href="#ve-tui-toi">Về chúng tôi</a></li>
+            <li><a href="#ve-tui-toi">Về tụi tôi</a></li>
             <li><a href="#lich-trinh">Lịch trình chuyến đi</a></li>
             <li><a href="#dia-diem">Địa điểm nổi bật</a></li>
           </ul>
         </div>
         <div>
-          <div style="font-weight:700;font-size:1.1rem;margin-bottom:16px;">Thông tin liên hệ</div>
+          <h3>Thông tin liên hệ</h3>
           <ul class="footer-links">
-            <li>Trường THPT Lương Thế Vinh, TP.HCM</li>
-            <li>Quận 1, TP. Hồ Chí Minh, Việt Nam</li>
-            <li>yenit4444@gmail.com</li>
-            <li>(+84) 774 805 419</li>
-            <li>Lớp 10A4 Năm 2026 Trường LTV</li>
+            <li>🏫 Trường THPT Lương Thế Vinh, TP.HCM</li>
+            <li>📍 Quận 1, TP. Hồ Chí Minh, Việt Nam</li>
+            <li>✉️ yenit4444@gmail.com</li>
+            <li>📞 (+84) 774 805 419</li>
+            <li>🌐 Lớp 10A4 Năm 2026 Trường LTV</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Thập Tứ Tour. Dự án giới thiệu du lịch Quy Nhơn của học sinh lớp 10A4 Trường THPT Lương Thế Vinh, TP.HCM.</p>
+        <p>© 2024 - 2026 Thập Tứ Tour. Dự án giới thiệu du lịch Quy Nhơn của học sinh lớp 10A4 Trường THPT Lương Thế Vinh, TP.HCM.</p>
       </div>
     </div>
   </footer>
 
   <!-- Nút về đầu trang -->
-  <button class="back-to-top" id="backToTop" aria-label="Cuộn về đầu trang" type="button">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
-  </button>
+  <button class="back-to-top" id="backToTop">↑</button>
 
   <!-- Scripts -->
   <script src="js/tours.js"></script>
