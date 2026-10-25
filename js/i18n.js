@@ -20,7 +20,13 @@ const I18N = {
     hero_title: "Khám Phá Vẻ Đẹp<br><span class=\"hero-gradient-text\">Quy Nhơn - Bình Định</span>",
     hero_desc: "Cẩm nang du lịch Quy Nhơn cùng tập thể 10A4: dạo biển vầng trăng khuyết, đón gió Eo Gió - Kỳ Co, khám phá vũ trụ ExploraScience và thưởng thức hải sản tươi ngon.",
     hero_btn_itinerary: "Xem lịch trình chuyến đi",
+    hero_btn_video: "🎬 Xem Video Quy Nhơn",
     hero_btn_places: "Địa điểm nổi bật →",
+
+    // Video Section
+    video_badge: "🎬 Thước Phim Trải Nghiệm",
+    video_heading: "Hành Trình Khám Phá Quy Nhơn Cùng Lớp 10A4",
+    video_sub: "Ghi lại trọn vẹn những khoảnh khắc tuyệt đẹp của thiên nhiên biển đảo, ẩm thực và nụ cười tuổi trẻ",
 
     // About Us
     about_title: "Về Chúng Tôi",
@@ -127,7 +133,13 @@ const I18N = {
     hero_title: "Discover the Charm of<br><span class=\"hero-gradient-text\">Quy Nhon - Binh Dinh</span>",
     hero_desc: "A handcrafted travel guide by Class 10A4: scenic beaches at Ky Co & Eo Gio, stargazing at ExploraScience, and authentic local coastal delicacies.",
     hero_btn_itinerary: "Explore 4-Day Itinerary",
+    hero_btn_video: "🎬 Watch Quy Nhon Video",
     hero_btn_places: "Featured Places →",
+
+    // Video Section
+    video_badge: "🎬 Experience Film",
+    video_heading: "Quy Nhon Exploration Journey with Class 10A4",
+    video_sub: "Capturing beautiful moments of coastal scenery, delicious seafood, and youth smiles",
 
     // About Us
     about_title: "About Us",
@@ -1009,6 +1021,9 @@ function switchLanguage(targetLang) {
   }
   if (typeof updateMarqueeTicker === 'function') {
     updateMarqueeTicker(targetLang);
+  }
+  if (typeof updateThemeButton === 'function') {
+    updateThemeButton(document.documentElement.getAttribute('data-theme') || 'light');
   }
 
   // Re-render các phần động trên trang chủ nếu đang ở trang chủ

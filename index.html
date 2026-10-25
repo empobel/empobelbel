@@ -36,6 +36,12 @@
       </nav>
 
       <div class="header-right">
+        <!-- Nút chuyển đổi giao diện Sáng / Tối (Theme Switcher) -->
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Chuyển chế độ sáng/tối" title="Chuyển chế độ sáng/tối">
+          <span class="theme-icon sun-icon">☀️</span>
+          <span class="theme-icon moon-icon">🌙</span>
+        </button>
+
         <!-- Nút chuyển đổi ngôn ngữ -->
         <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language selection">
           <button type="button" class="lang-btn active" data-lang="vi" title="Tiếng Việt">
@@ -53,7 +59,7 @@
     </div>
   </header>
 
-  <!-- ===== HERO BANNER VỚI HIỆU ỨNG PARALLAX ===== -->
+  <!-- ===== HERO BANNER ===== -->
   <section class="hero" id="top">
     <div class="hero-bg-floating-glow"></div>
     <div class="hero-content">
@@ -69,6 +75,7 @@
       <p data-i18n="hero_desc">Cùng tụi mình dạo quanh xứ Nẫu mộng mơ: từ làn nước trong xanh ngọc bích Kỳ Co, Eo Gió lộng gió, ẩm thực hải sản phố biển đến trải nghiệm vũ trụ kỳ thú tại ExploraScience.</p>
       <div class="hero-buttons">
         <a href="#lich-trinh" class="hero-btn pulse-glow" data-i18n="hero_btn_itinerary">Xem lịch trình chuyến đi</a>
+        <a href="#video-quy-nhon" class="hero-btn-video" data-i18n="hero_btn_video">🎬 Xem Video Quy Nhơn</a>
         <a href="#dia-diem" class="hero-btn-outline" data-i18n="hero_btn_places">Địa điểm nổi bật →</a>
       </div>
     </div>
@@ -132,6 +139,26 @@
     </div>
   </div>
 
+  <!-- ===== VIDEO SHOWCASE SECTION (THƯỚC PHIM HÀNH TRÌNH QUY NHƠN) ===== -->
+  <section class="video-section reveal-on-scroll" id="video-quy-nhon">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-badge" data-i18n="video_badge">🎬 Thước Phim Trải Nghiệm</span>
+        <h2 data-i18n="video_heading">Hành Trình Khám Phá Quy Nhơn Cùng Lớp 10A4</h2>
+        <p data-i18n="video_sub">Ghi lại trọn vẹn những khoảnh khắc tuyệt đẹp của thiên nhiên biển đảo, ẩm thực và nụ cười tuổi trẻ</p>
+      </div>
+
+      <div class="video-container">
+        <div class="video-wrapper">
+          <video id="quynhonVideo" controls playsinline preload="metadata" poster="about-quynhon.jpg">
+            <source src="quy-nhon.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ phát video.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== VỀ TỤI TÔI ===== -->
   <section class="about-us-section" id="ve-tui-toi">
     <div class="container">
@@ -140,7 +167,7 @@
         <p data-i18n="about_sub">Câu chuyện nhỏ đằng sau trang web Thập Tứ Tour</p>
       </div>
       
-      <div class="about-us-card tilt-card reveal-on-scroll">
+      <div class="about-us-card reveal-on-scroll">
         <div class="about-us-content">
           <span class="school-tag" data-i18n="about_tag">🏫 Lớp 10A4 • Năm 2026 • THPT Lương Thế Vinh TP.HCM</span>
           <h3 data-i18n="about_heading">Chào mọi người, tụi mình là Thập Tứ Tour! 👋</h3>
@@ -206,7 +233,7 @@
       </div>
 
       <!-- Khung giá & chi tiết trọn gói của tour -->
-      <div class="tour-cost-card tilt-card reveal-on-scroll">
+      <div class="tour-cost-card reveal-on-scroll">
         <div class="tour-cost-header">
           <div class="tour-cost-left">
             <span class="cost-tag" data-i18n="cost_tag">🏷️ CHI PHÍ TRỌN GÓI 4N3Đ</span>

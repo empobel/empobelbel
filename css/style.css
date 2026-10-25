@@ -3684,43 +3684,6 @@ img {
   }
 }
 
-/* 5. Hiệu ứng 3D Interactive Tilt & Glare (Chuột trên Máy tính & Con quay hồi chuyển Gyroscope trên Mobile) */
-.tilt-card {
-  transform-style: preserve-3d;
-  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-  position: relative;
-  will-change: transform;
-}
-
-/* Vệt sáng phản quang (Glare Sheen) - dùng ::before để không xung đột với tick xanh ::after của danh mục */
-.tilt-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.32) 0%, rgba(56, 189, 248, 0.15) 30%, transparent 68%);
-  transition: opacity 0.35s ease;
-  z-index: 5;
-}
-
-.tilt-card:hover::before {
-  opacity: 1;
-}
-
-/* Khi con quay hồi chuyển trên điện thoại hoạt động: vệt sáng phản quang tự động quét theo góc nghiêng điện thoại */
-body.gyro-active .tilt-card::before,
-.tilt-card.gyro-active::before {
-  opacity: 0.65;
-}
-
-/* Khi con quay hồi chuyển đang điều khiển: tắt CSS transition trên transform để LERP đạt độ mượt 60-120fps tuyệt đối */
-body.gyro-active .tilt-card,
-.tilt-card.gyro-active {
-  transition: box-shadow 0.3s ease, border-color 0.25s ease;
-}
-
 /* 6. Hiệu ứng Scroll Reveal (Cuộn tới đâu bay lên tới đó) */
 .reveal-on-scroll {
   opacity: 0;
@@ -3820,3 +3783,631 @@ body.gyro-active .tilt-card,
 
 
 
+
+
+/* ===================================================
+   TÍNH NĂNG MỚI: CHẾ ĐỘ SÁNG / TỐI & VIDEO SHOWCASE & NỔI LÊN KHI HOVER
+   =================================================== */
+
+/* --- NÚT CHUYỂN ĐỔI GIAO DIỆN SÁNG / TỐI (THEME SWITCHER) --- */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: #ffffff;
+  transition: all 0.25s ease;
+  outline: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.theme-icon {
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+/* Light mode (mặc định): hiện trăng 🌙, ẩn mặt trời ☀️ */
+.theme-toggle-btn .sun-icon {
+  display: none;
+}
+.theme-toggle-btn .moon-icon {
+  display: inline-block;
+}
+
+/* Dark mode: hiện mặt trời ☀️, ẩn trăng 🌙 */
+[data-theme="dark"] .theme-toggle-btn .sun-icon {
+  display: inline-block;
+}
+[data-theme="dark"] .theme-toggle-btn .moon-icon {
+  display: none;
+}
+
+/* --- HERO VIDEO BUTTON --- */
+.hero-btn-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 34px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  color: var(--white);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.hero-btn-video:hover {
+  background: #ffffff;
+  color: var(--primary-dark);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* --- VIDEO SHOWCASE SECTION (HÀNH TRÌNH QUY NHƠN) --- */
+.video-section {
+  padding: 85px 0 65px;
+  background: var(--gray-50);
+  position: relative;
+}
+
+.video-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 20px 45px -10px rgba(3, 105, 161, 0.28), 0 0 0 1px rgba(14, 165, 233, 0.25);
+  background: #000000;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
+}
+
+.video-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 26px 55px -10px rgba(3, 105, 161, 0.38), 0 0 0 2px rgba(14, 165, 233, 0.5);
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- HIỆU ỨNG THẺ NỔI LÊN KHI HOVER (LOẠI BỎ HOÀN TOÀN TILT & GRAVITY) --- */
+.tour-card,
+.category-card,
+.timeline-content,
+.about-us-card,
+.tour-cost-card,
+.weather-plan-box,
+.fact-item,
+.itinerary-card,
+.related-card,
+.info-card {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease !important;
+}
+
+.tour-card.is-revealed:hover,
+.tour-card:hover {
+  transform: translateY(-6px) !important;
+}
+
+.category-card.is-revealed:hover,
+.category-card:hover {
+  transform: translateY(-5px) !important;
+}
+
+.timeline-content:hover {
+  transform: translateY(-4px) !important;
+}
+
+.about-us-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+.tour-cost-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+.weather-plan-box:hover {
+  transform: translateY(-4px) !important;
+}
+
+.fact-item:hover {
+  transform: translateY(-4px) !important;
+}
+
+.itinerary-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+.related-card:hover {
+  transform: translateY(-5px) !important;
+}
+
+.info-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+/* ===================================================
+   CHẾ ĐỘ TỐI (DARK MODE) TOÀN DIỆN
+   Màu sắc sâu sang trọng, chữ sắc nét, hộp mốc timeline nổi bật với viền 2px
+   =================================================== */
+
+[data-theme="dark"] {
+  --primary: #38bdf8;
+  --primary-dark: #0284c7;
+  --primary-light: #7dd3fc;
+  --primary-bg: #0f172a;
+  --text: #f1f5f9;
+  --text-light: #94a3b8;
+  --white: #111c34;
+  --gray-50: #0a0f1d;
+  --gray-100: #111c34;
+  --gray-200: #1e2e4f;
+  --gray-300: #334155;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 35px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] body {
+  background-color: #0a0f1d;
+  color: #f1f5f9;
+}
+
+/* Header & Nav */
+[data-theme="dark"] .header {
+  background: #081021;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .nav-list a {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .nav-list a:hover,
+[data-theme="dark"] .nav-list a.active {
+  color: #38bdf8;
+}
+
+@media (max-width: 768px) {
+  [data-theme="dark"] .nav {
+    background: #0a1329;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Marquee Ticker */
+[data-theme="dark"] .marquee-ticker-wrap {
+  background: #060e1d;
+  border-top-color: rgba(56, 189, 248, 0.22);
+  border-bottom-color: rgba(56, 189, 248, 0.22);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero Section */
+[data-theme="dark"] .hero {
+  background: linear-gradient(135deg, #09152b 0%, #060c18 100%);
+}
+
+[data-theme="dark"] .hero-price-badge {
+  background: rgba(14, 165, 233, 0.18);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #7dd3fc;
+}
+
+/* Video Section */
+[data-theme="dark"] .video-section {
+  background: #0a0f1d;
+}
+
+[data-theme="dark"] .video-wrapper {
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .video-wrapper:hover {
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(56, 189, 248, 0.5);
+}
+
+/* Section Titles & Badges */
+[data-theme="dark"] .section-title h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .section-title p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .section-badge {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* Danh mục (Categories) */
+[data-theme="dark"] .categories {
+  background: #0d1527;
+}
+
+[data-theme="dark"] .category-card {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .category-card:hover {
+  background: #182849;
+  border-color: #38bdf8;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .category-card.active {
+  background: linear-gradient(145deg, #162c52, #0d3b66);
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
+}
+
+[data-theme="dark"] .cat-icon-wrap {
+  background: rgba(56, 189, 248, 0.12);
+}
+
+[data-theme="dark"] .category-card:hover .cat-icon-wrap,
+[data-theme="dark"] .category-card.active .cat-icon-wrap {
+  background: #38bdf8;
+}
+
+[data-theme="dark"] .cat-name {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .cat-count {
+  color: #94a3b8;
+}
+
+/* Tìm kiếm & Lọc (Search Filter) */
+[data-theme="dark"] .search-filter {
+  background: #0a0f1d;
+}
+
+[data-theme="dark"] .search-filter-box {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .search-input {
+  background: #182849;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .search-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .filter-pill {
+  background: #182849;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .btn-clear-filter {
+  color: #f87171;
+}
+
+/* Thẻ địa danh nổi bật (Tour Cards) */
+[data-theme="dark"] .tours-section {
+  background: #0d1527;
+}
+
+[data-theme="dark"] .tour-card {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .tour-card:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .tour-card-body h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .tour-visittime-tag {
+  background: #182849;
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #7dd3fc;
+}
+
+[data-theme="dark"] .tour-card-info {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .tour-tag-pill {
+  background: rgba(56, 189, 248, 0.12);
+  color: #7dd3fc;
+}
+
+[data-theme="dark"] .btn-detail {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .btn-detail:hover {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.4);
+}
+
+/* Về tụi tôi (About Us) */
+[data-theme="dark"] .about-us-section {
+  background: #0a0f1d;
+}
+
+[data-theme="dark"] .about-us-card {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .about-us-content h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .about-us-content p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .stat-box {
+  background: #182849;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .stat-number {
+  color: #38bdf8;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #94a3b8;
+}
+
+/* Chi phí trọn gói (Tour Cost Card) */
+[data-theme="dark"] .tour-cost-card {
+  background: #111c34;
+  border: 1.5px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .cost-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .cost-desc {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .cost-item {
+  background: #182849;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .cost-final-banner {
+  background: linear-gradient(135deg, #1e3a63, #0f2b48);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .umbrella-alert-banner {
+  background: linear-gradient(135deg, #1b2838, #162b46);
+  border: 1.5px solid #0284c7;
+}
+
+/* ===================================================
+   LỊCH TRÌNH CHI TIẾT (TIMELINE) TRONG DARK MODE
+   Các hộp mốc thời gian bên trong được làm NỔI BẬT với viền 2px dày dặn
+   =================================================== */
+
+[data-theme="dark"] .timeline-section {
+  background: #0a0f1d;
+}
+
+[data-theme="dark"] .timeline-tabs {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .timeline-tab-btn {
+  background: #182849;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .timeline-tab-btn:hover {
+  background: #20355d;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .timeline-tab-btn.active {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .timeline-day-header {
+  background: #111c34;
+  border: 1.5px solid rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .timeline-day-header h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .timeline-day-summary {
+  color: #94a3b8;
+}
+
+/* HỘP MỐC THỜI GIAN BÊN TRONG (.timeline-content) - Nổi bật, viền 2px dày dặn theo yêu cầu người dùng */
+[data-theme="dark"] .timeline-content {
+  background: #15223e;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .timeline-content:hover {
+  background: #1a2b50;
+  border-color: #7dd3fc;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.35);
+}
+
+[data-theme="dark"] .timeline-event-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .timeline-event-desc {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .timeline-place-tag a {
+  background: #1e3355;
+  border: 1.5px solid #38bdf8;
+  color: #7dd3fc;
+}
+
+[data-theme="dark"] .timeline-place-tag a:hover {
+  background: #25406d;
+  border-color: #bae6fd;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .timeline-time-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+[data-theme="dark"] .weather-plan-box {
+  background: #15223e;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .weather-plan-box h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .weather-sol-item {
+  background: #1a2b50;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+/* Trang chi tiết địa danh (Tour Detail Page) */
+[data-theme="dark"] .place-title-box,
+[data-theme="dark"] .quick-facts-card,
+[data-theme="dark"] .place-section,
+[data-theme="dark"] .itinerary-card,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .related-card {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+}
+
+[data-theme="dark"] .fact-item {
+  background: #182849;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .fact-item h4,
+[data-theme="dark"] .place-title-box h1,
+[data-theme="dark"] .place-section h2,
+[data-theme="dark"] .itinerary-body h3,
+[data-theme="dark"] .info-card h3,
+[data-theme="dark"] .related-body h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .place-description,
+[data-theme="dark"] .itinerary-body p,
+[data-theme="dark"] .info-card ul li,
+[data-theme="dark"] .fact-item p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .breadcrumb {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .breadcrumb a {
+  color: #38bdf8;
+}
+
+/* Footer */
+[data-theme="dark"] .footer {
+  background: #060b16;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .footer-col h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .footer-col ul a {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .footer-col ul a:hover {
+  color: #38bdf8;
+}
+
+/* Cursor trong Dark Mode */
+[data-theme="dark"] .cursor-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+[data-theme="dark"] .cursor-ring {
+  border-color: rgba(56, 189, 248, 0.8);
+  background: rgba(56, 189, 248, 0.1);
+}
