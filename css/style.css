@@ -4452,31 +4452,49 @@ img {
   background: #0a0f1d;
 }
 
-[data-theme="dark"] .search-filter-box {
-  background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+[data-theme="dark"] .search-filter-bar {
+  background: #111c34 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5) !important;
 }
 
-[data-theme="dark"] .search-input {
-  background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  color: #f1f5f9;
+[data-theme="dark"] .search-filter-bar:focus-within {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25) !important;
 }
 
-[data-theme="dark"] .search-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+[data-theme="dark"] .search-input-wrap input {
+  background: #182849 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.28) !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .search-input-wrap input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .search-input-wrap input:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
 }
 
 [data-theme="dark"] .filter-pill {
-  background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.32);
-  color: #f1f5f9;
+  background: #182849 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.35) !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .filter-pill strong {
+  color: #38bdf8 !important;
 }
 
 [data-theme="dark"] .btn-clear-filter {
-  color: #f87171;
+  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-clear-filter:hover {
+  background: #ef4444 !important;
 }
 
 /* === 11. THẺ ĐỊA DANH NỔI BẬT (TOUR CARDS) === */
