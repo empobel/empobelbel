@@ -477,7 +477,14 @@ img {
 
 /* === TÌM KIẾM & LỌC === */
 .search-filter {
-  padding: 0 0 40px;
+  padding: 0 0 35px;
+  position: relative;
+  z-index: 100;
+}
+
+.tours-section {
+  position: relative;
+  z-index: 10;
 }
 
 .search-filter-bar {
@@ -490,6 +497,8 @@ img {
   border: 1.5px solid var(--gray-200);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   flex-wrap: wrap;
+  position: relative;
+  z-index: 110;
 }
 
 .search-filter-bar:focus-within {
@@ -502,6 +511,7 @@ img {
   flex: 1;
   min-width: 250px;
   position: relative;
+  z-index: 120;
 }
 
 .search-input-wrap input {
@@ -573,8 +583,8 @@ img {
   background: #ffffff;
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-sm);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.14);
-  z-index: 120;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  z-index: 99999 !important;
   max-height: 340px;
   overflow-y: auto;
   display: none;
@@ -677,13 +687,15 @@ img {
   text-align: center;
 }
 
-/* Đề xuất từ khóa tìm nhanh (Search Recommendation Chips) */
+/* Đề xuất từ khóa tìm nhanh (Search Recommendation Chips) - Đặt phía trên thanh tìm kiếm */
 .search-recommendations {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 16px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 80;
 }
 
 .rec-label {
