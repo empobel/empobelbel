@@ -774,8 +774,37 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initMagicCursor();
   initTiltEffect();
+  initQuyNhonVideo();
   initMagneticElements();
   initScrollReveal();
   initHeroParallax();
 });
 
+
+
+/**
+ * Trình phát Video Quy Nhơn
+ */
+function initQuyNhonVideo() {
+  const video = document.getElementById('quynhonVideo');
+  const overlay = document.getElementById('videoPlayOverlay');
+  const playBtn = document.getElementById('videoPlayBtn');
+  if (!video || !overlay) return;
+
+  const handlePlay = (e) => {
+    if (e) e.stopPropagation();
+    overlay.classList.add('is-hidden');
+    video.play().catch(() => {});
+  };
+
+  if (playBtn) playBtn.addEventListener('click', handlePlay);
+  overlay.addEventListener('click', handlePlay);
+
+  video.addEventListener('play', () => {
+    overlay.classList.add('is-hidden');
+  });
+
+  video.addEventListener('ended', () => {
+    overlay.classList.remove('is-hidden');
+  });
+}
