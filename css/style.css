@@ -1768,10 +1768,11 @@ img {
   font-size: 1rem;
 }
 
-.about-stats-grid {
+.about-stats-grid,
+.about-stats-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
   margin-top: 25px;
 }
 
@@ -1779,22 +1780,41 @@ img {
   background: var(--gray-50);
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-sm);
-  padding: 16px 12px;
+  padding: 14px 10px;
   text-align: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 22px -4px rgba(3, 105, 161, 0.18);
+}
+
+.stat-box.highlight-stat,
+.stat-box.stat-highlight-price {
+  background: #fffbeb;
+  border-color: #f59e0b;
+}
+
+.stat-box.highlight-stat .stat-number,
+.stat-box.stat-highlight-price .stat-number {
+  color: #d97706;
 }
 
 .stat-number {
   display: block;
-  font-size: 1.6rem;
+  font-size: 1.38rem;
   font-weight: 800;
   color: var(--primary);
   margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .stat-label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-light);
   font-weight: 600;
+  line-height: 1.35;
 }
 
 .about-us-info-box {
@@ -2205,6 +2225,13 @@ img {
 }
 
 /* Responsive */
+@media (max-width: 1100px) {
+  .about-stats-grid,
+  .about-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
   .about-us-card {
     grid-template-columns: 1fr;
@@ -2246,8 +2273,10 @@ img {
     gap: 12px;
   }
 
-  .about-stats-grid {
-    grid-template-columns: 1fr;
+  .about-stats-grid,
+  .about-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 }
 
