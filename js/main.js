@@ -987,6 +987,38 @@ function initScrollReveal() {
   }
 }
 
+/**
+ * 5. Hiệu ứng tiêu đề Hero lướt nhẹ theo chuột (Hero Mouse Parallax)
+ */
+function initHeroParallax() {
+  const hero = document.querySelector('.hero');
+  if (!hero || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
+
+  const title = hero.querySelector('.hero-title-dynamic') || hero.querySelector('h1');
+  const badges = hero.querySelectorAll('.floating-badge');
+  const glow = hero.querySelector('.hero-bg-floating-glow');
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    if (title) title.style.transform = `translate3d(${(x * 18).toFixed(1)}px, ${(y * 12).toFixed(1)}px, 0)`;
+    badges.forEach(b => {
+      b.style.transform = `translate3d(${(x * -8).toFixed(1)}px, ${(y * -6).toFixed(1)}px, 0)`;
+    });
+    if (glow) glow.style.transform = `translate3d(${(x * 38).toFixed(1)}px, ${(y * 26).toFixed(1)}px, 0)`;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    if (title) title.style.transform = 'translate3d(0, 0, 0)';
+    badges.forEach(b => {
+      b.style.transform = 'translate3d(0, 0, 0)';
+    });
+    if (glow) glow.style.transform = 'translate3d(0, 0, 0)';
+  });
+}
+
 /* ===== KHỞI TẠO KHI TẢI TRANG ===== */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -996,5 +1028,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initMagicCursor();
   initScrollReveal();
+  initHeroParallax();
 });
 
