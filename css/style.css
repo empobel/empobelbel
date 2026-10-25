@@ -3966,8 +3966,8 @@ img {
 }
 
 /* ===================================================
-   CHẾ ĐỘ TỐI (DARK MODE) TOÀN DIỆN
-   Màu sắc sâu sang trọng, chữ sắc nét, hộp mốc timeline nổi bật với viền 2px
+   CHẾ ĐỘ TỐI (DARK MODE) TOÀN DIỆN & TƯƠNG PHẢN CAO
+   Khắc phục toàn bộ lỗi chữ chìm, nền tối và mất hình ảnh
    =================================================== */
 
 [data-theme="dark"] {
@@ -3976,15 +3976,15 @@ img {
   --primary-light: #7dd3fc;
   --primary-bg: #0f172a;
   --text: #f1f5f9;
-  --text-light: #94a3b8;
-  --white: #111c34;
+  --text-light: #cbd5e1;
+  --white: #ffffff; /* Giữ nguyên chữ trắng cho các nút, badge, banner */
   --gray-50: #0a0f1d;
   --gray-100: #111c34;
   --gray-200: #1e2e4f;
   --gray-300: #334155;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 35px rgba(0, 0, 0, 0.6);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 20px 35px rgba(0, 0, 0, 0.65);
 }
 
 [data-theme="dark"] body {
@@ -3992,10 +3992,10 @@ img {
   color: #f1f5f9;
 }
 
-/* Header & Nav */
+/* === 1. HEADER & NAVIGATION === */
 [data-theme="dark"] .header {
   background: #081021;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.22);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
@@ -4015,7 +4015,7 @@ img {
   }
 }
 
-/* Marquee Ticker */
+/* === 2. DẢI BĂNG MARQUEE === */
 [data-theme="dark"] .marquee-ticker-wrap {
   background: #060e1d;
   border-top-color: rgba(56, 189, 248, 0.22);
@@ -4023,71 +4023,371 @@ img {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Hero Section */
+/* === 3. HERO BANNER (FIX LỖI CHỮ TỐI & MẤT ẢNH NỀN) === */
 [data-theme="dark"] .hero {
-  background: linear-gradient(135deg, #09152b 0%, #060c18 100%);
+  background: linear-gradient(135deg, rgba(8, 16, 33, 0.92), rgba(11, 28, 54, 0.88)),
+              url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80') center/cover no-repeat;
+  color: #ffffff;
 }
 
 [data-theme="dark"] .hero-price-badge {
-  background: rgba(14, 165, 233, 0.18);
-  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(14, 165, 233, 0.2);
+  border-color: rgba(56, 189, 248, 0.4);
   color: #7dd3fc;
 }
 
-/* Video Section */
+[data-theme="dark"] .hero h1,
+[data-theme="dark"] .hero-title-dynamic {
+  color: #ffffff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
+}
+
+[data-theme="dark"] .hero-gradient-text {
+  background: linear-gradient(135deg, #ffffff 20%, #7dd3fc 60%, #fde047 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .hero p {
+  color: #e2e8f0 !important;
+  opacity: 0.96;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .hero-btn {
+  background: var(--accent);
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.45);
+}
+
+[data-theme="dark"] .hero-btn-outline {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+[data-theme="dark"] .hero-btn-outline:hover {
+  background: #ffffff;
+  color: #0369a1 !important;
+}
+
+[data-theme="dark"] .hero-btn-video {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+[data-theme="dark"] .hero-btn-video:hover {
+  background: #ffffff;
+  color: #0369a1 !important;
+}
+
+/* === 4. VIDEO SHOWCASE === */
 [data-theme="dark"] .video-section {
   background: #0a0f1d;
 }
 
 [data-theme="dark"] .video-wrapper {
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(56, 189, 248, 0.35);
 }
 
 [data-theme="dark"] .video-wrapper:hover {
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(56, 189, 248, 0.5);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.75), 0 0 0 2px rgba(56, 189, 248, 0.55);
 }
 
-/* Section Titles & Badges */
+/* === 5. TIÊU ĐỀ & BADGE CÁC PHẦN === */
 [data-theme="dark"] .section-title h2 {
   color: #ffffff;
 }
 
 [data-theme="dark"] .section-title p {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 [data-theme="dark"] .section-badge {
-  background: rgba(56, 189, 248, 0.15);
+  background: rgba(56, 189, 248, 0.18);
   color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+/* === 6. VỀ TỤI TÔI (ABOUT US - FIX CHỮ CHÌM & STAT BOX) === */
+[data-theme="dark"] .about-us-section {
+  background: #0a0f1d;
+}
+
+[data-theme="dark"] .about-us-card {
+  background: #111c34;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .about-us-content h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .about-us-content p {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .about-us-content strong {
+  color: #38bdf8;
+}
+
+[data-theme="dark"] .stat-box {
+  background: #182849;
   border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
-/* Danh mục (Categories) */
+[data-theme="dark"] .stat-number {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #e2e8f0 !important;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .about-us-img-caption {
+  background: rgba(17, 28, 52, 0.88);
+  color: #e2e8f0;
+}
+
+/* === 7. CHI PHÍ TRỌN GÓI (TOUR COST CARD - FIX CHỮ ĐEN) === */
+[data-theme="dark"] .tour-cost-card {
+  background: #111c34;
+  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .cost-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .tour-cost-left p {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .cost-item {
+  background: #182849;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .cost-feat-item .feat-text {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .cost-feat-item .feat-text strong {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .cost-final-banner {
+  background: linear-gradient(135deg, #1e3a63, #0f2b48);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+[data-theme="dark"] .umbrella-alert-banner {
+  background: linear-gradient(135deg, #1b2838, #162b46);
+  border: 1.5px solid #0284c7;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .umbrella-alert-banner strong {
+  color: #38bdf8;
+}
+
+/* === 8. LỊCH TRÌNH CHUYẾN ĐI (TIMELINE - FIX TOÀN DIỆN LỖI HIỂN THỊ) === */
+[data-theme="dark"] .timeline-section {
+  background: #0a0f1d;
+}
+
+/* TABS NGÀY: Xóa sạch khung bao lỗi, hiển thị các nút pill chuẩn chỉnh cân đối */
+[data-theme="dark"] .timeline-tabs {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+[data-theme="dark"] .timeline-tab-btn {
+  background: #15223e !important;
+  border: 2px solid rgba(56, 189, 248, 0.32) !important;
+  color: #f1f5f9 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .timeline-tab-btn .tab-day-badge {
+  background: rgba(56, 189, 248, 0.2) !important;
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .timeline-tab-btn .tab-day-title {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .timeline-tab-btn:hover {
+  background: #1e3358 !important;
+  border-color: #38bdf8 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .timeline-tab-btn.active {
+  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+  border-color: #38bdf8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 22px rgba(14, 165, 233, 0.45);
+}
+
+[data-theme="dark"] .timeline-tab-btn.active .tab-day-badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .timeline-tab-btn.active .tab-day-title {
+  color: #ffffff !important;
+}
+
+/* KHUNG CHÍNH CHỨA TIMELINE */
+[data-theme="dark"] .timeline-container {
+  background: #111c34 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* HEADER NGÀY BÊN TRONG TIMELINE: Xóa khung bao thừa, chữ trắng sáng */
+[data-theme="dark"] .timeline-day-header {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px dashed rgba(56, 189, 248, 0.35) !important;
+  box-shadow: none !important;
+  padding-bottom: 30px;
+  margin-bottom: 35px;
+}
+
+[data-theme="dark"] .timeline-day-header h3 {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .timeline-day-summary {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .timeline-day-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+}
+
+/* ĐƯỜNG KẺ NỐI TIMELINE */
+[data-theme="dark"] .timeline-line {
+  background: linear-gradient(180deg, #38bdf8, #0284c7);
+}
+
+[data-theme="dark"] .timeline-icon-box {
+  background: #182849;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+/* HỘP MỐC THỜI GIAN BÊN TRONG (.timeline-content) - NỔI BẬT VỚI VIỀN 2PX & CHỮ SÁNG */
+[data-theme="dark"] .timeline-content {
+  background: #15223e !important;
+  border: 2px solid #38bdf8 !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(56, 189, 248, 0.25) !important;
+}
+
+[data-theme="dark"] .timeline-content:hover {
+  background: #1a2b50 !important;
+  border-color: #7dd3fc !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 18px rgba(56, 189, 248, 0.4) !important;
+}
+
+[data-theme="dark"] .timeline-event-title {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .timeline-event-desc {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .timeline-place-tag a {
+  background: #1e3355 !important;
+  border: 1.5px solid #38bdf8 !important;
+  color: #7dd3fc !important;
+}
+
+[data-theme="dark"] .timeline-place-tag a:hover {
+  background: #25406d !important;
+  border-color: #bae6fd !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.35);
+}
+
+[data-theme="dark"] .timeline-time-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.45);
+}
+
+/* HỘP PHƯƠNG ÁN TRỜI MƯA (.weather-plan-box - FIX CHỮ ĐEN UNREADABLE) */
+[data-theme="dark"] .weather-plan-box {
+  background: #15223e !important;
+  border: 2px solid #38bdf8 !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55) !important;
+}
+
+[data-theme="dark"] .weather-plan-box h4 {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .weather-condition {
+  color: #7dd3fc !important;
+}
+
+[data-theme="dark"] .weather-sol-item {
+  background: #1a2b50 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+[data-theme="dark"] .weather-sol-item .sol-badge {
+  color: #fbbf24 !important;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .weather-sol-item p {
+  color: #e2e8f0 !important;
+}
+
+/* === 9. DANH MỤC ĐỊA DANH (CATEGORIES) === */
 [data-theme="dark"] .categories {
   background: #0d1527;
 }
 
 [data-theme="dark"] .category-card {
   background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.22);
   color: #f1f5f9;
 }
 
 [data-theme="dark"] .category-card:hover {
   background: #182849;
   border-color: #38bdf8;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 12px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45), 0 0 12px rgba(56, 189, 248, 0.22);
 }
 
 [data-theme="dark"] .category-card.active {
   background: linear-gradient(145deg, #162c52, #0d3b66);
   border-color: #38bdf8;
   color: #ffffff;
-  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
+  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
 }
 
 [data-theme="dark"] .cat-icon-wrap {
-  background: rgba(56, 189, 248, 0.12);
+  background: rgba(56, 189, 248, 0.14);
 }
 
 [data-theme="dark"] .category-card:hover .cat-icon-wrap,
@@ -4100,34 +4400,34 @@ img {
 }
 
 [data-theme="dark"] .cat-count {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
-/* Tìm kiếm & Lọc (Search Filter) */
+/* === 10. TÌM KIẾM & BỘ LỌC (SEARCH FILTER) === */
 [data-theme="dark"] .search-filter {
   background: #0a0f1d;
 }
 
 [data-theme="dark"] .search-filter-box {
   background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
 }
 
 [data-theme="dark"] .search-input {
   background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  border: 1px solid rgba(56, 189, 248, 0.28);
   color: #f1f5f9;
 }
 
 [data-theme="dark"] .search-input:focus {
   border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
 }
 
 [data-theme="dark"] .filter-pill {
   background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  border: 1px solid rgba(56, 189, 248, 0.32);
   color: #f1f5f9;
 }
 
@@ -4135,20 +4435,20 @@ img {
   color: #f87171;
 }
 
-/* Thẻ địa danh nổi bật (Tour Cards) */
+/* === 11. THẺ ĐỊA DANH NỔI BẬT (TOUR CARDS) === */
 [data-theme="dark"] .tours-section {
   background: #0d1527;
 }
 
 [data-theme="dark"] .tour-card {
   background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="dark"] .tour-card:hover {
   border-color: #38bdf8;
-  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.65), 0 0 16px rgba(56, 189, 248, 0.3);
 }
 
 [data-theme="dark"] .tour-card-body h3 {
@@ -4157,195 +4457,31 @@ img {
 
 [data-theme="dark"] .tour-visittime-tag {
   background: #182849;
-  border-color: rgba(56, 189, 248, 0.3);
+  border-color: rgba(56, 189, 248, 0.35);
   color: #7dd3fc;
 }
 
 [data-theme="dark"] .tour-card-info {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 [data-theme="dark"] .tour-tag-pill {
-  background: rgba(56, 189, 248, 0.12);
+  background: rgba(56, 189, 248, 0.15);
   color: #7dd3fc;
 }
 
 [data-theme="dark"] .btn-detail {
   background: linear-gradient(135deg, #0284c7, #0369a1);
-  color: #ffffff;
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #ffffff !important;
+  border: 1px solid rgba(56, 189, 248, 0.35);
 }
 
 [data-theme="dark"] .btn-detail:hover {
   background: linear-gradient(135deg, #38bdf8, #0284c7);
-  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.4);
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.45);
 }
 
-/* Về tụi tôi (About Us) */
-[data-theme="dark"] .about-us-section {
-  background: #0a0f1d;
-}
-
-[data-theme="dark"] .about-us-card {
-  background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-}
-
-[data-theme="dark"] .about-us-content h3 {
-  color: #ffffff;
-}
-
-[data-theme="dark"] .about-us-content p {
-  color: #cbd5e1;
-}
-
-[data-theme="dark"] .stat-box {
-  background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.2);
-}
-
-[data-theme="dark"] .stat-number {
-  color: #38bdf8;
-}
-
-[data-theme="dark"] .stat-label {
-  color: #94a3b8;
-}
-
-/* Chi phí trọn gói (Tour Cost Card) */
-[data-theme="dark"] .tour-cost-card {
-  background: #111c34;
-  border: 1.5px solid rgba(56, 189, 248, 0.3);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-}
-
-[data-theme="dark"] .cost-title {
-  color: #ffffff;
-}
-
-[data-theme="dark"] .cost-desc {
-  color: #cbd5e1;
-}
-
-[data-theme="dark"] .cost-item {
-  background: #182849;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .cost-final-banner {
-  background: linear-gradient(135deg, #1e3a63, #0f2b48);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-}
-
-[data-theme="dark"] .umbrella-alert-banner {
-  background: linear-gradient(135deg, #1b2838, #162b46);
-  border: 1.5px solid #0284c7;
-}
-
-/* ===================================================
-   LỊCH TRÌNH CHI TIẾT (TIMELINE) TRONG DARK MODE
-   Các hộp mốc thời gian bên trong được làm NỔI BẬT với viền 2px dày dặn
-   =================================================== */
-
-[data-theme="dark"] .timeline-section {
-  background: #0a0f1d;
-}
-
-[data-theme="dark"] .timeline-tabs {
-  background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.25);
-}
-
-[data-theme="dark"] .timeline-tab-btn {
-  background: #182849;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #cbd5e1;
-}
-
-[data-theme="dark"] .timeline-tab-btn:hover {
-  background: #20355d;
-  border-color: #38bdf8;
-  color: #ffffff;
-}
-
-[data-theme="dark"] .timeline-tab-btn.active {
-  background: linear-gradient(135deg, #0284c7, #0369a1);
-  border-color: #38bdf8;
-  color: #ffffff;
-}
-
-[data-theme="dark"] .timeline-day-header {
-  background: #111c34;
-  border: 1.5px solid rgba(56, 189, 248, 0.3);
-}
-
-[data-theme="dark"] .timeline-day-header h3 {
-  color: #ffffff;
-}
-
-[data-theme="dark"] .timeline-day-summary {
-  color: #94a3b8;
-}
-
-/* HỘP MỐC THỜI GIAN BÊN TRONG (.timeline-content) - Nổi bật, viền 2px dày dặn theo yêu cầu người dùng */
-[data-theme="dark"] .timeline-content {
-  background: #15223e;
-  border: 2px solid #38bdf8;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(56, 189, 248, 0.2);
-}
-
-[data-theme="dark"] .timeline-content:hover {
-  background: #1a2b50;
-  border-color: #7dd3fc;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.35);
-}
-
-[data-theme="dark"] .timeline-event-title {
-  color: #ffffff;
-}
-
-[data-theme="dark"] .timeline-event-desc {
-  color: #cbd5e1;
-}
-
-[data-theme="dark"] .timeline-place-tag a {
-  background: #1e3355;
-  border: 1.5px solid #38bdf8;
-  color: #7dd3fc;
-}
-
-[data-theme="dark"] .timeline-place-tag a:hover {
-  background: #25406d;
-  border-color: #bae6fd;
-  color: #ffffff;
-  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
-}
-
-[data-theme="dark"] .timeline-time-badge {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
-}
-
-[data-theme="dark"] .weather-plan-box {
-  background: #15223e;
-  border: 2px solid #38bdf8;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-[data-theme="dark"] .weather-plan-box h4 {
-  color: #ffffff;
-}
-
-[data-theme="dark"] .weather-sol-item {
-  background: #1a2b50;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd5e1;
-}
-
-/* Trang chi tiết địa danh (Tour Detail Page) */
+/* === 12. TRANG CHI TIẾT ĐỊA DANH (TOUR DETAIL PAGE) === */
 [data-theme="dark"] .place-title-box,
 [data-theme="dark"] .quick-facts-card,
 [data-theme="dark"] .place-section,
@@ -4353,12 +4489,12 @@ img {
 [data-theme="dark"] .info-card,
 [data-theme="dark"] .related-card {
   background: #111c34;
-  border: 1px solid rgba(56, 189, 248, 0.22);
+  border: 1px solid rgba(56, 189, 248, 0.25);
 }
 
 [data-theme="dark"] .fact-item {
   background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.22);
 }
 
 [data-theme="dark"] .fact-item h4,
@@ -4370,26 +4506,37 @@ img {
   color: #ffffff;
 }
 
-[data-theme="dark"] .place-description,
-[data-theme="dark"] .itinerary-body p,
-[data-theme="dark"] .info-card ul li,
+[data-theme="dark"] .place-description {
+  background: #15223e !important;
+  color: #e2e8f0 !important;
+  border-left-color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .itinerary-body p {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .info-card ul li {
+  color: #e2e8f0 !important;
+}
+
 [data-theme="dark"] .fact-item p {
-  color: #cbd5e1;
+  color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] .breadcrumb {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 [data-theme="dark"] .breadcrumb a {
   color: #38bdf8;
 }
 
-/* Footer */
+/* === 13. CHÂN TRANG (FOOTER) === */
 [data-theme="dark"] .footer {
   background: #060b16;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
 }
 
 [data-theme="dark"] .footer-col h4 {
@@ -4404,13 +4551,13 @@ img {
   color: #38bdf8;
 }
 
-/* Cursor trong Dark Mode */
+/* === 14. CON TRỎ CHUỘT (CURSOR IN DARK MODE) === */
 [data-theme="dark"] .cursor-dot {
   background: #38bdf8;
   box-shadow: 0 0 10px #38bdf8;
 }
 
 [data-theme="dark"] .cursor-ring {
-  border-color: rgba(56, 189, 248, 0.8);
-  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.85);
+  background: rgba(56, 189, 248, 0.12);
 }
