@@ -1,14 +1,13 @@
 /* ===================================================
    main.js - Logic hiển thị website Thập Tứ Tour
    Chỉ giới thiệu các địa danh du lịch Quy Nhơn & Về tụi tôi
-   Hỗ trợ Chế độ Sáng / Tối (Dark / Light Mode) & Đa ngôn ngữ (VI / EN)
    Hoàn toàn phi lợi nhuận, không có giá tiền / đăng ký tour
    =================================================== */
 
 /* ===== PHẦN CHUNG (tất cả trang) ===== */
 
 // Hamburger menu mobile
-const hamburger = document.getElementById('hamburger') || document.getElementById('hamburger');
+const hamburger = document.getElementById('hamburger');
 const nav = document.getElementById('nav');
 if (hamburger && nav) {
   hamburger.addEventListener('click', () => {
@@ -34,12 +33,16 @@ if (backToTopBtn) {
 
     if (currentScrollY > 400) {
       if (window.innerWidth <= 768) {
+        // Trên mobile: khi người dùng đang lướt xuống đọc bài -> ẩn đi để KHÔNG BAO GIỜ che chữ/thẻ
         if (currentScrollY > lastScrollY + 6) {
           backToTopBtn.classList.remove('show');
-        } else if (currentScrollY < lastScrollY - 6) {
+        } 
+        // Khi người dùng vuốt ngược lên để quay lại -> hiển thị lại nút
+        else if (currentScrollY < lastScrollY - 6) {
           backToTopBtn.classList.add('show');
         }
       } else {
+        // Desktop màn rộng -> hiện bình thường
         backToTopBtn.classList.add('show');
       }
     } else {
@@ -53,6 +56,7 @@ if (backToTopBtn) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
+
 
 /* ===== TRANG CHỦ (index.html) ===== */
 
@@ -73,7 +77,7 @@ function renderCategories() {
   const placesSuffix = (typeof t === 'function') ? t('cat_places_count') : 'địa điểm';
 
   let html = `
-    <div class="category-card reveal-on-scroll ${currentCategory === 'all' ? 'active' : ''}" data-category="all">
+    <div class="category-card tilt-card reveal-on-scroll ${currentCategory === 'all' ? 'active' : ''}" data-category="all">
       <div class="cat-icon-wrap">
         <span class="cat-icon">🌍</span>
       </div>
@@ -85,7 +89,7 @@ function renderCategories() {
   categories.forEach(cat => {
     const count = tours.filter(t => t.category === cat.id).length;
     html += `
-      <div class="category-card reveal-on-scroll ${currentCategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
+      <div class="category-card tilt-card reveal-on-scroll ${currentCategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
         <div class="cat-icon-wrap">
           <span class="cat-icon">${cat.icon}</span>
         </div>
@@ -104,6 +108,7 @@ function renderCategories() {
       currentCategory = card.dataset.category;
       applyFilters();
 
+      // Cuộn êm ái xuống phần địa điểm nổi bật để người dùng quan sát kết quả
       const destSection = document.getElementById('dia-diem');
       if (destSection) {
         const top = destSection.getBoundingClientRect().top + window.pageYOffset - 80;
@@ -118,7 +123,7 @@ function renderCategories() {
 }
 
 /**
- * Render danh sách thẻ địa danh Quy Nhơn
+ * Render danh sách thẻ địa danh Quy Nhơn (gắn liền mốc thời gian ghé thăm)
  */
 function renderTourCards(tours) {
   const grid = document.getElementById('tourGrid');
@@ -147,11 +152,13 @@ function renderTourCards(tours) {
 
   let html = '';
   tours.forEach(tour => {
+    // Render các thẻ tag nhỏ
     let tagsHtml = '';
     if (tour.tags && tour.tags.length > 0) {
       tagsHtml = `<div class="tour-tags">${tour.tags.map(tag => `<span class="tour-tag-pill">${tag}</span>`).join('')}</div>`;
     }
 
+    // Badge thời gian ghé thăm
     let visitBadge = '';
     if (tour.visitTime) {
       visitBadge = `
@@ -163,21 +170,21 @@ function renderTourCards(tours) {
     }
 
     html += `
-      <div class="tour-card reveal-on-scroll" onclick="window.location.href='tour-detail.html?id=${tour.id}'" role="button" tabindex="0">
-        <div class="tour-card-img tour-image-wrap">
-          <img src="${tour.image}" alt="${tour.name}" loading="lazy" class="tour-image" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-          <span class="tour-card-badge tour-badge">${tour.badge || getCatName(tour.category)}</span>
+      <div class="tour-card tilt-card reveal-on-scroll" onclick="window.location.href='tour-detail.html?id=${tour.id}'">
+        <div class="tour-card-img">
+          <img src="${tour.image}" alt="${tour.name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
+          <span class="tour-card-badge">${getCatName(tour.category)}</span>
         </div>
-        <div class="tour-card-body tour-body">
-          <h3 class="tour-title">${tour.name}</h3>
+        <div class="tour-card-body">
+          <h3>${tour.name}</h3>
           ${visitBadge}
-          <div class="tour-card-info tour-meta">
+          <div class="tour-card-info">
             <span>📍 ${tour.location}</span>
             <span>⏱️ ${tour.duration}</span>
           </div>
           ${tagsHtml}
-          <div class="tour-card-footer tour-footer">
-            <button class="btn-detail btn-detail-full tour-btn-detail" type="button">${btnText} →</button>
+          <div class="tour-card-footer">
+            <button class="btn-detail btn-detail-full" type="button">${btnText} <span class="btn-arrow">→</span></button>
           </div>
         </div>
       </div>
@@ -192,31 +199,7 @@ function renderTourCards(tours) {
 }
 
 /**
- * Lọc địa danh theo category và tìm kiếm
- */
-function applyFilters() {
-  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  let result = tours;
-
-  if (currentCategory !== 'all') {
-    result = result.filter(t => t.category === currentCategory);
-  }
-
-  if (currentSearch.trim() !== '') {
-    const q = currentSearch.toLowerCase().trim();
-    result = result.filter(t =>
-      t.name.toLowerCase().includes(q) ||
-      t.location.toLowerCase().includes(q) ||
-      t.description.toLowerCase().includes(q) ||
-      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(q)))
-    );
-  }
-
-  renderTourCards(result);
-}
-
-/**
- * Render Lịch trình chuyến đi theo Ngày (1 / 2 / 3 / 4)
+ * Render Lịch trình chuyến đi (Timeline 4 Ngày 3 Đêm)
  */
 function renderTimeline(dayNumber = 1) {
   const container = document.getElementById('timelineContainer');
@@ -249,7 +232,7 @@ function renderTimeline(dayNumber = 1) {
           <div class="timeline-icon-box">${ev.icon || '📍'}</div>
           <div class="timeline-line"></div>
         </div>
-        <div class="timeline-content">
+        <div class="timeline-content tilt-card">
           <div class="timeline-time-badge">${ev.time}</div>
           <h3 class="timeline-event-title">${ev.title}</h3>
           <p class="timeline-event-desc">${ev.desc}</p>
@@ -259,26 +242,42 @@ function renderTimeline(dayNumber = 1) {
     `;
   });
 
+  // Khối phương án trời mưa / thời tiết xấu
   let weatherHtml = '';
   if (dayData.weatherPlan) {
-    weatherHtml = `
-      <div class="weather-plan-box reveal-on-scroll">
-        <div class="weather-plan-header">
-          <span class="weather-plan-icon">🌦️</span>
-          <h4>${weatherTitle}</h4>
+    let solutionsHtml = '';
+    dayData.weatherPlan.solutions.forEach(sol => {
+      solutionsHtml += `
+        <div class="weather-sol-item">
+          <span class="sol-badge">⚡ ${sol.title}:</span>
+          <p>${sol.detail}</p>
         </div>
-        <p>${dayData.weatherPlan}</p>
+      `;
+    });
+
+    weatherHtml = `
+      <div class="weather-plan-box tilt-card reveal-on-scroll">
+        <div class="weather-header">
+          <span class="weather-icon">🌧️</span>
+          <div>
+            <h4>${weatherTitle}</h4>
+            <p class="weather-condition">${dayData.weatherPlan.condition}</p>
+          </div>
+        </div>
+        <div class="weather-solutions-list">
+          ${solutionsHtml}
+        </div>
       </div>
     `;
   }
 
   container.innerHTML = `
     <div class="timeline-day-header reveal-on-scroll">
-      <span class="timeline-day-pill">${dayBadgePrefix} ${dayData.day}</span>
-      <h3 class="timeline-day-title">${dayData.title || ''}</h3>
-      ${dayData.dateSummary ? `<p class="timeline-day-summary">${dayData.dateSummary}</p>` : ''}
+      <div class="timeline-day-badge">${dayBadgePrefix} ${dayData.day}</div>
+      <h3>${dayData.title}</h3>
+      <p class="timeline-day-summary">${dayData.dateSummary}</p>
     </div>
-    <div class="timeline-tree">
+    <div class="timeline-list">
       ${eventsHtml}
     </div>
     ${weatherHtml}
@@ -287,6 +286,377 @@ function renderTimeline(dayNumber = 1) {
   if (typeof triggerScrollReveal === 'function') {
     setTimeout(triggerScrollReveal, 30);
   }
+}
+
+/**
+ * Cập nhật badge thông tin bộ lọc danh mục / từ khóa
+ */
+function updateActiveFilterBadge(resultCount) {
+  const badgeWrap = document.getElementById('activeFilterBadge');
+  if (!badgeWrap) return;
+
+  if (currentCategory === 'all' && !currentSearch) {
+    badgeWrap.innerHTML = '';
+    badgeWrap.style.display = 'none';
+    return;
+  }
+
+  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
+  const categories = (typeof getLocalizedCategories === 'function') ? getLocalizedCategories() : CATEGORIES;
+
+  let catLabel = isEn ? 'All Destinations' : 'Tất cả địa danh';
+  if (currentCategory && currentCategory !== 'all') {
+    const cat = categories.find(c => c.id === currentCategory);
+    catLabel = cat ? `${cat.icon} ${cat.name}` : currentCategory;
+  }
+
+  const viewingPrefix = isEn ? 'Showing:' : 'Đang xem:';
+  const keywordPrefix = isEn ? 'Keyword:' : 'Từ khóa:';
+  const placesSuffix = isEn ? 'matching places' : 'địa điểm phù hợp';
+  const clearText = isEn ? '✕ View all' : '✕ Xem tất cả';
+
+  let filterDesc = `${viewingPrefix} <strong>${catLabel}</strong>`;
+  if (currentSearch) {
+    filterDesc += ` • ${keywordPrefix} "<em>${currentSearch}</em>"`;
+  }
+  filterDesc += ` (${resultCount} ${placesSuffix})`;
+
+  badgeWrap.innerHTML = `
+    <div class="filter-pill">
+      <span>${filterDesc}</span>
+      <button type="button" class="btn-clear-filter" id="btnClearFilter" title="${isEn ? 'Reset filter' : 'Xem lại tất cả'}">${clearText}</button>
+    </div>
+  `;
+  badgeWrap.style.display = 'block';
+
+  const clearBtn = document.getElementById('btnClearFilter');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      currentCategory = 'all';
+      currentSearch = '';
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      const catCards = document.querySelectorAll('.category-card');
+      catCards.forEach(c => {
+        c.classList.toggle('active', c.dataset.category === 'all');
+      });
+      applyFilters();
+    });
+  }
+}
+
+/**
+ * Lọc theo danh mục & tìm kiếm từ khóa
+ */
+function applyFilters() {
+  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  let result = tours;
+
+  // Lọc theo danh mục
+  if (currentCategory && currentCategory !== 'all') {
+    result = result.filter(t => t.category === currentCategory);
+  }
+
+  // Lọc theo từ khóa tìm kiếm
+  if (currentSearch) {
+    const kw = currentSearch.toLowerCase();
+    result = result.filter(t =>
+      t.name.toLowerCase().includes(kw) ||
+      t.location.toLowerCase().includes(kw) ||
+      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(kw))) ||
+      t.description.toLowerCase().includes(kw) ||
+      (t.visitTime && t.visitTime.toLowerCase().includes(kw))
+    );
+  }
+
+  renderTourCards(result);
+  updateActiveFilterBadge(result.length);
+}
+
+/**
+ * Khởi tạo trang chủ
+ */
+function initHomePage() {
+  const tourGrid = document.getElementById('tourGrid');
+  if (!tourGrid) return;
+
+  const currentTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  renderCategories();
+  renderTourCards(currentTours);
+
+  // Khởi tạo Timeline tabs & view
+  const timelineTabs = document.getElementById('timelineTabs');
+  if (timelineTabs) {
+    const tabBtns = timelineTabs.querySelectorAll('.timeline-tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const day = btn.dataset.day;
+        renderTimeline(day);
+      });
+    });
+    renderTimeline(1);
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  let searchTimeout;
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        currentSearch = e.target.value.trim();
+        applyFilters();
+      }, 250);
+    });
+  }
+}
+
+
+/* ===== TRANG GIỚI THIỆU CHI TIẾT ĐỊA DANH (tour-detail.html) ===== */
+
+function getTourIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
+/**
+ * Render trang bài viết giới thiệu địa danh (hoàn toàn không có giá tiền)
+ */
+function renderTourDetail(tour) {
+  const main = document.getElementById('tourDetailMain');
+  if (!main) return;
+
+  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
+  const siteTitle = (typeof t === 'function') ? t('logo_title') : 'Thập Tứ Tour';
+  document.title = `${siteTitle} | ${tour.name}`;
+  const breadcrumbName = document.getElementById('breadcrumbName');
+  if (breadcrumbName) breadcrumbName.textContent = tour.name;
+
+  // Lấy 3 địa danh khác gợi ý xem tiếp
+  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  const otherTours = allTours.filter(t => t.id !== tour.id).slice(0, 3);
+
+  // Labels từ hệ thống đa ngôn ngữ
+  const visitTitle = (typeof t === 'function') ? t('detail_visit_title') : 'Mốc thời gian ghé thăm trong chuyến đi:';
+  const locLabel = (typeof t === 'function') ? t('detail_location') : 'Vị trí:';
+  const durLabel = (typeof t === 'function') ? t('detail_duration') : 'Thời lượng:';
+  const tagLabel = (typeof t === 'function') ? t('detail_tags') : 'Đặc trưng:';
+  const bestTimeTitle = (typeof t === 'function') ? t('detail_best_time') : 'Thời điểm đẹp nhất';
+  const bestTimeDesc = (typeof t === 'function') ? t('detail_best_time_desc') : 'Tháng 3 - Tháng 9 (mùa khô, biển êm, trời trong xanh rực rỡ)';
+  const transTitle = (typeof t === 'function') ? t('detail_transport') : 'Phương tiện di chuyển';
+  const transDesc = (typeof t === 'function') ? t('detail_transport_desc') : 'Xe máy, ô tô hoặc cano / thuyền tùy điểm đến';
+  const expTitle = (typeof t === 'function') ? t('detail_experience') : 'Trải nghiệm chính';
+  const expDesc = (typeof t === 'function') ? t('detail_experience_desc') : 'Ngắm cảnh biển đảo hoang sơ, check-in vách đá, thưởng ngoạn di tích';
+  const descHeading = (typeof t === 'function') ? t('detail_desc_heading') : '✨ Vẻ đẹp đặc trưng của';
+  const itinHeading = (typeof t === 'function') ? t('detail_itinerary_heading') : '📋 Lịch trình tham quan trong chuyến đi';
+  const dayBadgeText = (typeof t === 'function') ? t('detail_day_badge') : 'Ngày';
+  const highHeading = (typeof t === 'function') ? t('detail_highlights_heading') : '🌟 Điểm nổi bật chuyến đi';
+  const tipsHeading = (typeof t === 'function') ? t('detail_tips_heading') : '🎒 Lưu ý & Chuẩn bị khi đi';
+  const backPlacesText = (typeof t === 'function') ? t('detail_back_places') : '← Quay lại danh sách địa điểm nổi bật';
+  const backTimelineText = (typeof t === 'function') ? t('detail_back_timeline') : '🗓️ Xem toàn bộ lịch trình 4 ngày 3 đêm →';
+  const relatedHeading = (typeof t === 'function') ? t('detail_related_heading') : 'Khám phá thêm các điểm đến khác trong chuyến đi';
+  const relatedBtnText = (typeof t === 'function') ? t('detail_related_btn') : 'Khám phá địa danh →';
+
+  let html = `
+    <!-- Ảnh bìa và tiêu đề địa danh -->
+    <div class="place-header reveal-on-scroll">
+      <div class="place-image-wrap">
+        <img class="place-hero-img" src="${tour.image}" alt="${tour.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
+      </div>
+      <div class="place-title-box">
+        <h1>${tour.name}</h1>
+        ${tour.visitTime ? `
+        <div class="visit-schedule-banner">
+          <span class="schedule-icon">⏰</span>
+          <div>
+            <strong>${visitTitle}</strong>
+            <span class="schedule-time-text">${tour.visitTime}</span>
+          </div>
+        </div>
+        ` : ''}
+        <div class="place-meta">
+          <span>📍 <strong>${locLabel}</strong> ${tour.location}</span>
+          <span>🕐 <strong>${durLabel}</strong> ${tour.duration}</span>
+          <span>🌊 <strong>${tagLabel}</strong> ${tour.tags ? tour.tags.join(' • ') : (isEn ? 'Quy Nhon Coastal Scenery' : 'Cảnh sắc Quy Nhơn')}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hộp thông tin nhanh -->
+    <div class="quick-facts-card reveal-on-scroll">
+      <div class="fact-item tilt-card">
+        <span class="fact-icon">🌅</span>
+        <div>
+          <h4>${bestTimeTitle}</h4>
+          <p>${bestTimeDesc}</p>
+        </div>
+      </div>
+      <div class="fact-item tilt-card">
+        <span class="fact-icon">🛵</span>
+        <div>
+          <h4>${transTitle}</h4>
+          <p>${transDesc}</p>
+        </div>
+      </div>
+      <div class="fact-item tilt-card">
+        <span class="fact-icon">📸</span>
+        <div>
+          <h4>${expTitle}</h4>
+          <p>${expDesc}</p>
+        </div>
+      </div>
+      <div class="fact-item tilt-card">
+        <span class="fact-icon">🏷️</span>
+        <div>
+          <h4>${isEn ? 'Tour Package' : 'Gói tour trải nghiệm'}</h4>
+          <p>${isEn ? 'Included in full 4D3N tour (5,920,000&nbsp;VND / student)' : 'Nằm trong tour trọn gói 4N3Đ (5.920.000đ / người)'}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Giới thiệu chi tiết cảnh đẹp -->
+    <div class="place-section reveal-on-scroll">
+      <h2>${descHeading} ${tour.name}</h2>
+      <div class="place-description">
+        ${tour.description}
+      </div>
+    </div>
+
+    <!-- Lịch trình khám phá gợi ý -->
+    <div class="place-section reveal-on-scroll">
+      <h2>${itinHeading}</h2>
+      <div class="itinerary-list">
+  `;
+
+  tour.itinerary.forEach(item => {
+    html += `
+      <div class="itinerary-card tilt-card">
+        <div class="itinerary-badge">
+          <span>${dayBadgeText}</span>
+          <strong>${item.day}</strong>
+        </div>
+        <div class="itinerary-body">
+          <h3>${item.title}</h3>
+          <p>${item.detail}</p>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+
+    <!-- Trải nghiệm nổi bật & Lưu ý khi tham quan -->
+    <div class="place-section reveal-on-scroll">
+      <h2>${tipsHeading}</h2>
+      <div class="includes-excludes-grid">
+        <div class="info-card info-includes tilt-card">
+          <h3>${highHeading}</h3>
+          <ul>
+  `;
+  if (tour.highlights) {
+    tour.highlights.forEach(item => {
+      html += `<li>${item}</li>`;
+    });
+  }
+  html += `
+          </ul>
+        </div>
+        <div class="info-card info-excludes tilt-card">
+          <h3>${tipsHeading}</h3>
+          <ul>
+  `;
+  if (tour.tips) {
+    tour.tips.forEach(item => {
+      html += `<li>${item}</li>`;
+    });
+  }
+  html += `
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nút quay lại -->
+    <div class="back-action-wrap reveal-on-scroll">
+      <a href="index.html#dia-diem" class="btn-back-home">${backPlacesText}</a>
+      <a href="index.html#lich-trinh" class="btn-back-timeline">${backTimelineText}</a>
+    </div>
+
+    <!-- Gợi ý các địa danh khác -->
+    <div class="related-places reveal-on-scroll">
+      <h2>${relatedHeading}</h2>
+      <div class="related-grid">
+  `;
+
+  otherTours.forEach(t => {
+    html += `
+      <div class="related-card tilt-card" onclick="window.location.href='tour-detail.html?id=${t.id}'">
+        <div class="related-img-wrap">
+          <img src="${t.image}" alt="${t.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
+        </div>
+        <div class="related-body">
+          <h4>${t.name}</h4>
+          <p>📍 ${t.location}</p>
+          <span class="related-link">${relatedBtnText}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  main.innerHTML = html;
+
+  if (typeof triggerScrollReveal === 'function') {
+    setTimeout(triggerScrollReveal, 40);
+  }
+  if (typeof initTiltEffect === 'function') {
+    initTiltEffect();
+  }
+}
+
+/**
+ * Khởi tạo trang chi tiết địa danh
+ */
+function initTourDetailPage() {
+  const tourDetailMain = document.getElementById('tourDetailMain');
+  if (!tourDetailMain) return;
+
+  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
+  const tourId = getTourIdFromUrl();
+  if (!tourId) {
+    const notFoundTitle = isEn ? 'Destination not found!' : 'Không tìm thấy địa danh!';
+    const notFoundLink = isEn ? '← Click here to view all destinations' : '← Bấm vào đây để xem danh sách các địa danh';
+    tourDetailMain.innerHTML = `
+      <div class="no-tours">
+        <h2>${notFoundTitle}</h2>
+        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
+      </div>
+    `;
+    return;
+  }
+
+  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  const tour = allTours.find(t => t.id === parseInt(tourId));
+  if (!tour) {
+    const notFoundTitle = isEn ? 'Destination does not exist!' : 'Địa danh không tồn tại!';
+    const notFoundLink = isEn ? '← Click here to view all destinations' : '← Bấm vào đây để xem danh sách các địa danh';
+    tourDetailMain.innerHTML = `
+      <div class="no-tours">
+        <h2>${notFoundTitle}</h2>
+        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
+      </div>
+    `;
+    return;
+  }
+
+  renderTourDetail(tour);
 }
 
 /**
@@ -299,14 +669,14 @@ function updateTimelineTabs(lang) {
   const tabData = {
     vi: [
       { day: 1, badge: 'Ngày 1', title: 'Khởi hành & Biển Quy Nhơn' },
-      { day: 2, badge: 'Ngày 2', title: 'Kỳ Co – Eo Gió & Tịnh Xá' },
-      { day: 3, badge: 'Ngày 3', title: 'ExploraScience & Ghềnh Ráng' },
+      { day: 2, badge: 'Ngày 2', title: 'Kỳ Co – Eo Gió & Phố đêm' },
+      { day: 3, badge: 'Ngày 3', title: 'Ghềnh Ráng Tiên Sa & Dạo phố' },
       { day: 4, badge: 'Ngày 4', title: 'Check-in kỉ niệm & Về TP.HCM' }
     ],
     en: [
       { day: 1, badge: 'Day 1', title: 'Departure & Quy Nhon Beach' },
-      { day: 2, badge: 'Day 2', title: 'Ky Co – Eo Gio & Pagoda' },
-      { day: 3, badge: 'Day 3', title: 'ExploraScience & Ghenh Rang' },
+      { day: 2, badge: 'Day 2', title: 'Ky Co – Eo Gio & Night Streets' },
+      { day: 3, badge: 'Day 3', title: 'Ghenh Rang & Science Center' },
       { day: 4, badge: 'Day 4', title: 'Farewell Photos & Back to HCMC' }
     ]
   };
@@ -338,7 +708,7 @@ function updateMarqueeTicker(lang) {
     <span class="dot">•</span>
     <span>💰 GIÁ CẢ TOUR: 5.920.000đ / NGƯỜI</span>
     <span class="dot">•</span>
-    <span>🏖️ KỲ CO - EO GIÓ - TỊNH XÁ NGỌC HÒA</span>
+    <span>🏖️ KỲ CO - EO GIÓ</span>
     <span class="dot">•</span>
     <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
     <span class="dot">•</span>
@@ -348,9 +718,7 @@ function updateMarqueeTicker(lang) {
     <span class="dot">•</span>
     <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
     <span class="dot">•</span>
-    <span>🥞 BÁNH XÈO TÔM NHẢY DIÊN HỒNG</span>
-    <span class="dot">•</span>
-    <span>🦞 HẢI SẢN LỘC BIỂN & CÂU MỰC ĐÊM</span>
+    <span>🦞 HẢI SẢN XUÂN DIỆU DUY MẬP</span>
     <span class="dot">•</span>
     <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
     <span class="dot">•</span>
@@ -367,7 +735,7 @@ function updateMarqueeTicker(lang) {
     <span class="dot">•</span>
     <span>💰 ALL-INCLUSIVE TOUR: 5,920,000 VND / PERSON</span>
     <span class="dot">•</span>
-    <span>🏖️ KY CO - EO GIO & NGOC HOA PAGODA</span>
+    <span>🏖️ KY CO - EO GIO</span>
     <span class="dot">•</span>
     <span>🌄 GHENH RANG TIEN SA HILLSIDE</span>
     <span class="dot">•</span>
@@ -377,9 +745,7 @@ function updateMarqueeTicker(lang) {
     <span class="dot">•</span>
     <span>🍜 NGOC LIEN FISH NOODLES & NEM LOI</span>
     <span class="dot">•</span>
-    <span>🥞 DIEN HONG CRISPY SHRIMP PANCAKES</span>
-    <span class="dot">•</span>
-    <span>🦞 LOC BIEN SEAFOOD & SQUID FISHING</span>
+    <span>🦞 XUAN DIEU SEAFOOD STREET</span>
     <span class="dot">•</span>
     <span>🚀 EXPLORASCIENCE SPACE CENTER</span>
     <span class="dot">•</span>
@@ -396,340 +762,44 @@ function updateMarqueeTicker(lang) {
 }
 
 /**
- * Khởi tạo toàn bộ chức năng trang chủ
- */
-function initHomePage() {
-  const tourGrid = document.getElementById('tourGrid');
-  if (!tourGrid) return;
-
-  const currentTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  renderCategories();
-  renderTourCards(currentTours);
-  renderTimeline(1);
-
-  // Tabs lịch trình
-  const timelineTabs = document.getElementById('timelineTabs');
-  if (timelineTabs) {
-    timelineTabs.querySelectorAll('.timeline-tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        timelineTabs.querySelectorAll('.timeline-tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const day = btn.dataset.day;
-        renderTimeline(day);
-      });
-    });
-  }
-
-  // Tìm kiếm
-  const searchInput = document.getElementById('searchInput');
-  const searchClearBtn = document.getElementById('searchClearBtn');
-
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      currentSearch = e.target.value;
-      if (searchClearBtn) {
-        searchClearBtn.style.display = currentSearch.length > 0 ? 'block' : 'none';
-      }
-      applyFilters();
-    });
-
-    if (searchClearBtn) {
-      searchClearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        currentSearch = '';
-        searchClearBtn.style.display = 'none';
-        applyFilters();
-        searchInput.focus();
-      });
-    }
-  }
-}
-
-/* ===== TRANG CHI TIẾT ĐỊA DANH (tour-detail.html) ===== */
-
-function renderTourDetail(tour) {
-  const main = document.getElementById('tourDetailMain');
-  if (!main) return;
-
-  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
-  const siteTitle = (typeof t === 'function') ? t('logo_title') : 'Thập Tứ Tour';
-  document.title = `${siteTitle} | ${tour.name}`;
-  const breadcrumbName = document.getElementById('breadcrumbName');
-  if (breadcrumbName) breadcrumbName.textContent = tour.name;
-
-  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  const otherTours = allTours.filter(t => t.id !== tour.id).slice(0, 3);
-
-  const visitTitle = (typeof t === 'function') ? t('detail_visit_title') : 'Mốc thời gian ghé thăm trong chuyến đi:';
-  const locLabel = (typeof t === 'function') ? t('detail_location') : 'Vị trí:';
-  const durLabel = (typeof t === 'function') ? t('detail_duration') : 'Thời lượng:';
-  const tagLabel = (typeof t === 'function') ? t('detail_tags') : 'Đặc trưng:';
-  const bestTimeTitle = (typeof t === 'function') ? t('detail_best_time') : 'Thời điểm đẹp nhất';
-  const bestTimeDesc = (typeof t === 'function') ? t('detail_best_time_desc') : 'Tháng 3 - Tháng 9 (mùa khô, biển êm, trời trong xanh rực rỡ)';
-  const transTitle = (typeof t === 'function') ? t('detail_transport') : 'Phương tiện di chuyển';
-  const transDesc = (typeof t === 'function') ? t('detail_transport_desc') : 'Xe máy, ô tô hoặc cano / thuyền tùy điểm đến';
-  const expTitle = (typeof t === 'function') ? t('detail_experience') : 'Trải nghiệm du lịch';
-  const expDesc = (typeof t === 'function') ? t('detail_experience_desc') : 'Chụp ảnh check-in, ngắm cảnh biển đảo, thưởng thức ẩm thực';
-  const feeTitle = (typeof t === 'function') ? t('detail_fee') : 'Chi phí tham khảo';
-  const feeDesc = (typeof t === 'function') ? t('detail_fee_desc') : 'Đã bao gồm trong chi phí trọn gói 5.920.000đ của chuyến đi';
-  const introHeading = (typeof t === 'function') ? t('detail_intro_heading') : 'Giới thiệu về địa danh này';
-  const highlightsHeading = (typeof t === 'function') ? t('detail_highlights_heading') : 'Trải nghiệm nổi bật & Lưu ý khi ghé thăm';
-  const backHomeBtn = (typeof t === 'function') ? t('detail_btn_back_home') : '← Quay lại Trang Chủ';
-  const backPlacesBtn = (typeof t === 'function') ? t('detail_btn_back_places') : 'Xem danh sách địa điểm';
-  const relatedHeading = (typeof t === 'function') ? t('detail_related_heading') : 'Khám phá thêm các địa danh khác';
-
-  let visitBannerHtml = '';
-  if (tour.visitTime) {
-    visitBannerHtml = `
-      <div class="visit-schedule-banner">
-        <span>⏰</span>
-        <div>
-          <strong>${visitTitle}</strong>
-          <span>${tour.visitTime}</span>
-        </div>
-      </div>
-    `;
-  }
-
-  let highlightsListHtml = '';
-  if (tour.highlights && tour.highlights.length > 0) {
-    highlightsListHtml = tour.highlights.map(item => `<li>${item}</li>`).join('');
-  }
-
-  let otherCardsHtml = '';
-  otherTours.forEach(item => {
-    otherCardsHtml += `
-      <div class="related-card" onclick="window.location.href='tour-detail.html?id=${item.id}'" role="button" tabindex="0">
-        <img src="${item.image}" alt="${item.name}" loading="lazy">
-        <div class="related-body">
-          <h4>${item.name}</h4>
-          <p>${item.location}</p>
-          <span class="related-link">${isEn ? 'View details →' : 'Xem chi tiết →'}</span>
-        </div>
-      </div>
-    `;
-  });
-
-  main.innerHTML = `
-    <div class="place-header">
-      <div class="place-title-box">
-        <span class="place-badge">${tour.badge || 'Điểm đến Quy Nhơn'}</span>
-        <h1>${tour.name}</h1>
-        <div class="place-meta">
-          <span>${locLabel} <strong>${tour.location}</strong></span>
-          <span>${durLabel} <strong>${tour.duration}</strong></span>
-          <span>${tagLabel} <strong>${(tour.tags || []).join(', ')}</strong></span>
-        </div>
-      </div>
-      <div class="place-hero-img-wrap">
-        <img src="${tour.image}" alt="${tour.name}" class="place-hero-img">
-      </div>
-    </div>
-
-    ${visitBannerHtml}
-
-    <div class="quick-facts-grid">
-      <div class="fact-item">
-        <div class="fact-icon">🌤️</div>
-        <div>
-          <h4>${bestTimeTitle}</h4>
-          <p>${bestTimeDesc}</p>
-        </div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-icon">🛵</div>
-        <div>
-          <h4>${transTitle}</h4>
-          <p>${transDesc}</p>
-        </div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-icon">📸</div>
-        <div>
-          <h4>${expTitle}</h4>
-          <p>${expDesc}</p>
-        </div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-icon">🏷️</div>
-        <div>
-          <h4>${feeTitle}</h4>
-          <p>${feeDesc}</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="place-section">
-      <h2>${introHeading}</h2>
-      <div class="place-description">
-        <p>${tour.description}</p>
-      </div>
-    </div>
-
-    <div class="place-section">
-      <h2>${highlightsHeading}</h2>
-      <div class="info-grid">
-        <div class="info-card info-includes">
-          <h3>✨ Trải nghiệm không thể bỏ qua</h3>
-          <ul>${highlightsListHtml}</ul>
-        </div>
-        <div class="info-card info-excludes">
-          <h3>📌 Lưu ý từ tụi mình</h3>
-          <ul>
-            <li>Đem theo trang phục phù hợp, kem chống nắng và mũ nón khi đi biển đảo.</li>
-            <li>Giữ gìn vệ sinh chung, không vứt rác bừa bãi tại các danh lam thắng cảnh.</li>
-            <li>Đoàn luôn chuẩn bị sẵn dù và áo mưa tiện lợi hỗ trợ chu đáo suốt chuyến đi.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="detail-back-bar">
-      <a href="index.html" class="btn-back-home">${backHomeBtn}</a>
-      <a href="index.html#dia-diem" class="btn-back-places">${backPlacesBtn} →</a>
-    </div>
-
-    <div class="related-places">
-      <h2>${relatedHeading}</h2>
-      <div class="related-grid">
-        ${otherCardsHtml}
-      </div>
-    </div>
-  `;
-}
-
-function initTourDetailPage() {
-  const tourDetailMain = document.getElementById('tourDetailMain');
-  if (!tourDetailMain) return;
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const tourId = urlParams.get('id');
-  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
-
-  if (!tourId) {
-    const notFoundTitle = isEn ? 'Destination not found!' : 'Không tìm thấy địa danh này!';
-    const notFoundLink = isEn ? '← Back to Home' : '← Quay lại Trang Chủ';
-    tourDetailMain.innerHTML = `
-      <div class="no-tours">
-        <h2>${notFoundTitle}</h2>
-        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
-      </div>
-    `;
-    return;
-  }
-
-  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
-  const tour = allTours.find(t => t.id === parseInt(tourId));
-  if (!tour) {
-    const notFoundTitle = isEn ? 'Destination does not exist!' : 'Địa danh không tồn tại!';
-    const notFoundLink = isEn ? '← Click here to view all destinations' : '← Bấm vào đây để xem danh sách các địa danh';
-    tourDetailMain.innerHTML = `
-      <div class="no-tours">
-        <h2>${notFoundTitle}</h2>
-        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
-      </div>
-    `;
-    return;
-  }
-
-  renderTourDetail(tour);
-}
-
-/* ===== HỆ THỐNG GIAO DIỆN SÁNG / TỐI (LIGHT / DARK THEME) ===== */
-
-/**
- * Cập nhật tooltip & trạng thái cho nút chuyển đổi giao diện Sáng / Tối
- */
-function updateThemeToggleUI(theme, lang) {
-  const btn = document.getElementById('themeToggle');
-  if (!btn) return;
-  const currentLang = lang || ((typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi');
-  const isDark = theme === 'dark';
-  let label = '';
-  if (typeof t === 'function') {
-    label = isDark ? t('theme_toggle_light') : t('theme_toggle_dark');
-  }
-  if (!label) {
-    label = isDark
-      ? (currentLang === 'en' ? 'Switch to light mode' : 'Chuyển sang chế độ sáng')
-      : (currentLang === 'en' ? 'Switch to dark mode' : 'Chuyển sang chế độ tối');
-  }
-  btn.setAttribute('title', label);
-  btn.setAttribute('aria-label', label);
-}
-
-/**
- * Khởi tạo bộ chuyển đổi giao diện Sáng / Tối
- */
-function initThemeToggle() {
-  const btn = document.getElementById('themeToggle');
-  if (!btn) return;
-
-  const getCurrentTheme = () => document.documentElement.getAttribute('data-theme') || 'light';
-  updateThemeToggleUI(getCurrentTheme());
-
-  btn.addEventListener('click', () => {
-    const currentTheme = getCurrentTheme();
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    try {
-      localStorage.setItem('thap_tu_theme', newTheme);
-    } catch (e) {}
-    updateThemeToggleUI(newTheme);
-
-    btn.style.transform = 'scale(0.85) rotate(15deg)';
-    setTimeout(() => {
-      btn.style.transform = '';
-    }, 180);
-  });
-
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      try {
-        if (!localStorage.getItem('thap_tu_theme')) {
-          const autoTheme = e.matches ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', autoTheme);
-          updateThemeToggleUI(autoTheme);
-        }
-      } catch (err) {}
-    });
-  }
-}
-
-/* ===== HỆ THỐNG ĐA NGÔN NGỮ (VIỆT - ANH) ===== */
-
-/**
- * Khởi tạo bộ chuyển đổi ngôn ngữ
+ * Khởi tạo bộ chuyển đổi ngôn ngữ (Language Switcher)
  */
 function initLanguageSwitcher() {
   const currentLang = (typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi';
 
+  // Đồng bộ trạng thái giao diện và thuộc tính lang
   document.documentElement.lang = currentLang;
   document.querySelectorAll('.lang-btn').forEach(btn => {
-    if (btn.dataset.lang === currentLang) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
     btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetLang = btn.dataset.lang;
+      const targetLang = e.currentTarget.dataset.lang;
       if (typeof switchLanguage === 'function') {
         switchLanguage(targetLang);
       }
     });
   });
 
+  // Nếu người dùng đã chọn English trước đó, áp dụng ngay tức thì
   if (currentLang === 'en' && typeof switchLanguage === 'function') {
     switchLanguage('en');
+  } else {
+    updateTimelineTabs('vi');
+    updateMarqueeTicker('vi');
   }
 }
 
-/* ===== HIỆU ỨNG TƯƠNG TÁC CAO CẤP ===== */
+
+/* ===================================================
+   DYNAMIC INTERACTIVE FEATURES (Phong cách theforgottentoys.com)
+   - Magic Custom Cursor (chấm tròn + vòng tròn lerp + magnetic hover)
+   - Scroll Progress Indicator
+   - 3D Interactive Card Tilt & Dynamic Glare
+   - Scroll-triggered Reveal Animations (IntersectionObserver)
+   - Hero Mouse-track Parallax
+   =================================================== */
 
 /**
- * Thanh tiến trình cuộn trang
+ * 1. Thanh tiến trình cuộn trang (Scroll Progress Bar)
  */
 function initScrollProgress() {
   const progressBar = document.getElementById('scrollProgress');
@@ -747,76 +817,68 @@ function initScrollProgress() {
 }
 
 /**
- * Con trỏ chuột tương tác ảo (Magic Custom Cursor) - 60Hz / 120Hz mượt mà tuyệt đối
+ * 2. Con trỏ chuột tương tác sáng tạo (Magic Cursor)
+ * Chỉ kích hoạt trên thiết bị dùng chuột (pointer: fine)
  */
 function initMagicCursor() {
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
   if (!dot || !ring) return;
 
+  // Kiểm tra nếu là thiết bị cảm ứng thì ẩn con trỏ tùy biến
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
     dot.style.display = 'none';
     ring.style.display = 'none';
     return;
   }
 
-  document.body.classList.add('has-magic-cursor');
-
   let mouseX = -100;
   let mouseY = -100;
   let ringX = -100;
   let ringY = -100;
-  let currentScale = 1;
-  let targetScale = 1;
   let isHovering = false;
   let isDown = false;
   let isVisible = false;
 
-  const onMouseMove = (e) => {
+  window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
     if (!isVisible) {
       isVisible = true;
-      ringX = mouseX;
-      ringY = mouseY;
       dot.style.opacity = '1';
       ring.style.opacity = '1';
     }
-  };
 
-  window.addEventListener('mousemove', onMouseMove, { passive: true });
+    // Dot bám sát tức thì không độ trễ
+    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
 
-  const interactiveSelector = 'a, button, input, select, textarea, [role="button"], .tour-card, .category-card, .timeline-content, .hero-btn, .hero-btn-video, .video-player-wrap, .stat-box, .weather-plan-box';
-
-  document.addEventListener('mouseover', (e) => {
-    if (!e.target) return;
-    if (e.target.closest(interactiveSelector)) {
-      if (!isHovering) {
-        isHovering = true;
+    // Xử lý hover toàn cục bằng closest() - HOÀN TOÀN KHÔNG BAO GIỜ BỊ NHẤP NHÁY
+    const interactiveEl = e.target && e.target.closest('a, button, .tour-card, .category-card, .timeline-tab-btn, input, select');
+    const shouldHover = !!interactiveEl;
+    if (shouldHover !== isHovering) {
+      isHovering = shouldHover;
+      if (isHovering) {
         ring.classList.add('cursor-hover');
         dot.classList.add('cursor-hover');
+      } else {
+        ring.classList.remove('cursor-hover');
+        dot.classList.remove('cursor-hover');
       }
-    }
-  }, { passive: true });
-
-  document.addEventListener('mouseout', (e) => {
-    if (!isHovering) return;
-    const related = e.relatedTarget;
-    if (!related || !related.closest(interactiveSelector)) {
-      isHovering = false;
-      ring.classList.remove('cursor-hover');
-      dot.classList.remove('cursor-hover');
     }
   }, { passive: true });
 
   window.addEventListener('mousedown', () => {
     isDown = true;
-  }, { passive: true });
+    ring.classList.add('cursor-down');
+    dot.classList.add('cursor-down');
+  });
 
   window.addEventListener('mouseup', () => {
     isDown = false;
-  }, { passive: true });
+    ring.classList.remove('cursor-down');
+    dot.classList.remove('cursor-down');
+  });
 
   document.addEventListener('mouseleave', () => {
     isVisible = false;
@@ -824,77 +886,342 @@ function initMagicCursor() {
     ring.style.opacity = '0';
   });
 
-  document.addEventListener('mouseenter', () => {
-    isVisible = true;
-    dot.style.opacity = '1';
-    ring.style.opacity = '1';
-  });
-
+  // Vòng tròn ring lướt theo chuột với hiệu ứng gia tốc mượt mà (lerp)
   const renderCursor = () => {
-    if (isVisible) {
-      ringX += (mouseX - ringX) * 0.2;
-      ringY += (mouseY - ringY) * 0.2;
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
 
-      targetScale = isDown ? 0.72 : (isHovering ? 1.55 : 1.0);
-      currentScale += (targetScale - currentScale) * 0.22;
-
-      // Dot và Ring luôn luôn đồng tâm tuyệt đối 100% tại (ringX, ringY)
-      // Dot không bao giờ bị lệch tâm hay văng ra ngoài vòng tròn
-      dot.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0)`;
-      ring.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0) scale(${currentScale.toFixed(2)})`;
-    }
-
+    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) scale(${isHovering ? 1.5 : isDown ? 0.8 : 1})`;
     requestAnimationFrame(renderCursor);
   };
-
   requestAnimationFrame(renderCursor);
 }
 
 /**
- * Trình phát Video Quy Nhơn
+ * 3. Hiệu ứng nghiêng 3D theo chuột (3D Interactive Tilt)
  */
-function initQuyNhonVideo() {
-  const video = document.getElementById('quynhonVideo');
-  const overlay = document.getElementById('videoPlayOverlay');
-  const playBtn = document.getElementById('videoPlayBtn');
-  if (!video || !overlay) return;
+function initTiltEffect() {
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
 
-  const handlePlay = (e) => {
-    if (e) e.stopPropagation();
-    overlay.classList.add('is-hidden');
-    video.play().catch(() => {});
+  const attachTilt = () => {
+    const cards = document.querySelectorAll('.tilt-card, .tour-card, .category-card, .weather-plan-box, .timeline-content');
+    cards.forEach(card => {
+      if (card.dataset.tiltBound) return;
+      card.dataset.tiltBound = 'true';
+
+      card.addEventListener('mouseenter', () => {
+        // Tắt CSS transition khi đang rê chuột để tilt bám mượt tức thì không bị giật lag
+        card.style.transition = 'none';
+      });
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = -((y - centerY) / centerY) * 4.5;
+        const rotateY = ((x - centerX) / centerX) * 4.5;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(5px)`;
+        card.style.setProperty('--mouse-x', `${((x / rect.width) * 100).toFixed(1)}%`);
+        card.style.setProperty('--mouse-y', `${((y / rect.height) * 100).toFixed(1)}%`);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        // Trả về vị trí ban đầu mượt mà
+        card.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        setTimeout(() => {
+          if (!card.matches(':hover')) {
+            card.style.transition = '';
+            card.style.transform = '';
+          }
+        }, 460);
+      });
+    });
   };
 
-  if (playBtn) playBtn.addEventListener('click', handlePlay);
-  overlay.addEventListener('click', handlePlay);
+  attachTilt();
 
-  video.addEventListener('play', () => {
-    overlay.classList.add('is-hidden');
+  if (typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver(() => {
+      attachTilt();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+}
+
+/**
+ * 3b. Hiệu ứng nam châm hút theo chuột cho nút Địa Điểm (Magnetic Follow)
+ */
+function initMagneticElements() {
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+
+  const attachMagnetic = () => {
+    const magneticItems = document.querySelectorAll('.timeline-place-tag a');
+    magneticItems.forEach(item => {
+      if (item.dataset.magneticBound) return;
+      item.dataset.magneticBound = 'true';
+
+      item.addEventListener('mouseenter', () => {
+        item.style.transition = 'none';
+      });
+
+      item.addEventListener('mousemove', (e) => {
+        const rect = item.getBoundingClientRect();
+        const relX = e.clientX - rect.left - rect.width / 2;
+        const relY = e.clientY - rect.top - rect.height / 2;
+        // Hút theo chuột nhẹ nhàng: di chuyển tối đa 5px ngang, 3px dọc
+        const moveX = (relX / (rect.width / 2)) * 5;
+        const moveY = (relY / (rect.height / 2)) * 3;
+        item.style.transform = `translate3d(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px, 0)`;
+      });
+
+      item.addEventListener('mouseleave', () => {
+        item.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+        item.style.transform = 'translate3d(0, 0, 0)';
+      });
+    });
+  };
+
+  attachMagnetic();
+
+  if (typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver(() => {
+      attachMagnetic();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+}
+
+/**
+ * 3c. Hiệu ứng nghiêng 3D con quay hồi chuyển trên điện thoại (Device Orientation Gyroscope Tilt)
+ * Tự động đồng bộ góc nghiêng vật lý của điện thoại (trái/phải, trước/sau) với thẻ card 3D
+ * Hỗ trợ mượt mà cả Android (tự động) & iOS Safari (cấp quyền qua cú chạm đầu tiên)
+ */
+function initDeviceOrientationTilt() {
+  // Chỉ kích hoạt trên thiết bị cảm ứng / điện thoại
+  const isTouchDevice = 'ontouchstart' in window || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  if (!isTouchDevice) return;
+
+  let hasOrientationEvent = false;
+  let isListening = false;
+  let animFrameId = null;
+
+  // Góc mục tiêu từ cảm biến điện thoại
+  let targetRotX = 0;
+  let targetRotY = 0;
+  let targetGlareX = 50;
+  let targetGlareY = 50;
+
+  // Góc hiện tại (được làm mượt bằng LERP để chuyển động siêu êm, loại bỏ hoàn toàn rung giật của tay)
+  let currentRotX = 0;
+  let currentRotY = 0;
+  let currentGlareX = 50;
+  let currentGlareY = 50;
+
+  let isActivelyMoving = false;
+  let idleCounter = 0;
+
+  // Tập hợp các thẻ đang hiển thị trong màn hình để tối ưu hóa hiệu năng 60-120fps
+  const visibleCards = new Set();
+
+  // IntersectionObserver phát hiện thẻ nào đang nằm trong khung nhìn màn hình
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visibleCards.add(entry.target);
+        entry.target.classList.add('gyro-active');
+      } else {
+        visibleCards.delete(entry.target);
+        entry.target.classList.remove('gyro-active');
+        // Trả thẻ về trạng thái phẳng khi ra khỏi khung nhìn
+        entry.target.style.transform = '';
+      }
+    });
+  }, {
+    rootMargin: '40px 0px 40px 0px',
+    threshold: 0.05
   });
 
-  video.addEventListener('ended', () => {
-    overlay.classList.remove('is-hidden');
+  const observeCards = () => {
+    const cards = document.querySelectorAll(
+      '.tilt-card, .tour-card, .category-card, .fact-item, .weather-plan-box, .timeline-content, .about-us-card, .related-card, .itinerary-card'
+    );
+    cards.forEach(card => {
+      if (!card.dataset.gyroObserved) {
+        card.dataset.gyroObserved = 'true';
+        cardObserver.observe(card);
+      }
+    });
+  };
+
+  observeCards();
+
+  if (typeof MutationObserver !== 'undefined') {
+    const mutationObs = new MutationObserver(() => {
+      observeCards();
+    });
+    mutationObs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // Vòng lặp Render 60-120fps sử dụng requestAnimationFrame và LERP
+  const updateTiltLoop = () => {
+    const lerp = 0.085;
+    const diffX = targetRotX - currentRotX;
+    const diffY = targetRotY - currentRotY;
+
+    if (Math.abs(diffX) > 0.005 || Math.abs(diffY) > 0.005) {
+      currentRotX += diffX * lerp;
+      currentRotY += diffY * lerp;
+      currentGlareX += (targetGlareX - currentGlareX) * lerp;
+      currentGlareY += (targetGlareY - currentGlareY) * lerp;
+      isActivelyMoving = true;
+      idleCounter = 0;
+    } else {
+      idleCounter++;
+      if (idleCounter > 30) {
+        isActivelyMoving = false;
+      }
+    }
+
+    if (isActivelyMoving && visibleCards.size > 0) {
+      const transformValue = `perspective(850px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg)`;
+      const gx = `${currentGlareX.toFixed(1)}%`;
+      const gy = `${currentGlareY.toFixed(1)}%`;
+
+      visibleCards.forEach(card => {
+        // Chỉ áp dụng khi thẻ đã hiển thị (đã hoàn thành hoặc không có animation cuộn che khuất)
+        if (card.classList.contains('is-revealed') || card.closest('.timeline-day-header, .place-header')) {
+          card.style.transform = transformValue;
+          card.style.setProperty('--mouse-x', gx);
+          card.style.setProperty('--mouse-y', gy);
+        }
+      });
+    }
+
+    animFrameId = requestAnimationFrame(updateTiltLoop);
+  };
+
+  // Xử lý dữ liệu con quay hồi chuyển
+  const handleOrientation = (e) => {
+    if (e.gamma === null && e.beta === null) return;
+
+    if (!hasOrientationEvent) {
+      hasOrientationEvent = true;
+      document.body.classList.add('gyro-active');
+      if (!animFrameId) {
+        animFrameId = requestAnimationFrame(updateTiltLoop);
+      }
+    }
+
+    let gamma = e.gamma || 0; // Trục nghiêng trái (-90) / phải (+90)
+    let beta = e.beta || 0;   // Trục nghiêng trước (-180) / sau (+180)
+
+    // Tự động nhận diện hướng màn hình ngang (Landscape) nếu người dùng xoay ngang điện thoại
+    const orientationAngle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+    if (orientationAngle === 90) {
+      const temp = gamma;
+      gamma = -beta;
+      beta = temp;
+    } else if (orientationAngle === -90 || orientationAngle === 270) {
+      const temp = gamma;
+      gamma = beta;
+      beta = -temp;
+    }
+
+    // Góc nghiêng tự nhiên của người dùng khi cầm điện thoại là khoảng 45°
+    const deltaBeta = beta - 45;
+    const maxAngle = 9.5; // Giới hạn góc nghiêng tối đa để chữ và ảnh vẫn rõ ràng, sang trọng
+
+    // Tính toán góc nghiêng 3D
+    targetRotX = Math.max(-maxAngle, Math.min(maxAngle, deltaBeta * 0.32));
+    targetRotY = Math.max(-maxAngle, Math.min(maxAngle, gamma * 0.32));
+
+    // Tính toán tọa độ phản quang vệt sáng (Glare Sheen)
+    const rawGlareX = 50 + (gamma / 28) * 40;
+    const rawGlareY = 50 + (deltaBeta / 28) * 40;
+    targetGlareX = Math.max(10, Math.min(90, rawGlareX));
+    targetGlareY = Math.max(10, Math.min(90, rawGlareY));
+
+    // Đánh thức vòng lặp nếu đang tạm dừng
+    if (!isActivelyMoving) {
+      isActivelyMoving = true;
+      idleCounter = 0;
+    }
+  };
+
+  const startOrientationListener = () => {
+    if (isListening) return;
+    isListening = true;
+    window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    if (!animFrameId) {
+      animFrameId = requestAnimationFrame(updateTiltLoop);
+    }
+  };
+
+  // Kiểm tra hỗ trợ iOS Safari 13+ (Yêu cầu xin quyền DeviceOrientationEvent.requestPermission)
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    const handleFirstGesture = () => {
+      DeviceOrientationEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            startOrientationListener();
+          }
+        })
+        .catch(() => {
+          // Người dùng từ chối hoặc lỗi bảo mật, duy trì hiển thị tĩnh bình thường
+        });
+    };
+
+    window.addEventListener('touchstart', handleFirstGesture, { once: true, passive: true });
+    window.addEventListener('click', handleFirstGesture, { once: true, passive: true });
+  } else if ('DeviceOrientationEvent' in window) {
+    // Android Chrome & trình duyệt chuẩn: khởi chạy trực tiếp ngay lập tức
+    startOrientationListener();
+  }
+
+  // Tạm dừng khi chuyển tab để bảo vệ pin và CPU
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+    } else if (isListening && !animFrameId) {
+      animFrameId = requestAnimationFrame(updateTiltLoop);
+    }
   });
 }
 
 /**
- * Hiệu ứng cuộn trang xuất hiện mềm mại (Scroll Reveal)
- * Sử dụng IntersectionObserver hiệu năng cao, tự unobserve khi xuất hiện
+ * 4. Hiệu ứng cuộn trang xuất hiện mượt (Scroll Reveal Animations)
  */
 let scrollRevealObserver = null;
 
 function triggerScrollReveal() {
   const elements = document.querySelectorAll(
-    '.reveal-on-scroll, .section-title, .video-showcase-card, .about-us-card, .timeline-item, .tour-card, .category-card, .weather-plan-box, .umbrella-alert-banner, .tour-cost-summary-box'
+    '.reveal-on-scroll, .section-title, .timeline-item, .tour-card, .category-card, .weather-plan-box, .about-us-card, .umbrella-alert-banner, .timeline-tabs, .timeline-day-header, .place-header, .quick-facts-card, .place-section, .itinerary-card, .related-places, .related-card'
   );
-  if (!elements.length) return;
 
   if (!('IntersectionObserver' in window)) {
     elements.forEach(el => el.classList.add('is-revealed'));
     return;
   }
 
+  // Tự động hiển thị ngay các phần tử đã nằm trong tầm nhìn (đặc biệt tối ưu cho mobile)
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  elements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < vh + 60 && rect.bottom > -60) {
+      el.classList.add('is-revealed');
+    }
+  });
+
   if (!scrollRevealObserver) {
+    const isMobile = window.innerWidth <= 768;
     scrollRevealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -903,16 +1230,14 @@ function triggerScrollReveal() {
         }
       });
     }, {
-      threshold: 0.08,
-      rootMargin: '0px 0px -20px 0px'
+      threshold: isMobile ? 0.02 : 0.08,
+      rootMargin: isMobile ? '0px 0px 80px 0px' : '0px 0px 30px 0px'
     });
   }
 
   elements.forEach(el => {
-    if (!el.classList.contains('reveal-on-scroll')) {
-      el.classList.add('reveal-on-scroll');
-    }
-    if (!el.classList.contains('is-revealed')) {
+    if (!el.classList.contains('is-revealed') && !el.dataset.observed) {
+      el.dataset.observed = 'true';
       scrollRevealObserver.observe(el);
     }
   });
@@ -920,16 +1245,54 @@ function triggerScrollReveal() {
 
 function initScrollReveal() {
   triggerScrollReveal();
+
+  if (typeof MutationObserver !== 'undefined') {
+    const domObserver = new MutationObserver(() => {
+      triggerScrollReveal();
+    });
+    domObserver.observe(document.body, { childList: true, subtree: true });
+  }
+}
+
+/**
+ * 5. Hiệu ứng Hero Parallax & Mouse Track 3D
+ */
+function initHeroParallax() {
+  const hero = document.querySelector('.hero');
+  if (!hero || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
+
+  const title = hero.querySelector('.hero-title-dynamic');
+  const badge = hero.querySelector('.floating-badge');
+  const glow = hero.querySelector('.hero-bg-floating-glow');
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    if (title) title.style.transform = `translate3d(${x * 14}px, ${y * 10}px, 0)`;
+    if (badge) badge.style.transform = `translate3d(${x * -8}px, ${y * -6}px, 0)`;
+    if (glow) glow.style.transform = `translate3d(${x * 35}px, ${y * 25}px, 0)`;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    if (title) title.style.transform = 'translate3d(0, 0, 0)';
+    if (badge) badge.style.transform = 'translate3d(0, 0, 0)';
+    if (glow) glow.style.transform = 'translate3d(0, 0, 0)';
+  });
 }
 
 /* ===== KHỞI TẠO KHI TẢI TRANG ===== */
 document.addEventListener('DOMContentLoaded', () => {
-  initThemeToggle();
-  initLanguageSwitcher();
   initHomePage();
   initTourDetailPage();
+  initLanguageSwitcher();
   initScrollProgress();
   initMagicCursor();
-  initQuyNhonVideo();
+  initTiltEffect();
+  initMagneticElements();
+  initDeviceOrientationTilt();
   initScrollReveal();
+  initHeroParallax();
 });
+

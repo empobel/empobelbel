@@ -3,21 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
   <title>Thập Tứ Tour - Giới Thiệu Địa Danh Quy Nhơn</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="css/style.css">
-  <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('thap_tu_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved ? saved : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
-    })();
-  </script>
 </head>
 <body>
 
@@ -41,17 +30,12 @@
           <li><a href="index.html" data-i18n="nav_home">Trang chủ</a></li>
           <li><a href="index.html#ve-tui-toi" data-i18n="nav_about">Về chúng tôi</a></li>
           <li><a href="index.html#lich-trinh" data-i18n="nav_itinerary">Lịch trình chuyến đi</a></li>
+          <li><a href="index.html#categories" data-i18n="nav_categories">Danh mục</a></li>
           <li><a href="index.html#dia-diem" data-i18n="nav_places">Địa điểm nổi bật</a></li>
         </ul>
       </nav>
 
       <div class="header-right">
-        <!-- Nút chuyển đổi giao diện Sáng / Tối (Theme Switcher) -->
-        <button type="button" class="theme-toggle-btn" id="themeToggle" aria-label="Chuyển chế độ sáng/tối" title="Chuyển sang chế độ tối">
-          <span class="theme-icon sun-icon" aria-hidden="true">☀️</span>
-          <span class="theme-icon moon-icon" aria-hidden="true">🌙</span>
-        </button>
-
         <!-- Nút chuyển đổi ngôn ngữ -->
         <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language selection">
           <button type="button" class="lang-btn active" data-lang="vi" title="Tiếng Việt">
@@ -62,10 +46,8 @@
           </button>
         </div>
 
-        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
@@ -96,29 +78,32 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-about">
-          <div class="footer-logo">
+          <div class="logo">
             <img src="logo.png" alt="Logo Thập Tứ Tour" class="logo-image">
             <span data-i18n="logo_title">Thập Tứ Tour</span>
           </div>
           <p data-i18n="footer_desc">
-            Website cẩm nang du lịch Quy Nhơn do tập thể học sinh lớp 10A4 Trường THPT Lương Thế Vinh (TP.HCM) tự tay thiết kế và tổng hợp từ trải nghiệm thực tế.
+            Thập Tứ Tour là dự án cẩm nang du lịch Quy Nhơn - Bình Định của nhóm học sinh lớp 10A4 năm 2026, Trường THPT Lương Thế Vinh - TP. Hồ Chí Minh.
           </p>
         </div>
-        <div class="footer-links">
+        <div>
           <h3 data-i18n="footer_quicklinks">Liên kết nhanh</h3>
-          <ul>
+          <ul class="footer-links">
             <li><a href="index.html" data-i18n="nav_home">Trang chủ</a></li>
             <li><a href="index.html#ve-tui-toi" data-i18n="nav_about">Về chúng tôi</a></li>
             <li><a href="index.html#lich-trinh" data-i18n="nav_itinerary">Lịch trình chuyến đi</a></li>
+            <li><a href="index.html#categories" data-i18n="nav_categories">Danh mục</a></li>
             <li><a href="index.html#dia-diem" data-i18n="nav_places">Địa điểm nổi bật</a></li>
           </ul>
         </div>
-        <div class="footer-links">
+        <div>
           <h3 data-i18n="footer_contact">Thông tin liên hệ</h3>
-          <ul>
+          <ul class="footer-links">
             <li data-i18n="footer_school">🏫 Trường THPT Lương Thế Vinh, TP.HCM</li>
             <li data-i18n="footer_address">📍 Quận 1, TP. Hồ Chí Minh, Việt Nam</li>
-            <li>📧 thaptutour.10a4@gmail.com</li>
+            <li>✉️ yenit4444@gmail.com</li>
+            <li>📞 (+84) 774 805 419</li>
+            <li>🌐 Lớp 10A4 Năm 2026 Trường LTV</li>
           </ul>
         </div>
       </div>
