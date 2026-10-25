@@ -74,6 +74,7 @@ const I18N = {
 
     // Search & Filter
     search_placeholder: "Tìm địa điểm theo tên hoặc vị trí...",
+    search_rec_label: "💡 Gợi ý tìm nhanh:",
     filter_all_label: "Tất cả mức giá",
     active_filter_label: "Đang hiển thị:",
     active_filter_total: "trên tổng số",
@@ -187,6 +188,7 @@ const I18N = {
 
     // Search & Filter
     search_placeholder: "Search destination by name or location...",
+    search_rec_label: "💡 Quick recommendations:",
     filter_all_label: "All prices",
     active_filter_label: "Showing:",
     active_filter_total: "out of total",
@@ -1029,6 +1031,9 @@ function switchLanguage(targetLang) {
   // Re-render các phần động trên trang chủ nếu đang ở trang chủ
   if (typeof renderCategories === 'function' && document.getElementById('categoryGrid')) {
     renderCategories();
+  }
+  if (typeof renderSearchRecommendations === 'function' && document.getElementById('recChipsList')) {
+    renderSearchRecommendations();
   }
   if (typeof applyFilters === 'function' && document.getElementById('tourGrid')) {
     applyFilters();

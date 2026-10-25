@@ -537,6 +537,205 @@ img {
   transform: translateY(-50%) scale(1.18);
 }
 
+/* Nút xóa từ khóa tìm kiếm nhanh */
+.btn-input-clear {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.08);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.btn-input-clear:hover {
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--text);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Menu gợi ý tự động (Autocomplete Suggestions Dropdown) */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.14);
+  z-index: 120;
+  max-height: 340px;
+  overflow-y: auto;
+  display: none;
+  animation: dropdownFade 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-suggestions-dropdown.open {
+  display: block;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestions-header {
+  padding: 10px 16px 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background: #f0f9ff;
+}
+
+.suggestion-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--gray-100);
+}
+
+.suggestion-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.suggestion-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-meta {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-arrow {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+}
+
+.suggestion-item:hover .suggestion-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.suggestion-no-result {
+  padding: 18px 20px;
+  font-size: 0.92rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* Đề xuất từ khóa tìm nhanh (Search Recommendation Chips) */
+.search-recommendations {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.rec-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  white-space: nowrap;
+}
+
+.rec-chips-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.rec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #f0f9ff;
+  border: 1.5px solid #bae6fd;
+  color: var(--primary);
+  border-radius: 50px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.08);
+}
+
+.rec-chip:hover {
+  background: #e0f2fe;
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.rec-chip.active {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border-color: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(3, 105, 161, 0.35);
+}
+
+.rec-chip-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .price-filter {
   min-width: 200px;
 }
@@ -4495,6 +4694,72 @@ img {
 
 [data-theme="dark"] .btn-clear-filter:hover {
   background: #ef4444 !important;
+}
+
+[data-theme="dark"] .search-suggestions-dropdown {
+  background: #111c34 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65) !important;
+}
+
+[data-theme="dark"] .suggestions-header {
+  color: #94a3b8 !important;
+  border-bottom-color: rgba(56, 189, 248, 0.18) !important;
+}
+
+[data-theme="dark"] .suggestion-item:hover {
+  background: #182849 !important;
+}
+
+[data-theme="dark"] .suggestion-title {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .suggestion-meta {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .suggestion-arrow {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .suggestion-no-result {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .btn-input-clear {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .btn-input-clear:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .rec-label {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .rec-chip {
+  background: #15223e !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.32) !important;
+  color: #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .rec-chip:hover {
+  background: #1e3358 !important;
+  border-color: #38bdf8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25) !important;
+}
+
+[data-theme="dark"] .rec-chip.active {
+  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+  border-color: #38bdf8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.45) !important;
 }
 
 /* === 11. THẺ ĐỊA DANH NỔI BẬT (TOUR CARDS) === */

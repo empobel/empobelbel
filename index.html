@@ -322,8 +322,16 @@
       <div class="search-filter-bar reveal-on-scroll">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Tìm kiếm địa điểm: Kỳ Co, Eo Gió, Khách sạn Odin, Xuân Diệu, Bún cá Ngọc Liên, ExploraScience...">
+          <input type="text" id="searchInput" autocomplete="off" data-i18n="search_placeholder" placeholder="Tìm kiếm địa điểm: Kỳ Co, Eo Gió, Khách sạn Odin, Xuân Diệu, Bún cá Ngọc Liên, ExploraScience...">
+          <button type="button" class="btn-input-clear" id="btnInputClear" aria-label="Xóa tìm kiếm" title="Xóa tìm kiếm">✕</button>
+          <!-- Menu gợi ý tự động (Autocomplete Suggestions Dropdown) -->
+          <div class="search-suggestions-dropdown" id="searchSuggestionsDropdown" role="listbox"></div>
         </div>
+      </div>
+      <!-- Đề xuất từ khóa tìm nhanh (Search Recommendations Chips) -->
+      <div class="search-recommendations reveal-on-scroll" id="searchRecommendations">
+        <span class="rec-label" data-i18n="search_rec_label">💡 Gợi ý tìm nhanh:</span>
+        <div class="rec-chips-list" id="recChipsList"></div>
       </div>
       <!-- Badge hiển thị trạng thái lọc danh mục & từ khóa -->
       <div id="activeFilterBadge" class="active-filter-badge-wrap"></div>

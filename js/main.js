@@ -376,8 +376,163 @@ function updateActiveFilterBadge(resultCount) {
         c.classList.toggle('active', c.dataset.category === 'all');
       });
       applyFilters();
+      renderSearchRecommendations();
+      updateSearchClearBtn();
+      closeSuggestions();
     });
   }
+}
+
+/**
+ * Danh sách từ khóa đề xuất theo ngôn ngữ
+ */
+const SEARCH_RECOMMENDATIONS = {
+  vi: [
+    { icon: '🏝️', label: 'Kỳ Co', keyword: 'Kỳ Co' },
+    { icon: '🌅', label: 'Eo Gió', keyword: 'Eo Gió' },
+    { icon: '🏨', label: 'Khách sạn Odin', keyword: 'Khách sạn Odin' },
+    { icon: '🦞', label: 'Hải sản', keyword: 'Hải sản' },
+    { icon: '🚀', label: 'ExploraScience', keyword: 'ExploraScience' },
+    { icon: '🌄', label: 'Ghềnh Ráng', keyword: 'Ghềnh Ráng' },
+    { icon: '🍲', label: 'Cơm Mậu & Bún cá', keyword: 'Cơm Mậu' },
+    { icon: '🏛️', label: 'Bảo tàng', keyword: 'Bảo tàng' }
+  ],
+  en: [
+    { icon: '🏝️', label: 'Ky Co Beach', keyword: 'Ky Co' },
+    { icon: '🌅', label: 'Eo Gio Cliff', keyword: 'Eo Gio' },
+    { icon: '🏨', label: 'Odin Hotel', keyword: 'Odin' },
+    { icon: '🦞', label: 'Seafood', keyword: 'Seafood' },
+    { icon: '🚀', label: 'ExploraScience', keyword: 'ExploraScience' },
+    { icon: '🌄', label: 'Ghenh Rang', keyword: 'Ghenh Rang' },
+    { icon: '🍲', label: 'Com Mau Diner', keyword: 'Com Mau' },
+    { icon: '🏛️', label: 'Binh Dinh Museum', keyword: 'Museum' }
+  ]
+};
+
+function updateSearchClearBtn() {
+  const clearBtn = document.getElementById('btnInputClear');
+  const searchInput = document.getElementById('searchInput');
+  if (!clearBtn || !searchInput) return;
+  clearBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
+}
+
+function closeSuggestions() {
+  const dropdown = document.getElementById('searchSuggestionsDropdown');
+  if (dropdown) dropdown.classList.remove('open');
+}
+
+/**
+ * Render thanh từ khóa đề xuất (Recommendation Chips)
+ */
+function renderSearchRecommendations() {
+  const container = document.getElementById('recChipsList');
+  if (!container) return;
+
+  const currentLang = (typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi';
+  const recs = SEARCH_RECOMMENDATIONS[currentLang] || SEARCH_RECOMMENDATIONS.vi;
+
+  let html = '';
+  recs.forEach(item => {
+    const isActive = currentSearch && currentSearch.toLowerCase() === item.keyword.toLowerCase();
+    html += `
+      <button type="button" class="rec-chip ${isActive ? 'active' : ''}" data-keyword="${item.keyword}">
+        <span class="rec-chip-icon">${item.icon}</span>
+        <span class="rec-chip-text">${item.label}</span>
+      </button>
+    `;
+  });
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.rec-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const kw = btn.dataset.keyword;
+      const searchInput = document.getElementById('searchInput');
+      if (currentSearch && currentSearch.toLowerCase() === kw.toLowerCase()) {
+        currentSearch = '';
+        if (searchInput) searchInput.value = '';
+      } else {
+        currentSearch = kw;
+        if (searchInput) searchInput.value = kw;
+      }
+      applyFilters();
+      renderSearchRecommendations();
+      updateSearchClearBtn();
+      closeSuggestions();
+    });
+  });
+}
+
+/**
+ * Render menu gợi ý tự động (Autocomplete Suggestions Dropdown) khi gõ hoặc click vào ô tìm kiếm
+ */
+function renderSearchSuggestions(query = '') {
+  const dropdown = document.getElementById('searchSuggestionsDropdown');
+  if (!dropdown) return;
+
+  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
+  const trimmed = query.trim().toLowerCase();
+
+  let matches = [];
+  if (trimmed) {
+    matches = tours.filter(t =>
+      t.name.toLowerCase().includes(trimmed) ||
+      t.location.toLowerCase().includes(trimmed) ||
+      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(trimmed))) ||
+      (t.visitTime && t.visitTime.toLowerCase().includes(trimmed))
+    ).slice(0, 5);
+  } else {
+    // Khi chưa gõ gì: hiển thị 4 địa danh nổi bật nhất làm gợi ý
+    matches = tours.slice(0, 4);
+  }
+
+  if (matches.length === 0) {
+    dropdown.innerHTML = `
+      <div class="suggestion-no-result">
+        <span>🔍</span> ${isEn ? 'No destinations found matching' : 'Không có địa điểm nào phù hợp'} "<em>${query}</em>"
+      </div>
+    `;
+    dropdown.classList.add('open');
+    return;
+  }
+
+  const titleText = trimmed
+    ? (isEn ? 'Matching destinations' : 'Địa điểm gợi ý phù hợp')
+    : (isEn ? 'Popular destinations to explore' : 'Địa điểm nổi bật gợi ý khám phá');
+
+  let html = `<div class="suggestions-header">${titleText}</div>`;
+  matches.forEach(tour => {
+    html += `
+      <div class="suggestion-item" data-id="${tour.id}" data-name="${tour.name}">
+        <div class="suggestion-img">
+          <img src="${tour.image}" alt="${tour.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
+        </div>
+        <div class="suggestion-info">
+          <div class="suggestion-title">${tour.name}</div>
+          <div class="suggestion-meta">📍 ${tour.location} ${tour.visitTime ? `• ⏰ ${tour.visitTime}` : ''}</div>
+        </div>
+        <span class="suggestion-arrow">→</span>
+      </div>
+    `;
+  });
+
+  dropdown.innerHTML = html;
+  dropdown.classList.add('open');
+
+  dropdown.querySelectorAll('.suggestion-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const name = item.dataset.name;
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = name;
+      currentSearch = name;
+      applyFilters();
+      renderSearchRecommendations();
+      updateSearchClearBtn();
+      closeSuggestions();
+    });
+  });
 }
 
 /**
@@ -418,6 +573,7 @@ function initHomePage() {
   const currentTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
   renderCategories();
   renderTourCards(currentTours);
+  renderSearchRecommendations();
 
   // Khởi tạo Timeline tabs & view
   const timelineTabs = document.getElementById('timelineTabs');
@@ -435,16 +591,54 @@ function initHomePage() {
   }
 
   const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('btnInputClear');
   let searchTimeout;
+
   if (searchInput) {
+    // Khi focus -> mở menu gợi ý
+    searchInput.addEventListener('focus', () => {
+      renderSearchSuggestions(searchInput.value);
+    });
+
     searchInput.addEventListener('input', (e) => {
+      updateSearchClearBtn();
+      renderSearchSuggestions(e.target.value);
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         currentSearch = e.target.value.trim();
         applyFilters();
+        renderSearchRecommendations();
       }, 250);
     });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeSuggestions();
+      }
+    });
   }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      currentSearch = '';
+      applyFilters();
+      renderSearchRecommendations();
+      updateSearchClearBtn();
+      closeSuggestions();
+    });
+  }
+
+  // Đóng dropdown gợi ý khi nhấp ra ngoài
+  document.addEventListener('click', (e) => {
+    const wrap = e.target && e.target.closest('.search-input-wrap');
+    if (!wrap) {
+      closeSuggestions();
+    }
+  });
 }
 
 
