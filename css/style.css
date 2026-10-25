@@ -4156,24 +4156,45 @@ img {
   color: #e2e8f0;
 }
 
-/* === 7. CHI PHÍ TRỌN GÓI (TOUR COST CARD - FIX CHỮ ĐEN) === */
+/* === 7. CHI PHÍ TRỌN GÓI (TOUR COST CARD) === */
 [data-theme="dark"] .tour-cost-card {
-  background: #111c34;
-  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  background: #111c34 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.35) !important;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.55);
 }
 
-[data-theme="dark"] .cost-title {
-  color: #ffffff;
+[data-theme="dark"] .cost-tag {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+}
+
+[data-theme="dark"] .tour-cost-left h3 {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .tour-cost-left h3 strong {
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .tour-cost-left h3 small {
+  color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] .tour-cost-left p {
   color: #cbd5e1 !important;
 }
 
-[data-theme="dark"] .cost-item {
-  background: #182849;
-  border: 1px solid rgba(56, 189, 248, 0.25);
+/* 5 ô chi tiết dịch vụ trọn gói */
+[data-theme="dark"] .cost-feat-item {
+  background: #182849 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .cost-feat-item:hover {
+  background: #1e3358 !important;
+  border-color: #38bdf8 !important;
 }
 
 [data-theme="dark"] .cost-feat-item .feat-text {
@@ -4184,9 +4205,23 @@ img {
   color: #38bdf8 !important;
 }
 
+[data-theme="dark"] .cost-price-badge {
+  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4) !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+}
+
+[data-theme="dark"] .cost-amount {
+  color: #fef08a !important;
+}
+
+[data-theme="dark"] .cost-period {
+  color: #ffffff !important;
+}
+
 [data-theme="dark"] .cost-final-banner {
-  background: linear-gradient(135deg, #1e3a63, #0f2b48);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: linear-gradient(135deg, #1e3a63, #0f2b48) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
 }
 
 [data-theme="dark"] .umbrella-alert-banner {
