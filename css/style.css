@@ -2604,8 +2604,23 @@ img {
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.85);
 }
 
-/* 2. Con trỏ chuột tương tác sáng tạo (Magic Cursor) */
+/* 2. Con trỏ chuột tương tác ảo (Magic Custom Cursor) - Tối ưu 60Hz / 120Hz mượt mà tuyệt đối */
 @media (hover: hover) and (pointer: fine) {
+  body.has-magic-cursor,
+  body.has-magic-cursor a,
+  body.has-magic-cursor button,
+  body.has-magic-cursor select,
+  body.has-magic-cursor [role="button"],
+  body.has-magic-cursor .hero-btn-video,
+  body.has-magic-cursor .video-play-pulse-btn {
+    cursor: none !important;
+  }
+
+  body.has-magic-cursor input,
+  body.has-magic-cursor textarea {
+    cursor: text !important;
+  }
+
   .cursor-dot {
     position: fixed;
     top: 0;
@@ -2619,46 +2634,42 @@ img {
     transform: translate3d(-100px, -100px, 0);
     margin-left: -4px;
     margin-top: -4px;
-    transition: opacity 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     opacity: 0;
-    box-shadow: 0 0 8px #0ea5e9;
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.9);
     will-change: transform;
+    contain: layout style paint;
+    transition: opacity 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .cursor-ring {
     position: fixed;
     top: 0;
     left: 0;
-    width: 36px;
-    height: 36px;
-    border: 2px solid rgba(14, 165, 233, 0.7);
+    width: 38px;
+    height: 38px;
+    border: 2px solid rgba(14, 165, 233, 0.75);
     background: rgba(14, 165, 233, 0.08);
     border-radius: 50%;
     pointer-events: none !important;
     z-index: 999998;
     transform: translate3d(-100px, -100px, 0);
-    margin-left: -18px;
-    margin-top: -18px;
-    transition: opacity 0.25s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    margin-left: -19px;
+    margin-top: -19px;
     opacity: 0;
     will-change: transform;
+    contain: layout style paint;
+    transition: opacity 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .cursor-ring.cursor-hover {
     border-color: rgba(245, 158, 11, 0.95);
-    background: rgba(245, 158, 11, 0.15);
-    box-shadow: 0 0 16px rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.16);
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.5);
   }
 
   .cursor-dot.cursor-hover {
     background: #f59e0b;
-    box-shadow: 0 0 10px #f59e0b;
-  }
-
-  .cursor-ring.cursor-down {
-    transform: scale(0.75);
-    border-color: #0284c7;
-    background: rgba(2, 132, 199, 0.3);
+    box-shadow: 0 0 12px #f59e0b;
   }
 }
 
@@ -2721,7 +2732,7 @@ img {
   }
 }
 
-/* 4. Hiệu ứng Hero Parallax & Floating Elements */
+/* 4. Khối Hero nhẹ nhàng, thanh thoát */
 .hero {
   position: relative;
   overflow: hidden;
@@ -2731,24 +2742,19 @@ img {
   position: absolute;
   width: 550px;
   height: 550px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.4) 0%, rgba(3, 105, 161, 0) 70%);
-  filter: blur(60px);
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.35) 0%, rgba(3, 105, 161, 0) 70%);
+  filter: blur(50px);
   pointer-events: none;
   border-radius: 50%;
   top: 50%;
   left: 50%;
-  margin-top: -275px;
-  margin-left: -275px;
+  transform: translate(-50%, -50%);
   z-index: 1;
-  transition: transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
-  will-change: transform;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  transition: transform 0.2s ease-out;
-  will-change: transform;
 }
 
 .hero-gradient-text {
@@ -2760,150 +2766,50 @@ img {
 }
 
 .floating-badge {
-  animation: floatingBob 3.5s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes floatingBob {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  /* Huy hiệu cố định thanh lịch */
 }
 
 .pulse-glow {
   position: relative;
-  overflow: hidden;
-  animation: pulseButtonGlow 3s infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-@keyframes pulseButtonGlow {
-  0%, 100% {
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-  }
-  50% {
-    box-shadow: 0 6px 26px rgba(245, 158, 11, 0.75), 0 0 0 6px rgba(245, 158, 11, 0.2);
-  }
+.pulse-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
 }
 
-/* Hiệu ứng vệt sáng lướt qua nút (Shimmer sheen) */
-.pulse-glow::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  transform: skewX(-25deg);
-  animation: sheenSlide 4s infinite ease-in-out;
-}
-
-@keyframes sheenSlide {
-  0%, 65% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
-}
-
-/* 5. Hiệu ứng 3D Interactive Tilt & Glare */
+/* 5. Thẻ hiển thị tức thì & mượt mà, chỉ nổi lên khi hover */
 .tilt-card {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
   position: relative;
-  will-change: transform;
 }
 
 .tilt-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 18px 36px -6px rgba(3, 105, 161, 0.22) !important;
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 32px -6px rgba(3, 105, 161, 0.2) !important;
 }
 
-.tilt-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 65%);
-  transition: opacity 0.35s ease;
-  z-index: 5;
-}
-
-.tilt-card:hover::after {
-  opacity: 1;
-}
-
-/* 6. Hiệu ứng Scroll Reveal (Cuộn tới đâu bay lên tới đó) */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(35px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-on-scroll.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Từng mốc Timeline lướt từ trái sang phải khi cuộn xuống */
-.timeline-item {
-  opacity: 0;
-  transform: translate3d(-35px, 20px, 0);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.timeline-item.is-revealed {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-/* Từng thẻ địa điểm lướt từ dưới lên và phóng nhẹ khi cuộn xuống */
-.tour-card {
-  opacity: 0;
-  transform: translate3d(0, 45px, 0) scale(0.96);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-  will-change: opacity, transform;
-}
-
-.tour-card.is-revealed {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-/* Thẻ danh mục lướt nhẹ từ dưới lên */
+/* Hiển thị tự nhiên không độ trễ cho mọi thành phần */
+.reveal-on-scroll,
+.timeline-item,
+.tour-card,
 .category-card {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
 }
 
-.category-card.is-revealed {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+.tour-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 35px -5px rgba(3, 105, 161, 0.2) !important;
 }
 
-/* Độ trễ xuất hiện so le (Staggered Animation) cho các thẻ */
-.category-grid .category-card:nth-child(1) { transition-delay: 0.05s; }
-.category-grid .category-card:nth-child(2) { transition-delay: 0.12s; }
-.category-grid .category-card:nth-child(3) { transition-delay: 0.19s; }
-.category-grid .category-card:nth-child(4) { transition-delay: 0.26s; }
+.category-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 25px -4px rgba(3, 105, 161, 0.16) !important;
+}
 
-.tour-grid .tour-card:nth-child(1) { transition-delay: 0.05s; }
-.tour-grid .tour-card:nth-child(2) { transition-delay: 0.12s; }
-.tour-grid .tour-card:nth-child(3) { transition-delay: 0.19s; }
-.tour-grid .tour-card:nth-child(4) { transition-delay: 0.26s; }
-.tour-grid .tour-card:nth-child(5) { transition-delay: 0.33s; }
-.tour-grid .tour-card:nth-child(6) { transition-delay: 0.40s; }
-
-/* Micro-interaction: Gợn sóng xung quanh icon mốc thời gian */
 .timeline-icon-box {
   position: relative;
 }
@@ -2911,30 +2817,10 @@ img {
 .timeline-icon-box::before {
   content: '';
   position: absolute;
-  inset: -4px;
+  inset: -3px;
   border-radius: 50%;
-  border: 2px solid rgba(14, 165, 233, 0.4);
-  animation: markerPulse 2.5s infinite;
+  border: 2px solid rgba(14, 165, 233, 0.3);
 }
-
-@keyframes markerPulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-}
-
-
-
-
 
 /* Hiệu ứng nổi lên toàn bộ cho thẻ Về Chúng Tôi, Thời Tiết & Thống Kê */
 .about-us-card {

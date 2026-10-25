@@ -598,173 +598,116 @@ function initScrollProgress() {
 }
 
 /**
- * 2. Con trỏ chuột tương tác sáng tạo (Magic Cursor)
- * Chỉ kích hoạt trên thiết bị dùng chuột (pointer: fine)
+ * 2. Con trỏ chuột tương tác ảo (Magic Custom Cursor)
+ * Tối ưu hóa hiệu năng cao: đồng bộ 60Hz / 120Hz / 144Hz qua requestAnimationFrame
+ * Không layout thrashing, không query DOM trong mousemove, phản hồi siêu mượt và chính xác.
  */
 function initMagicCursor() {
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
   if (!dot || !ring) return;
 
-  // Kiểm tra nếu là thiết bị cảm ứng thì ẩn con trỏ tùy biến
+  // Ẩn trên thiết bị cảm ứng (touchscreen)
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
     dot.style.display = 'none';
     ring.style.display = 'none';
     return;
   }
 
+  // Kích hoạt class ẩn con trỏ mặc định trên desktop
+  document.body.classList.add('has-magic-cursor');
+
   let mouseX = -100;
   let mouseY = -100;
   let ringX = -100;
   let ringY = -100;
+  let currentScale = 1;
+  let targetScale = 1;
   let isHovering = false;
   let isDown = false;
   let isVisible = false;
 
-  window.addEventListener('mousemove', (e) => {
+  // Chỉ ghi nhận tọa độ trong mousemove - tuyệt đối không reflow layout hay query DOM
+  const onMouseMove = (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
     if (!isVisible) {
       isVisible = true;
+      ringX = mouseX;
+      ringY = mouseY;
       dot.style.opacity = '1';
       ring.style.opacity = '1';
     }
+  };
 
-    // Dot bám sát tức thì không độ trễ
-    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+  window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    // Xử lý hover toàn cục bằng closest() - HOÀN TOÀN KHÔNG BAO GIỜ BỊ NHẤP NHÁY
-    const interactiveEl = e.target && e.target.closest('a, button, .tour-card, .category-card, .timeline-tab-btn, input, select');
-    const shouldHover = !!interactiveEl;
-    if (shouldHover !== isHovering) {
-      isHovering = shouldHover;
-      if (isHovering) {
+  // Nhận diện tương tác qua mouseover / mouseout (chỉ kích hoạt khi chuyển đổi phần tử, không tốn tài nguyên khi rê chuột)
+  const interactiveSelector = 'a, button, input, select, textarea, [role="button"], .tour-card, .category-card, .timeline-content, .hero-btn, .hero-btn-video, .video-player-wrap, .stat-box, .weather-plan-box';
+
+  document.addEventListener('mouseover', (e) => {
+    if (!e.target) return;
+    if (e.target.closest(interactiveSelector)) {
+      if (!isHovering) {
+        isHovering = true;
         ring.classList.add('cursor-hover');
         dot.classList.add('cursor-hover');
-      } else {
-        ring.classList.remove('cursor-hover');
-        dot.classList.remove('cursor-hover');
       }
     }
   }, { passive: true });
 
+  document.addEventListener('mouseout', (e) => {
+    if (!isHovering) return;
+    const related = e.relatedTarget;
+    if (!related || !related.closest(interactiveSelector)) {
+      isHovering = false;
+      ring.classList.remove('cursor-hover');
+      dot.classList.remove('cursor-hover');
+    }
+  }, { passive: true });
+
+  // Hiệu ứng co giãn khi nhấn giữ / nhả chuột
   window.addEventListener('mousedown', () => {
     isDown = true;
-    ring.classList.add('cursor-down');
-    dot.classList.add('cursor-down');
-  });
+  }, { passive: true });
 
   window.addEventListener('mouseup', () => {
     isDown = false;
-    ring.classList.remove('cursor-down');
-    dot.classList.remove('cursor-down');
-  });
+  }, { passive: true });
 
+  // Xử lý khi chuột rời / vào lại trang
   document.addEventListener('mouseleave', () => {
     isVisible = false;
     dot.style.opacity = '0';
     ring.style.opacity = '0';
   });
 
-  // Vòng tròn ring lướt theo chuột với hiệu ứng gia tốc mượt mà (lerp)
-  const renderCursor = () => {
-    ringX += (mouseX - ringX) * 0.18;
-    ringY += (mouseY - ringY) * 0.18;
+  document.addEventListener('mouseenter', () => {
+    isVisible = true;
+    dot.style.opacity = '1';
+    ring.style.opacity = '1';
+  });
 
-    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) scale(${isHovering ? 1.5 : isDown ? 0.8 : 1})`;
+  // Vòng lặp render đồng bộ GPU VSync (60fps / 120fps / 144fps mượt mà tuyệt đối)
+  const renderCursor = () => {
+    if (isVisible) {
+      // Ring lướt theo với gia tốc quán tính lerp êm ái
+      ringX += (mouseX - ringX) * 0.2;
+      ringY += (mouseY - ringY) * 0.2;
+
+      // Scale tương tác
+      targetScale = isDown ? 0.72 : (isHovering ? 1.55 : 1.0);
+      currentScale += (targetScale - currentScale) * 0.22;
+
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      ring.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0) scale(${currentScale.toFixed(2)})`;
+    }
+
     requestAnimationFrame(renderCursor);
   };
+
   requestAnimationFrame(renderCursor);
-}
-
-/**
- * 3. Hiệu ứng nổi lên mượt mà khi hover (loại bỏ hoàn toàn góc nghiêng chìm xuống)
- */
-function initTiltEffect() {
-  // Đã chuyển toàn bộ hiệu ứng sang nổi lên (float up) mượt mà bằng CSS translateY
-}
-
-/**
- * 3b. Nút Địa Điểm nổi lên mượt mà (không hút lệch theo chuột)
- */
-function initMagneticElements() {
-  // Nút địa điểm chỉ nổi lên bằng CSS
-}
-
-/**
- * 4. Hiệu ứng cuộn trang xuất hiện mượt (Scroll Reveal Animations)
- */
-let scrollRevealObserver = null;
-
-function triggerScrollReveal() {
-  const elements = document.querySelectorAll(
-    '.reveal-on-scroll, .section-title, .timeline-item, .tour-card, .category-card, .weather-plan-box, .about-us-card, .umbrella-alert-banner, .timeline-tabs, .timeline-day-header'
-  );
-
-  if (!('IntersectionObserver' in window)) {
-    elements.forEach(el => el.classList.add('is-revealed'));
-    return;
-  }
-
-  if (!scrollRevealObserver) {
-    scrollRevealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-revealed');
-        }
-      });
-    }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    });
-  }
-
-  elements.forEach(el => {
-    if (!el.dataset.observed) {
-      el.dataset.observed = 'true';
-      scrollRevealObserver.observe(el);
-    }
-  });
-}
-
-function initScrollReveal() {
-  triggerScrollReveal();
-
-  if (typeof MutationObserver !== 'undefined') {
-    const domObserver = new MutationObserver(() => {
-      triggerScrollReveal();
-    });
-    domObserver.observe(document.body, { childList: true, subtree: true });
-  }
-}
-
-/**
- * 5. Hiệu ứng Hero Parallax & Mouse Track 3D
- */
-function initHeroParallax() {
-  const hero = document.querySelector('.hero');
-  if (!hero || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
-
-  const title = hero.querySelector('.hero-title-dynamic');
-  const badge = hero.querySelector('.floating-badge');
-  const glow = hero.querySelector('.hero-bg-floating-glow');
-
-  hero.addEventListener('mousemove', (e) => {
-    const rect = hero.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-    if (title) title.style.transform = `translate3d(${x * 14}px, ${y * 10}px, 0)`;
-    if (badge) badge.style.transform = `translate3d(${x * -8}px, ${y * -6}px, 0)`;
-    if (glow) glow.style.transform = `translate3d(${x * 35}px, ${y * 25}px, 0)`;
-  });
-
-  hero.addEventListener('mouseleave', () => {
-    if (title) title.style.transform = 'translate3d(0, 0, 0)';
-    if (badge) badge.style.transform = 'translate3d(0, 0, 0)';
-    if (glow) glow.style.transform = 'translate3d(0, 0, 0)';
-  });
 }
 
 /* ===== KHỞI TẠO KHI TẢI TRANG ===== */
@@ -773,11 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTourDetailPage();
   initScrollProgress();
   initMagicCursor();
-  initTiltEffect();
   initQuyNhonVideo();
-  initMagneticElements();
-  initScrollReveal();
-  initHeroParallax();
 });
 
 
