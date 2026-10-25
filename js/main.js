@@ -164,22 +164,20 @@ function renderTourCards(tours) {
 
     html += `
       <div class="tour-card reveal-on-scroll" onclick="window.location.href='tour-detail.html?id=${tour.id}'" role="button" tabindex="0">
-        <div class="tour-image-wrap">
-          <img src="${tour.image}" alt="${tour.name}" loading="lazy" class="tour-image">
-          <span class="tour-badge">${tour.badge || getCatName(tour.category)}</span>
-          ${visitBadge}
+        <div class="tour-card-img tour-image-wrap">
+          <img src="${tour.image}" alt="${tour.name}" loading="lazy" class="tour-image" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
+          <span class="tour-card-badge tour-badge">${tour.badge || getCatName(tour.category)}</span>
         </div>
-        <div class="tour-body">
-          <div class="tour-meta">
+        <div class="tour-card-body tour-body">
+          <h3 class="tour-title">${tour.name}</h3>
+          ${visitBadge}
+          <div class="tour-card-info tour-meta">
             <span>📍 ${tour.location}</span>
             <span>⏱️ ${tour.duration}</span>
           </div>
-          <h3 class="tour-title">${tour.name}</h3>
-          <p class="tour-desc">${tour.description}</p>
           ${tagsHtml}
-          <div class="tour-footer">
-            <span class="tour-free-tag">Cẩm nang miễn phí</span>
-            <span class="tour-btn-detail">${btnText} →</span>
+          <div class="tour-card-footer tour-footer">
+            <button class="btn-detail btn-detail-full tour-btn-detail" type="button">${btnText} →</button>
           </div>
         </div>
       </div>
