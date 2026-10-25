@@ -1,43 +1,58 @@
 /* ===================================================
    main.js - Logic hiển thị website Thập Tứ Tour
    Chỉ giới thiệu các địa danh du lịch Quy Nhơn & Về tụi tôi
+   Hỗ trợ Chế độ Sáng / Tối (Dark / Light Mode) & Đa ngôn ngữ (VI / EN)
    Hoàn toàn phi lợi nhuận, không có giá tiền / đăng ký tour
    =================================================== */
 
 /* ===== PHẦN CHUNG (tất cả trang) ===== */
 
 // Hamburger menu mobile
-const hamburger = document.getElementById('hamburger');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn') || document.getElementById('hamburger');
 const nav = document.getElementById('nav');
-if (hamburger && nav) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
+if (mobileMenuBtn && nav) {
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn.classList.toggle('active');
     nav.classList.toggle('open');
   });
 
   nav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
+      mobileMenuBtn.classList.remove('active');
       nav.classList.remove('open');
     });
   });
 }
 
-// Nút back to top
+// Nút back to top - Tự ẩn khi cuộn xuống đọc, chỉ hiện khi cuộn ngược lên trên mobile
 const backToTopBtn = document.getElementById('backToTop');
 if (backToTopBtn) {
+  let lastScrollY = window.scrollY;
+
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) {
-      backToTopBtn.classList.add('show');
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > 400) {
+      if (window.innerWidth <= 768) {
+        if (currentScrollY > lastScrollY + 6) {
+          backToTopBtn.classList.remove('show');
+        } else if (currentScrollY < lastScrollY - 6) {
+          backToTopBtn.classList.add('show');
+        }
+      } else {
+        backToTopBtn.classList.add('show');
+      }
     } else {
       backToTopBtn.classList.remove('show');
     }
-  });
+
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+
   backToTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
-
 
 /* ===== TRANG CHỦ (index.html) ===== */
 
@@ -51,26 +66,31 @@ function renderCategories() {
   const grid = document.getElementById('categoryGrid');
   if (!grid || typeof TOURS === 'undefined') return;
 
-  const totalCount = TOURS.length;
+  const categories = (typeof getLocalizedCategories === 'function') ? getLocalizedCategories() : CATEGORIES;
+  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  const totalCount = tours.length;
+  const catAllName = (typeof t === 'function') ? t('cat_all') : 'Tất cả địa danh';
+  const placesSuffix = (typeof t === 'function') ? t('cat_places_count') : 'địa điểm';
+
   let html = `
-    <div class="category-card tilt-card reveal-on-scroll active" data-category="all">
+    <div class="category-card reveal-on-scroll ${currentCategory === 'all' ? 'active' : ''}" data-category="all">
       <div class="cat-icon-wrap">
         <span class="cat-icon">🌍</span>
       </div>
-      <span class="cat-name">Tất cả địa danh</span>
-      <span class="cat-count">${totalCount} địa điểm</span>
+      <span class="cat-name">${catAllName}</span>
+      <span class="cat-count">${totalCount} ${placesSuffix}</span>
     </div>
   `;
 
-  CATEGORIES.forEach(cat => {
-    const count = TOURS.filter(t => t.category === cat.id).length;
+  categories.forEach(cat => {
+    const count = tours.filter(t => t.category === cat.id).length;
     html += `
-      <div class="category-card tilt-card reveal-on-scroll" data-category="${cat.id}">
+      <div class="category-card reveal-on-scroll ${currentCategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
         <div class="cat-icon-wrap">
           <span class="cat-icon">${cat.icon}</span>
         </div>
         <span class="cat-name">${cat.name}</span>
-        <span class="cat-count">${count} địa điểm</span>
+        <span class="cat-count">${count} ${placesSuffix}</span>
       </div>
     `;
   });
@@ -84,7 +104,6 @@ function renderCategories() {
       currentCategory = card.dataset.category;
       applyFilters();
 
-      // Cuộn êm ái xuống phần địa điểm nổi bật để người dùng quan sát kết quả
       const destSection = document.getElementById('dia-diem');
       if (destSection) {
         const top = destSection.getBoundingClientRect().top + window.pageYOffset - 80;
@@ -99,63 +118,68 @@ function renderCategories() {
 }
 
 /**
- * Render danh sách thẻ địa danh Quy Nhơn (gắn liền mốc thời gian ghé thăm)
+ * Render danh sách thẻ địa danh Quy Nhơn
  */
 function renderTourCards(tours) {
   const grid = document.getElementById('tourGrid');
   if (!grid) return;
 
   if (tours.length === 0) {
+    const noTitle = (typeof t === 'function') ? t('no_places_title') : 'Không tìm thấy địa điểm phù hợp';
+    const noSub = (typeof t === 'function') ? t('no_places_sub') : 'Vui lòng thử tìm kiếm với từ khóa khác hoặc chọn mục "Tất cả địa danh".';
     grid.innerHTML = `
       <div class="no-tours">
         <span class="no-tours-icon">🔍</span>
-        <h3>Không tìm thấy địa điểm phù hợp</h3>
-        <p>Vui lòng thử tìm kiếm với từ khóa khác hoặc chọn mục "Tất cả địa danh".</p>
+        <h3>${noTitle}</h3>
+        <p>${noSub}</p>
       </div>
     `;
     return;
   }
 
+  const categories = (typeof getLocalizedCategories === 'function') ? getLocalizedCategories() : CATEGORIES;
   const getCatName = (catId) => {
-    const cat = CATEGORIES.find(c => c.id === catId);
+    const cat = categories.find(c => c.id === catId);
     return cat ? cat.name : '';
   };
+  const visitPrefix = (typeof t === 'function') ? t('visit_prefix') : 'Ghé thăm:';
+  const btnText = (typeof t === 'function') ? t('btn_view_place') : 'Xem chi tiết địa điểm';
 
   let html = '';
   tours.forEach(tour => {
-    // Render các thẻ tag nhỏ
     let tagsHtml = '';
     if (tour.tags && tour.tags.length > 0) {
-      tagsHtml = `<div class="tour-tags">${tour.tags.map(t => `<span class="tour-tag-pill">${t}</span>`).join('')}</div>`;
+      tagsHtml = `<div class="tour-tags">${tour.tags.map(tag => `<span class="tour-tag-pill">${tag}</span>`).join('')}</div>`;
     }
 
-    // Badge thời gian ghé thăm
     let visitBadge = '';
     if (tour.visitTime) {
       visitBadge = `
         <div class="tour-visittime-tag">
           <span class="visittime-icon">⏰</span>
-          <span><strong>Ghé thăm:</strong> ${tour.visitTime}</span>
+          <span><strong>${visitPrefix}</strong> ${tour.visitTime}</span>
         </div>
       `;
     }
 
     html += `
-      <div class="tour-card tilt-card reveal-on-scroll" onclick="window.location.href='tour-detail.html?id=${tour.id}'">
-        <div class="tour-card-img">
-          <img src="${tour.image}" alt="${tour.name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-          <span class="tour-card-badge">${getCatName(tour.category)}</span>
-        </div>
-        <div class="tour-card-body">
-          <h3>${tour.name}</h3>
+      <div class="tour-card reveal-on-scroll" onclick="window.location.href='tour-detail.html?id=${tour.id}'" role="button" tabindex="0">
+        <div class="tour-image-wrap">
+          <img src="${tour.image}" alt="${tour.name}" loading="lazy" class="tour-image">
+          <span class="tour-badge">${tour.badge || getCatName(tour.category)}</span>
           ${visitBadge}
-          <div class="tour-card-info">
+        </div>
+        <div class="tour-body">
+          <div class="tour-meta">
             <span>📍 ${tour.location}</span>
             <span>⏱️ ${tour.duration}</span>
           </div>
+          <h3 class="tour-title">${tour.name}</h3>
+          <p class="tour-desc">${tour.description}</p>
           ${tagsHtml}
-          <div class="tour-card-footer">
-            <button class="btn-detail btn-detail-full">Xem chi tiết địa điểm →</button>
+          <div class="tour-footer">
+            <span class="tour-free-tag">Cẩm nang miễn phí</span>
+            <span class="tour-btn-detail">${btnText} →</span>
           </div>
         </div>
       </div>
@@ -170,14 +194,43 @@ function renderTourCards(tours) {
 }
 
 /**
- * Render Lịch trình chuyến đi (Timeline 4 Ngày 3 Đêm)
+ * Lọc địa danh theo category và tìm kiếm
+ */
+function applyFilters() {
+  const tours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  let result = tours;
+
+  if (currentCategory !== 'all') {
+    result = result.filter(t => t.category === currentCategory);
+  }
+
+  if (currentSearch.trim() !== '') {
+    const q = currentSearch.toLowerCase().trim();
+    result = result.filter(t =>
+      t.name.toLowerCase().includes(q) ||
+      t.location.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(q)))
+    );
+  }
+
+  renderTourCards(result);
+}
+
+/**
+ * Render Lịch trình chuyến đi theo Ngày (1 / 2 / 3 / 4)
  */
 function renderTimeline(dayNumber = 1) {
   const container = document.getElementById('timelineContainer');
   if (!container || typeof TIMELINE_DATA === 'undefined') return;
 
-  const dayData = TIMELINE_DATA.find(d => d.day === parseInt(dayNumber)) || TIMELINE_DATA[0];
+  const timelineData = (typeof getLocalizedTimeline === 'function') ? getLocalizedTimeline() : TIMELINE_DATA;
+  const dayData = timelineData.find(d => d.day === parseInt(dayNumber)) || timelineData[0];
   if (!dayData) return;
+
+  const placeLinkPrefix = (typeof t === 'function') ? t('timeline_place_link') : '📍 <strong>Địa điểm trong chuyến đi:</strong>';
+  const weatherTitle = (typeof t === 'function') ? t('weather_plan_title') : 'Phương Án Dự Phòng Khi Thời Tiết Xấu / Trời Mưa';
+  const dayBadgePrefix = (typeof t === 'function') ? t('day_badge_prefix') : 'LỊCH TRÌNH NGÀY';
 
   let eventsHtml = '';
   dayData.events.forEach((ev) => {
@@ -186,7 +239,7 @@ function renderTimeline(dayNumber = 1) {
       placeLinkHtml = `
         <div class="timeline-place-tag">
           <a href="tour-detail.html?id=${ev.highlightPlaceId}" title="Bấm xem giới thiệu chi tiết">
-            📍 <strong>Địa điểm trong chuyến đi:</strong> ${ev.placeName} <span class="arrow-icon">→</span>
+            ${placeLinkPrefix} ${ev.placeName} <span class="arrow-icon">→</span>
           </a>
         </div>
       `;
@@ -198,7 +251,7 @@ function renderTimeline(dayNumber = 1) {
           <div class="timeline-icon-box">${ev.icon || '📍'}</div>
           <div class="timeline-line"></div>
         </div>
-        <div class="timeline-content tilt-card">
+        <div class="timeline-content">
           <div class="timeline-time-badge">${ev.time}</div>
           <h3 class="timeline-event-title">${ev.title}</h3>
           <p class="timeline-event-desc">${ev.desc}</p>
@@ -208,42 +261,25 @@ function renderTimeline(dayNumber = 1) {
     `;
   });
 
-  // Khối phương án trời mưa / thời tiết xấu
   let weatherHtml = '';
   if (dayData.weatherPlan) {
-    let solutionsHtml = '';
-    dayData.weatherPlan.solutions.forEach(sol => {
-      solutionsHtml += `
-        <div class="weather-sol-item">
-          <span class="sol-badge">⚡ ${sol.title}:</span>
-          <p>${sol.detail}</p>
-        </div>
-      `;
-    });
-
     weatherHtml = `
-      <div class="weather-plan-box tilt-card reveal-on-scroll">
-        <div class="weather-header">
-          <span class="weather-icon">🌧️</span>
-          <div>
-            <h4>Phương Án Dự Phòng Khi Thời Tiết Xấu / Trời Mưa</h4>
-            <p class="weather-condition">${dayData.weatherPlan.condition}</p>
-          </div>
+      <div class="weather-plan-box reveal-on-scroll">
+        <div class="weather-plan-header">
+          <span class="weather-plan-icon">🌦️</span>
+          <h4>${weatherTitle}</h4>
         </div>
-        <div class="weather-solutions-list">
-          ${solutionsHtml}
-        </div>
+        <p>${dayData.weatherPlan}</p>
       </div>
     `;
   }
 
   container.innerHTML = `
     <div class="timeline-day-header reveal-on-scroll">
-      <div class="timeline-day-badge">LỊCH TRÌNH NGÀY ${dayData.day}</div>
-      <h3>${dayData.title}</h3>
-      <p class="timeline-day-summary">${dayData.dateSummary}</p>
+      <span class="timeline-day-pill">${dayBadgePrefix} ${dayData.day}</span>
+      <h3 class="timeline-day-title">${dayData.theme}</h3>
     </div>
-    <div class="timeline-list">
+    <div class="timeline-tree">
       ${eventsHtml}
     </div>
     ${weatherHtml}
@@ -255,312 +291,343 @@ function renderTimeline(dayNumber = 1) {
 }
 
 /**
- * Cập nhật badge thông tin bộ lọc danh mục / từ khóa
+ * Cập nhật nội dung các nút tab lịch trình (Ngày 1 / 2 / 3 / 4)
  */
-function updateActiveFilterBadge(resultCount) {
-  const badgeWrap = document.getElementById('activeFilterBadge');
-  if (!badgeWrap) return;
+function updateTimelineTabs(lang) {
+  const tabsContainer = document.getElementById('timelineTabs');
+  if (!tabsContainer) return;
 
-  if (currentCategory === 'all' && !currentSearch) {
-    badgeWrap.innerHTML = '';
-    badgeWrap.style.display = 'none';
-    return;
-  }
+  const tabData = {
+    vi: [
+      { day: 1, badge: 'Ngày 1', title: 'Khởi hành & Biển Quy Nhơn' },
+      { day: 2, badge: 'Ngày 2', title: 'Kỳ Co – Eo Gió & Tịnh Xá' },
+      { day: 3, badge: 'Ngày 3', title: 'ExploraScience & Ghềnh Ráng' },
+      { day: 4, badge: 'Ngày 4', title: 'Check-in kỉ niệm & Về TP.HCM' }
+    ],
+    en: [
+      { day: 1, badge: 'Day 1', title: 'Departure & Quy Nhon Beach' },
+      { day: 2, badge: 'Day 2', title: 'Ky Co – Eo Gio & Pagoda' },
+      { day: 3, badge: 'Day 3', title: 'ExploraScience & Ghenh Rang' },
+      { day: 4, badge: 'Day 4', title: 'Farewell Photos & Back to HCMC' }
+    ]
+  };
 
-  let catLabel = 'Tất cả địa danh';
-  if (currentCategory && currentCategory !== 'all') {
-    const cat = CATEGORIES.find(c => c.id === currentCategory);
-    catLabel = cat ? `${cat.icon} ${cat.name}` : currentCategory;
-  }
+  const currentTabs = tabData[lang] || tabData.vi;
+  const tabBtns = tabsContainer.querySelectorAll('.timeline-tab-btn');
+  tabBtns.forEach((btn, index) => {
+    const data = currentTabs[index];
+    if (data) {
+      const badge = btn.querySelector('.tab-day-badge');
+      const title = btn.querySelector('.tab-day-title');
+      if (badge) badge.textContent = data.badge;
+      if (title) title.textContent = data.title;
+    }
+  });
+}
 
-  let filterDesc = `Đang xem: <strong>${catLabel}</strong>`;
-  if (currentSearch) {
-    filterDesc += ` • Từ khóa: "<em>${currentSearch}</em>"`;
-  }
-  filterDesc += ` (${resultCount} địa điểm phù hợp)`;
+/**
+ * Cập nhật dòng chữ chạy ngang (Marquee ticker)
+ */
+function updateMarqueeTicker(lang) {
+  const marqueeBoxes = document.querySelectorAll('.marquee-track .marquee-content');
+  if (!marqueeBoxes || marqueeBoxes.length === 0) return;
 
-  badgeWrap.innerHTML = `
-    <div class="filter-pill">
-      <span>${filterDesc}</span>
-      <button type="button" class="btn-clear-filter" id="btnClearFilter" title="Xem lại tất cả">✕ Xem tất cả</button>
-    </div>
+  const contentVI = `
+    <span>🌊 THẬP TỨ TOUR</span>
+    <span class="dot">•</span>
+    <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
+    <span class="dot">•</span>
+    <span>💰 GIÁ CẢ TOUR: 5.920.000đ / NGƯỜI</span>
+    <span class="dot">•</span>
+    <span>🏖️ KỲ CO - EO GIÓ - TỊNH XÁ NGỌC HÒA</span>
+    <span class="dot">•</span>
+    <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
+    <span class="dot">•</span>
+    <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
+    <span class="dot">•</span>
+    <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
+    <span class="dot">•</span>
+    <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
+    <span class="dot">•</span>
+    <span>🥞 BÁNH XÈO TÔM NHẢY DIÊN HỒNG</span>
+    <span class="dot">•</span>
+    <span>🦞 HẢI SẢN LỘC BIỂN & CÂU MỰC ĐÊM</span>
+    <span class="dot">•</span>
+    <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
+    <span class="dot">•</span>
+    <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
+    <span class="dot">•</span>
+    <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
+    <span class="dot">•</span>
   `;
-  badgeWrap.style.display = 'block';
 
-  const clearBtn = document.getElementById('btnClearFilter');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      currentCategory = 'all';
-      currentSearch = '';
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.value = '';
-      const catCards = document.querySelectorAll('.category-card');
-      catCards.forEach(c => {
-        c.classList.toggle('active', c.dataset.category === 'all');
-      });
-      applyFilters();
-    });
-  }
+  const contentEN = `
+    <span>🌊 THAP TU TOUR</span>
+    <span class="dot">•</span>
+    <span>🎓 CLASS 10A4 LUONG THE VINH (2026)</span>
+    <span class="dot">•</span>
+    <span>💰 ALL-INCLUSIVE TOUR: 5,920,000 VND / PERSON</span>
+    <span class="dot">•</span>
+    <span>🏖️ KY CO - EO GIO & NGOC HOA PAGODA</span>
+    <span class="dot">•</span>
+    <span>🌄 GHENH RANG TIEN SA HILLSIDE</span>
+    <span class="dot">•</span>
+    <span>🏛️ BINH DINH GENERAL MUSEUM</span>
+    <span class="dot">•</span>
+    <span>🍲 COM MAU RETRO RESTAURANT</span>
+    <span class="dot">•</span>
+    <span>🍜 NGOC LIEN FISH NOODLES & NEM LOI</span>
+    <span class="dot">•</span>
+    <span>🥞 DIEN HONG CRISPY SHRIMP PANCAKES</span>
+    <span class="dot">•</span>
+    <span>🦞 LOC BIEN SEAFOOD & SQUID FISHING</span>
+    <span class="dot">•</span>
+    <span>🚀 EXPLORASCIENCE SPACE CENTER</span>
+    <span class="dot">•</span>
+    <span>☂️ UMBRELLAS & RAINCOATS READY</span>
+    <span class="dot">•</span>
+    <span>🏨 ODIN HOTEL QUY NHON</span>
+    <span class="dot">•</span>
+  `;
+
+  const chosenContent = lang === 'en' ? contentEN : contentVI;
+  marqueeBoxes.forEach(box => {
+    box.innerHTML = chosenContent;
+  });
 }
 
 /**
- * Lọc theo danh mục & tìm kiếm từ khóa
- */
-function applyFilters() {
-  let result = TOURS;
-
-  // Lọc theo danh mục
-  if (currentCategory && currentCategory !== 'all') {
-    result = result.filter(t => t.category === currentCategory);
-  }
-
-  // Lọc theo từ khóa tìm kiếm
-  if (currentSearch) {
-    const kw = currentSearch.toLowerCase();
-    result = result.filter(t =>
-      t.name.toLowerCase().includes(kw) ||
-      t.location.toLowerCase().includes(kw) ||
-      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(kw))) ||
-      t.description.toLowerCase().includes(kw) ||
-      (t.visitTime && t.visitTime.toLowerCase().includes(kw))
-    );
-  }
-
-  renderTourCards(result);
-  updateActiveFilterBadge(result.length);
-}
-
-/**
- * Khởi tạo trang chủ
+ * Khởi tạo toàn bộ chức năng trang chủ
  */
 function initHomePage() {
   const tourGrid = document.getElementById('tourGrid');
   if (!tourGrid) return;
 
+  const currentTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
   renderCategories();
-  renderTourCards(TOURS);
+  renderTourCards(currentTours);
+  renderTimeline(1);
 
-  // Khởi tạo Timeline tabs & view
+  // Tabs lịch trình
   const timelineTabs = document.getElementById('timelineTabs');
   if (timelineTabs) {
-    const tabBtns = timelineTabs.querySelectorAll('.timeline-tab-btn');
-    tabBtns.forEach(btn => {
+    timelineTabs.querySelectorAll('.timeline-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
+        timelineTabs.querySelectorAll('.timeline-tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const day = btn.dataset.day;
         renderTimeline(day);
       });
     });
-    renderTimeline(1);
   }
 
+  // Tìm kiếm
   const searchInput = document.getElementById('searchInput');
-  let searchTimeout;
+  const searchClearBtn = document.getElementById('searchClearBtn');
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        currentSearch = e.target.value.trim();
-        applyFilters();
-      }, 250);
+      currentSearch = e.target.value;
+      if (searchClearBtn) {
+        searchClearBtn.style.display = currentSearch.length > 0 ? 'block' : 'none';
+      }
+      applyFilters();
     });
+
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        currentSearch = '';
+        searchClearBtn.style.display = 'none';
+        applyFilters();
+        searchInput.focus();
+      });
+    }
   }
 }
 
+/* ===== TRANG CHI TIẾT ĐỊA DANH (tour-detail.html) ===== */
 
-/* ===== TRANG GIỚI THIỆU CHI TIẾT ĐỊA DANH (tour-detail.html) ===== */
-
-function getTourIdFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('id');
-}
-
-/**
- * Render trang bài viết giới thiệu địa danh (hoàn toàn không có giá tiền)
- */
 function renderTourDetail(tour) {
   const main = document.getElementById('tourDetailMain');
   if (!main) return;
 
-  document.title = `Thập Tứ Tour | ${tour.name}`;
+  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
+  const siteTitle = (typeof t === 'function') ? t('logo_title') : 'Thập Tứ Tour';
+  document.title = `${siteTitle} | ${tour.name}`;
   const breadcrumbName = document.getElementById('breadcrumbName');
   if (breadcrumbName) breadcrumbName.textContent = tour.name;
 
-  // Lấy 3 địa danh khác gợi ý xem tiếp
-  const otherTours = TOURS.filter(t => t.id !== tour.id).slice(0, 3);
+  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  const otherTours = allTours.filter(t => t.id !== tour.id).slice(0, 3);
 
-  let html = `
-    <!-- Ảnh bìa và tiêu đề địa danh -->
-    <div class="place-header">
-      <div class="place-image-wrap">
-        <img class="place-hero-img" src="${tour.image}" alt="${tour.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-      </div>
-      <div class="place-title-box">
-        <h1>${tour.name}</h1>
-        ${tour.visitTime ? `
-        <div class="visit-schedule-banner">
-          <span class="schedule-icon">⏰</span>
-          <div>
-            <strong>Mốc thời gian ghé thăm trong chuyến đi:</strong>
-            <span class="schedule-time-text">${tour.visitTime}</span>
-          </div>
-        </div>
-        ` : ''}
-        <div class="place-meta">
-          <span>📍 <strong>Vị trí:</strong> ${tour.location}</span>
-          <span>🕐 <strong>Thời lượng:</strong> ${tour.duration}</span>
-          <span>🌊 <strong>Đặc trưng:</strong> ${tour.tags ? tour.tags.join(' • ') : 'Cảnh sắc Quy Nhơn'}</span>
-        </div>
-      </div>
-    </div>
+  const visitTitle = (typeof t === 'function') ? t('detail_visit_title') : 'Mốc thời gian ghé thăm trong chuyến đi:';
+  const locLabel = (typeof t === 'function') ? t('detail_location') : 'Vị trí:';
+  const durLabel = (typeof t === 'function') ? t('detail_duration') : 'Thời lượng:';
+  const tagLabel = (typeof t === 'function') ? t('detail_tags') : 'Đặc trưng:';
+  const bestTimeTitle = (typeof t === 'function') ? t('detail_best_time') : 'Thời điểm đẹp nhất';
+  const bestTimeDesc = (typeof t === 'function') ? t('detail_best_time_desc') : 'Tháng 3 - Tháng 9 (mùa khô, biển êm, trời trong xanh rực rỡ)';
+  const transTitle = (typeof t === 'function') ? t('detail_transport') : 'Phương tiện di chuyển';
+  const transDesc = (typeof t === 'function') ? t('detail_transport_desc') : 'Xe máy, ô tô hoặc cano / thuyền tùy điểm đến';
+  const expTitle = (typeof t === 'function') ? t('detail_experience') : 'Trải nghiệm du lịch';
+  const expDesc = (typeof t === 'function') ? t('detail_experience_desc') : 'Chụp ảnh check-in, ngắm cảnh biển đảo, thưởng thức ẩm thực';
+  const feeTitle = (typeof t === 'function') ? t('detail_fee') : 'Chi phí tham khảo';
+  const feeDesc = (typeof t === 'function') ? t('detail_fee_desc') : 'Đã bao gồm trong chi phí trọn gói 5.920.000đ của chuyến đi';
+  const introHeading = (typeof t === 'function') ? t('detail_intro_heading') : 'Giới thiệu về địa danh này';
+  const highlightsHeading = (typeof t === 'function') ? t('detail_highlights_heading') : 'Trải nghiệm nổi bật & Lưu ý khi ghé thăm';
+  const backHomeBtn = (typeof t === 'function') ? t('detail_btn_back_home') : '← Quay lại Trang Chủ';
+  const backPlacesBtn = (typeof t === 'function') ? t('detail_btn_back_places') : 'Xem danh sách địa điểm';
+  const relatedHeading = (typeof t === 'function') ? t('detail_related_heading') : 'Khám phá thêm các địa danh khác';
 
-    <!-- Hộp thông tin nhanh -->
-    <div class="quick-facts-card">
-      <div class="fact-item">
-        <span class="fact-icon">🌅</span>
+  let visitBannerHtml = '';
+  if (tour.visitTime) {
+    visitBannerHtml = `
+      <div class="visit-schedule-banner">
+        <span>⏰</span>
         <div>
-          <h4>Thời điểm đẹp nhất</h4>
-          <p>Tháng 3 - Tháng 9 (mùa khô, biển êm, trời trong xanh rực rỡ)</p>
+          <strong>${visitTitle}</strong>
+          <span>${tour.visitTime}</span>
         </div>
       </div>
-      <div class="fact-item">
-        <span class="fact-icon">🛵</span>
-        <div>
-          <h4>Phương tiện di chuyển</h4>
-          <p>Xe máy, ô tô hoặc cano / thuyền tùy điểm đến</p>
-        </div>
-      </div>
-      <div class="fact-item">
-        <span class="fact-icon">📸</span>
-        <div>
-          <h4>Trải nghiệm chính</h4>
-          <p>Ngắm cảnh biển đảo hoang sơ, check-in vách đá, thưởng ngoạn di tích</p>
-        </div>
-      </div>
-    </div>
+    `;
+  }
 
-    <!-- Giới thiệu chi tiết cảnh đẹp -->
-    <div class="place-section">
-      <h2>✨ Vẻ đẹp đặc trưng của ${tour.name}</h2>
-      <div class="place-description">
-        ${tour.description}
-      </div>
-    </div>
+  let highlightsListHtml = '';
+  if (tour.highlights && tour.highlights.length > 0) {
+    highlightsListHtml = tour.highlights.map(item => `<li>${item}</li>`).join('');
+  }
 
-    <!-- Lịch trình khám phá gợi ý -->
-    <div class="place-section">
-      <h2>📋 Lịch trình tham quan trong chuyến đi</h2>
-      <div class="itinerary-list">
-  `;
-
-  tour.itinerary.forEach(item => {
-    html += `
-      <div class="itinerary-card">
-        <div class="itinerary-badge">
-          <span>Ngày</span>
-          <strong>${item.day}</strong>
-        </div>
-        <div class="itinerary-body">
-          <h3>${item.title}</h3>
-          <p>${item.detail}</p>
+  let otherCardsHtml = '';
+  otherTours.forEach(item => {
+    otherCardsHtml += `
+      <div class="related-card" onclick="window.location.href='tour-detail.html?id=${item.id}'" role="button" tabindex="0">
+        <img src="${item.image}" alt="${item.name}" loading="lazy">
+        <div class="related-body">
+          <h4>${item.name}</h4>
+          <p>${item.location}</p>
+          <span class="related-link">${isEn ? 'View details →' : 'Xem chi tiết →'}</span>
         </div>
       </div>
     `;
   });
 
-  html += `
+  main.innerHTML = `
+    <div class="place-header">
+      <div class="place-title-box">
+        <span class="place-badge">${tour.badge || 'Điểm đến Quy Nhơn'}</span>
+        <h1>${tour.name}</h1>
+        <div class="place-meta">
+          <span>${locLabel} <strong>${tour.location}</strong></span>
+          <span>${durLabel} <strong>${tour.duration}</strong></span>
+          <span>${tagLabel} <strong>${(tour.tags || []).join(', ')}</strong></span>
+        </div>
+      </div>
+      <div class="place-hero-img-wrap">
+        <img src="${tour.image}" alt="${tour.name}" class="place-hero-img">
       </div>
     </div>
 
-    <!-- Trải nghiệm nổi bật & Lưu ý khi tham quan -->
+    ${visitBannerHtml}
+
+    <div class="quick-facts-grid">
+      <div class="fact-item">
+        <div class="fact-icon">🌤️</div>
+        <div>
+          <h4>${bestTimeTitle}</h4>
+          <p>${bestTimeDesc}</p>
+        </div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-icon">🛵</div>
+        <div>
+          <h4>${transTitle}</h4>
+          <p>${transDesc}</p>
+        </div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-icon">📸</div>
+        <div>
+          <h4>${expTitle}</h4>
+          <p>${expDesc}</p>
+        </div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-icon">🏷️</div>
+        <div>
+          <h4>${feeTitle}</h4>
+          <p>${feeDesc}</p>
+        </div>
+      </div>
+    </div>
+
     <div class="place-section">
-      <h2>💡 Cẩm nang & Bí quyết trải nghiệm</h2>
-      <div class="includes-excludes-grid">
+      <h2>${introHeading}</h2>
+      <div class="place-description">
+        <p>${tour.description}</p>
+      </div>
+    </div>
+
+    <div class="place-section">
+      <h2>${highlightsHeading}</h2>
+      <div class="info-grid">
         <div class="info-card info-includes">
-          <h3>🌟 Điểm nổi bật chuyến đi</h3>
-          <ul>
-  `;
-  if (tour.highlights) {
-    tour.highlights.forEach(item => {
-      html += `<li>${item}</li>`;
-    });
-  }
-  html += `
-          </ul>
+          <h3>✨ Trải nghiệm không thể bỏ qua</h3>
+          <ul>${highlightsListHtml}</ul>
         </div>
         <div class="info-card info-excludes">
-          <h3>🎒 Lưu ý & Chuẩn bị khi đi</h3>
+          <h3>📌 Lưu ý từ tụi mình</h3>
           <ul>
-  `;
-  if (tour.tips) {
-    tour.tips.forEach(item => {
-      html += `<li>${item}</li>`;
-    });
-  }
-  html += `
+            <li>Đem theo trang phục phù hợp, kem chống nắng và mũ nón khi đi biển đảo.</li>
+            <li>Giữ gìn vệ sinh chung, không vứt rác bừa bãi tại các danh lam thắng cảnh.</li>
+            <li>Đoàn luôn chuẩn bị sẵn dù và áo mưa tiện lợi hỗ trợ chu đáo suốt chuyến đi.</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- Nút quay lại -->
-    <div class="back-action-wrap">
-      <a href="index.html#dia-diem" class="btn-back-home">← Quay lại danh sách địa điểm nổi bật</a>
-      <a href="index.html#lich-trinh" class="btn-back-timeline">🗓️ Xem toàn bộ lịch trình 4 ngày 3 đêm →</a>
+    <div class="detail-back-bar">
+      <a href="index.html" class="btn-back-home">${backHomeBtn}</a>
+      <a href="index.html#dia-diem" class="btn-back-places">${backPlacesBtn} →</a>
     </div>
 
-    <!-- Gợi ý các địa danh khác -->
     <div class="related-places">
-      <h2>Khám phá thêm các điểm đến khác trong chuyến đi</h2>
+      <h2>${relatedHeading}</h2>
       <div class="related-grid">
-  `;
-
-  otherTours.forEach(t => {
-    html += `
-      <div class="related-card" onclick="window.location.href='tour-detail.html?id=${t.id}'">
-        <img src="${t.image}" alt="${t.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80';">
-        <div class="related-body">
-          <h4>${t.name}</h4>
-          <p>📍 ${t.location}</p>
-          <span class="related-link">Khám phá địa danh →</span>
-        </div>
-      </div>
-    `;
-  });
-
-  html += `
+        ${otherCardsHtml}
       </div>
     </div>
   `;
-
-  main.innerHTML = html;
 }
 
-/**
- * Khởi tạo trang chi tiết địa danh
- */
 function initTourDetailPage() {
   const tourDetailMain = document.getElementById('tourDetailMain');
   if (!tourDetailMain) return;
 
-  const tourId = getTourIdFromUrl();
+  const urlParams = new URLSearchParams(window.location.search);
+  const tourId = urlParams.get('id');
+  const isEn = typeof getCurrentLang === 'function' && getCurrentLang() === 'en';
+
   if (!tourId) {
+    const notFoundTitle = isEn ? 'Destination not found!' : 'Không tìm thấy địa danh này!';
+    const notFoundLink = isEn ? '← Back to Home' : '← Quay lại Trang Chủ';
     tourDetailMain.innerHTML = `
       <div class="no-tours">
-        <h2>Không tìm thấy địa danh!</h2>
-        <p><a href="index.html#tours">← Bấm vào đây để xem danh sách các địa danh</a></p>
+        <h2>${notFoundTitle}</h2>
+        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
       </div>
     `;
     return;
   }
 
-  const tour = getTourById(tourId);
+  const allTours = (typeof getLocalizedTours === 'function') ? getLocalizedTours() : TOURS;
+  const tour = allTours.find(t => t.id === parseInt(tourId));
   if (!tour) {
+    const notFoundTitle = isEn ? 'Destination does not exist!' : 'Địa danh không tồn tại!';
+    const notFoundLink = isEn ? '← Click here to view all destinations' : '← Bấm vào đây để xem danh sách các địa danh';
     tourDetailMain.innerHTML = `
       <div class="no-tours">
-        <h2>Địa danh không tồn tại!</h2>
-        <p><a href="index.html#tours">← Bấm vào đây để xem danh sách các địa danh</a></p>
+        <h2>${notFoundTitle}</h2>
+        <p><a href="index.html#dia-diem">${notFoundLink}</a></p>
       </div>
     `;
     return;
@@ -569,18 +636,101 @@ function initTourDetailPage() {
   renderTourDetail(tour);
 }
 
-
-/* ===================================================
-   DYNAMIC INTERACTIVE FEATURES (Phong cách theforgottentoys.com)
-   - Magic Custom Cursor (chấm tròn + vòng tròn lerp + magnetic hover)
-   - Scroll Progress Indicator
-   - 3D Interactive Card Tilt & Dynamic Glare
-   - Scroll-triggered Reveal Animations (IntersectionObserver)
-   - Hero Mouse-track Parallax
-   =================================================== */
+/* ===== HỆ THỐNG GIAO DIỆN SÁNG / TỐI (LIGHT / DARK THEME) ===== */
 
 /**
- * 1. Thanh tiến trình cuộn trang (Scroll Progress Bar)
+ * Cập nhật tooltip & trạng thái cho nút chuyển đổi giao diện Sáng / Tối
+ */
+function updateThemeToggleUI(theme, lang) {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  const currentLang = lang || ((typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi');
+  const isDark = theme === 'dark';
+  let label = '';
+  if (typeof t === 'function') {
+    label = isDark ? t('theme_toggle_light') : t('theme_toggle_dark');
+  }
+  if (!label) {
+    label = isDark
+      ? (currentLang === 'en' ? 'Switch to light mode' : 'Chuyển sang chế độ sáng')
+      : (currentLang === 'en' ? 'Switch to dark mode' : 'Chuyển sang chế độ tối');
+  }
+  btn.setAttribute('title', label);
+  btn.setAttribute('aria-label', label);
+}
+
+/**
+ * Khởi tạo bộ chuyển đổi giao diện Sáng / Tối
+ */
+function initThemeToggle() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+
+  const getCurrentTheme = () => document.documentElement.getAttribute('data-theme') || 'light';
+  updateThemeToggleUI(getCurrentTheme());
+
+  btn.addEventListener('click', () => {
+    const currentTheme = getCurrentTheme();
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    try {
+      localStorage.setItem('thap_tu_theme', newTheme);
+    } catch (e) {}
+    updateThemeToggleUI(newTheme);
+
+    btn.style.transform = 'scale(0.85) rotate(15deg)';
+    setTimeout(() => {
+      btn.style.transform = '';
+    }, 180);
+  });
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      try {
+        if (!localStorage.getItem('thap_tu_theme')) {
+          const autoTheme = e.matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', autoTheme);
+          updateThemeToggleUI(autoTheme);
+        }
+      } catch (err) {}
+    });
+  }
+}
+
+/* ===== HỆ THỐNG ĐA NGÔN NGỮ (VIỆT - ANH) ===== */
+
+/**
+ * Khởi tạo bộ chuyển đổi ngôn ngữ
+ */
+function initLanguageSwitcher() {
+  const currentLang = (typeof getCurrentLang === 'function') ? getCurrentLang() : 'vi';
+
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    if (btn.dataset.lang === currentLang) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetLang = btn.dataset.lang;
+      if (typeof switchLanguage === 'function') {
+        switchLanguage(targetLang);
+      }
+    });
+  });
+
+  if (currentLang === 'en' && typeof switchLanguage === 'function') {
+    switchLanguage('en');
+  }
+}
+
+/* ===== HIỆU ỨNG TƯƠNG TÁC CAO CẤP ===== */
+
+/**
+ * Thanh tiến trình cuộn trang
  */
 function initScrollProgress() {
   const progressBar = document.getElementById('scrollProgress');
@@ -598,23 +748,19 @@ function initScrollProgress() {
 }
 
 /**
- * 2. Con trỏ chuột tương tác ảo (Magic Custom Cursor)
- * Tối ưu hóa hiệu năng cao: đồng bộ 60Hz / 120Hz / 144Hz qua requestAnimationFrame
- * Không layout thrashing, không query DOM trong mousemove, phản hồi siêu mượt và chính xác.
+ * Con trỏ chuột tương tác ảo (Magic Custom Cursor) - 60Hz / 120Hz mượt mà tuyệt đối
  */
 function initMagicCursor() {
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
   if (!dot || !ring) return;
 
-  // Ẩn trên thiết bị cảm ứng (touchscreen)
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
     dot.style.display = 'none';
     ring.style.display = 'none';
     return;
   }
 
-  // Kích hoạt class ẩn con trỏ mặc định trên desktop
   document.body.classList.add('has-magic-cursor');
 
   let mouseX = -100;
@@ -627,7 +773,6 @@ function initMagicCursor() {
   let isDown = false;
   let isVisible = false;
 
-  // Chỉ ghi nhận tọa độ trong mousemove - tuyệt đối không reflow layout hay query DOM
   const onMouseMove = (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -643,7 +788,6 @@ function initMagicCursor() {
 
   window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-  // Nhận diện tương tác qua mouseover / mouseout (chỉ kích hoạt khi chuyển đổi phần tử, không tốn tài nguyên khi rê chuột)
   const interactiveSelector = 'a, button, input, select, textarea, [role="button"], .tour-card, .category-card, .timeline-content, .hero-btn, .hero-btn-video, .video-player-wrap, .stat-box, .weather-plan-box';
 
   document.addEventListener('mouseover', (e) => {
@@ -667,7 +811,6 @@ function initMagicCursor() {
     }
   }, { passive: true });
 
-  // Hiệu ứng co giãn khi nhấn giữ / nhả chuột
   window.addEventListener('mousedown', () => {
     isDown = true;
   }, { passive: true });
@@ -676,7 +819,6 @@ function initMagicCursor() {
     isDown = false;
   }, { passive: true });
 
-  // Xử lý khi chuột rời / vào lại trang
   document.addEventListener('mouseleave', () => {
     isVisible = false;
     dot.style.opacity = '0';
@@ -689,14 +831,11 @@ function initMagicCursor() {
     ring.style.opacity = '1';
   });
 
-  // Vòng lặp render đồng bộ GPU VSync (60fps / 120fps / 144fps mượt mà tuyệt đối)
   const renderCursor = () => {
     if (isVisible) {
-      // Ring lướt theo với gia tốc quán tính lerp êm ái
       ringX += (mouseX - ringX) * 0.2;
       ringY += (mouseY - ringY) * 0.2;
 
-      // Scale tương tác
       targetScale = isDown ? 0.72 : (isHovering ? 1.55 : 1.0);
       currentScale += (targetScale - currentScale) * 0.22;
 
@@ -709,17 +848,6 @@ function initMagicCursor() {
 
   requestAnimationFrame(renderCursor);
 }
-
-/* ===== KHỞI TẠO KHI TẢI TRANG ===== */
-document.addEventListener('DOMContentLoaded', () => {
-  initHomePage();
-  initTourDetailPage();
-  initScrollProgress();
-  initMagicCursor();
-  initQuyNhonVideo();
-});
-
-
 
 /**
  * Trình phát Video Quy Nhơn
@@ -747,3 +875,60 @@ function initQuyNhonVideo() {
     overlay.classList.remove('is-hidden');
   });
 }
+
+/**
+ * Hiệu ứng cuộn trang xuất hiện mềm mại (Scroll Reveal)
+ * Sử dụng IntersectionObserver hiệu năng cao, tự unobserve khi xuất hiện
+ */
+let scrollRevealObserver = null;
+
+function triggerScrollReveal() {
+  const elements = document.querySelectorAll(
+    '.reveal-on-scroll, .section-title, .video-showcase-card, .about-us-card, .timeline-item, .tour-card, .category-card, .weather-plan-box, .umbrella-alert-banner, .tour-cost-summary-box'
+  );
+  if (!elements.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach(el => el.classList.add('is-revealed'));
+    return;
+  }
+
+  if (!scrollRevealObserver) {
+    scrollRevealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          scrollRevealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -20px 0px'
+    });
+  }
+
+  elements.forEach(el => {
+    if (!el.classList.contains('reveal-on-scroll')) {
+      el.classList.add('reveal-on-scroll');
+    }
+    if (!el.classList.contains('is-revealed')) {
+      scrollRevealObserver.observe(el);
+    }
+  });
+}
+
+function initScrollReveal() {
+  triggerScrollReveal();
+}
+
+/* ===== KHỞI TẠO KHI TẢI TRANG ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
+  initLanguageSwitcher();
+  initHomePage();
+  initTourDetailPage();
+  initScrollProgress();
+  initMagicCursor();
+  initQuyNhonVideo();
+  initScrollReveal();
+});
