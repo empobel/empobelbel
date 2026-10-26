@@ -1,8 +1,44 @@
 /* ===================================================
    tours.js - Cẩm nang các địa danh du lịch Quy Nhơn
    8+ địa danh nổi tiếng: Biển đảo, Thiên nhiên, Văn hóa lịch sử
-   Hoàn toàn phi lợi nhuận, không có giá tiền / tour trọn gói
+   Dự án học sinh Lớp 10A4 THPT Lương Thế Vinh (Khóa 2026)
    =================================================== */
+
+/**
+ * CẤU HÌNH THÔNG TIN CHUYẾN ĐI & KINH PHÍ TẬP TRUNG (Single Source of Truth)
+ * Quản lý toàn bộ kinh phí và siêu dữ liệu chuyến đi tại một nơi duy nhất.
+ */
+const TOUR_CONFIG = {
+  price: 5920000,
+  formattedPrice: {
+    vi: "5.920.000đ",
+    en: "5,920,000 VND"
+  },
+  duration: {
+    vi: "4 Ngày 3 Đêm",
+    en: "4 Days 3 Nights"
+  },
+  durationShort: "4N3Đ",
+  className: "10A4",
+  schoolName: {
+    vi: "THPT Lương Thế Vinh - TP.HCM",
+    en: "Luong The Vinh High School - HCMC"
+  },
+  year: 2026,
+  isCommercial: false
+};
+
+/**
+ * Lấy mức kinh phí / giá chuyến đi theo ngôn ngữ
+ * @param {string} lang - 'vi' hoặc 'en'
+ * @returns {string} Chuỗi hiển thị kinh phí định dạng chuẩn
+ */
+function getTourPrice(lang = 'vi') {
+  if (TOUR_CONFIG.formattedPrice && TOUR_CONFIG.formattedPrice[lang]) {
+    return TOUR_CONFIG.formattedPrice[lang];
+  }
+  return TOUR_CONFIG.formattedPrice.vi;
+}
 
 const TOURS = [
   // === 1: Kỳ Co & Eo Gió ===

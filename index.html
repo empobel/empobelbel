@@ -4,6 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thập Tứ Tour - Khám Phá Quy Nhơn | Lớp 10A4 THPT Lương Thế Vinh TP.HCM</title>
+
+  <!-- SEO & Cẩm Nang Du Lịch -->
+  <meta name="description" content="Cẩm nang du lịch Quy Nhơn - Bình Định 4 ngày 3 đêm tự thiết kế của học sinh Lớp 10A4 THPT Lương Thế Vinh (2026). Khám phá Kỳ Co, Eo Gió, Ghềnh Ráng Tiên Sa, ExploraScience, ẩm thực xứ Nẫu và kinh phí tham khảo chi tiết.">
+  <meta name="keywords" content="du lịch Quy Nhơn, cẩm nang Quy Nhơn, du lịch Bình Định, Kỳ Co Eo Gió, Ghềnh Ráng Tiên Sa, ExploraScience, Lớp 10A4 THPT Lương Thế Vinh, Thập Tứ Tour, lịch trình 4N3Đ">
+  <meta name="author" content="Lớp 10A4 THPT Lương Thế Vinh TP.HCM">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://empobelbel.vercel.app/">
+
+  <!-- Open Graph / Facebook / Zalo Social Share -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://empobelbel.vercel.app/">
+  <meta property="og:title" content="Thập Tứ Tour - Cẩm Nang Du Lịch Quy Nhơn 4N3Đ | Lớp 10A4 LTV">
+  <meta property="og:description" content="Cẩm nang du lịch trải nghiệm Quy Nhơn 4N3Đ của học sinh Lớp 10A4 THPT Lương Thế Vinh TP.HCM. Lộ trình chi tiết từng giờ, địa điểm nổi bật và kinh phí tham khảo.">
+  <meta property="og:image" content="https://empobelbel.vercel.app/about-quynhon.jpg">
+  <meta property="og:site_name" content="Thập Tứ Tour">
+  <meta property="og:locale" content="vi_VN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://empobelbel.vercel.app/">
+  <meta name="twitter:title" content="Thập Tứ Tour - Cẩm Nang Du Lịch Quy Nhơn 4N3Đ">
+  <meta name="twitter:description" content="Cẩm nang du lịch trải nghiệm Quy Nhơn 4N3Đ của học sinh Lớp 10A4 THPT Lương Thế Vinh TP.HCM.">
+  <meta name="twitter:image" content="https://empobelbel.vercel.app/about-quynhon.jpg">
+
+  <!-- Mobile Theme Color -->
+  <meta name="theme-color" content="#0369a1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a0f1d" media="(prefers-color-scheme: dark)">
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="css/style.css">
@@ -68,7 +96,7 @@
           🎓 Dự án học sinh Lớp 10A4 • THPT Lương Thế Vinh
         </div>
         <div class="hero-price-badge floating-badge" data-i18n="hero_price_badge">
-          🏷️ Tour 4N3Đ: <strong class="price-nowrap">5.920.000đ</strong> / bạn
+          🏷️ Kinh phí tham khảo 4N3Đ: <strong class="price-nowrap">5.920.000đ</strong> / bạn
         </div>
       </div>
       <h1 class="hero-title-dynamic" data-i18n="hero_title">Khám Phá Vẻ Đẹp<br><span class="hero-gradient-text">Quy Nhơn - Bình Định</span></h1>
@@ -83,13 +111,13 @@
 
   <!-- ===== MARQUEE TICKER (DẢI CHỮ CHẠY VÔ TẬN) ===== -->
   <div class="marquee-ticker-wrap">
-    <div class="marquee-track">
-      <div class="marquee-content">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-content" id="marqueeContentPrimary">
         <span>🌊 THẬP TỨ TOUR</span>
         <span class="dot">•</span>
         <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
         <span class="dot">•</span>
-        <span>💰 GIÁ CẢ TOUR: 5.920.000đ / NGƯỜI</span>
+        <span>💰 KINH PHÍ THAM KHẢO: 5.920.000đ / BẠN</span>
         <span class="dot">•</span>
         <span>🏖️ KỲ CO - EO GIÓ</span>
         <span class="dot">•</span>
@@ -110,12 +138,12 @@
         <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
         <span class="dot">•</span>
       </div>
-      <div class="marquee-content" aria-hidden="true">
+      <div class="marquee-content" id="marqueeContentClone" aria-hidden="true">
         <span>🌊 THẬP TỨ TOUR</span>
         <span class="dot">•</span>
         <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
         <span class="dot">•</span>
-        <span>💰 GIÁ CẢ TOUR: 5.920.000đ / NGƯỜI</span>
+        <span>💰 KINH PHÍ THAM KHẢO: 5.920.000đ / BẠN</span>
         <span class="dot">•</span>
         <span>🏖️ KỲ CO - EO GIÓ</span>
         <span class="dot">•</span>
@@ -193,13 +221,13 @@
             </div>
             <div class="stat-box stat-highlight-price">
               <span class="stat-number" data-i18n="stat_price_num">5.920.000đ</span>
-              <span class="stat-label" data-i18n="stat_price_label">Giá cả tour / người</span>
+              <span class="stat-label" data-i18n="stat_price_label">Kinh phí thực tế / bạn</span>
             </div>
           </div>
         </div>
 
         <div class="about-us-image-box">
-          <img src="about-quynhon.jpg" alt="Toàn cảnh biển đảo Quy Nhơn" class="about-us-img">
+          <img src="about-quynhon.jpg" alt="Toàn cảnh biển đảo Quy Nhơn" class="about-us-img" loading="lazy" decoding="async">
           <div class="about-image-caption">
             <span data-i18n="about_img_caption">🌊 Toàn cảnh Cù Lao Xanh - Quy Nhơn, Bình Định</span>
           </div>
@@ -208,10 +236,10 @@
     </div>
   </section>
 
-  <!-- Dải chuyển tiếp phân cách mềm mại giữa 2 phần -->
+  <!-- Dải chuyển tiếp phân cách mềm mại giữa 2 phần (currentColor theo chủ đề) -->
   <div class="section-divider-curve">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
-      <path fill="#ffffff" d="M0,35 C280,80 540,10 820,50 C1100,90 1300,30 1440,55 L1440,80 L0,80 Z"></path>
+      <path fill="currentColor" d="M0,35 C280,80 540,10 820,50 C1100,90 1300,30 1440,55 L1440,80 L0,80 Z"></path>
     </svg>
   </div>
 
@@ -232,18 +260,18 @@
         </div>
       </div>
 
-      <!-- Khung giá & chi tiết trọn gói của tour -->
+      <!-- Khung kinh phí tham khảo chuyến đi của học sinh lớp 10A4 -->
       <div class="tour-cost-card reveal-on-scroll">
         <div class="tour-cost-header">
           <div class="tour-cost-left">
-            <span class="cost-tag" data-i18n="cost_tag">🏷️ CHI PHÍ TRỌN GÓI 4N3Đ</span>
-            <h3 data-i18n="cost_heading">Giá Trọn Gói: <strong class="price-nowrap">5.920.000đ</strong> <small>/ người</small></h3>
-            <p data-i18n="cost_desc">Mức kinh phí thực tế và minh bạch cho chuyến đi 4 ngày 3 đêm của học sinh lớp 10A4, đã bao trọn toàn bộ dịch vụ chất lượng:</p>
+            <span class="cost-tag" data-i18n="cost_tag">🏷️ KINH PHÍ THAM KHẢO 4N3Đ</span>
+            <h3 data-i18n="cost_heading">Kinh Phí Chuyến Đi: <strong class="price-nowrap">5.920.000đ</strong> <small>/ bạn (tham khảo)</small></h3>
+            <p data-i18n="cost_desc">Mức kinh phí thực tế và minh bạch cho chuyến đi trải nghiệm 4 ngày 3 đêm của học sinh lớp 10A4 (dự án học sinh phi thương mại, không kinh doanh hay nhận đặt tour):</p>
           </div>
           <div class="tour-cost-right">
             <div class="cost-price-badge">
               <span class="cost-amount price-nowrap" data-i18n="cost_amount">5.920.000đ</span>
-              <span class="cost-period" data-i18n="cost_period">4 Ngày 3 Đêm • Trọn gói</span>
+              <span class="cost-period" data-i18n="cost_period">4 Ngày 3 Đêm • Thực tế lớp 10A4</span>
             </div>
           </div>
         </div>
@@ -254,7 +282,7 @@
           </div>
           <div class="cost-feat-item">
             <span class="feat-icon">🏨</span>
-            <span class="feat-text" data-i18n="cost_feat_hotel"><strong>Khách sạn 4 sao Odin Quy Nhơn:</strong> nghỉ ngơi 3 đêm, hồ bơi sân thượng, vị trí trung tâm</span>
+            <span class="feat-text" data-i18n="cost_feat_hotel"><strong>Khách sạn Odin Quy Nhơn:</strong> tiêu chuẩn tiện nghi 3 đêm, hồ bơi sân thượng, vị trí trung tâm</span>
           </div>
           <div class="cost-feat-item">
             <span class="feat-icon">🦀</span>
@@ -266,10 +294,35 @@
           </div>
           <div class="cost-feat-item">
             <span class="feat-icon">☂️</span>
-            <span class="feat-text" data-i18n="cost_feat_care"><strong>Hỗ trợ chu đáo:</strong> dù che, áo mưa tiện lợi dự phòng thời tiết & bảo hiểm du lịch trọn tour</span>
+            <span class="feat-text" data-i18n="cost_feat_care"><strong>Hỗ trợ chu đáo:</strong> chuẩn bị sẵn dù che, áo mưa tiện lợi dự phòng thời tiết & quản lý đoàn học sinh</span>
           </div>
         </div>
       </div>
+
+      <!-- Nội dung dự phòng trong trường hợp tắt JavaScript hoặc dành cho web crawlers -->
+      <noscript>
+        <div class="noscript-fallback">
+          <h3>📌 Cẩm Nang Du Lịch Quy Nhơn 4N3Đ (Bản xem tĩnh không JavaScript)</h3>
+          <p>Trang web đang chạy ở chế độ tĩnh. Dưới đây là tóm tắt toàn bộ lịch trình chuyến đi 4 ngày 3 đêm và danh sách các địa danh nổi bật tại Quy Nhơn - Bình Định của tập thể Lớp 10A4 THPT Lương Thế Vinh (2026):</p>
+          <ul>
+            <li><strong>Ngày 1:</strong> Khởi hành từ TP.HCM, check-in Khách sạn Odin Quy Nhơn, dạo bãi biển Vầng Trăng Khuyết, thưởng thức Bún cá Ngọc Liên và Hải sản đêm phố biển Duy Mập (Xuân Diệu).</li>
+            <li><strong>Ngày 2:</strong> Dạo bước ngắm vách đá kỳ vĩ Eo Gió (Nhơn Lý), tắm biển ngọc bích Kỳ Co, ăn trưa hải sản tươi sống Hoàng Thao, du hành vũ trụ tại Trung tâm Khoa học ExploraScience, ăn tối Nem Chả Lợi.</li>
+            <li><strong>Ngày 3:</strong> Đón bình minh và tắm biển Quy Nhơn, viếng thăm danh thắng Ghềnh Ráng Tiên Sa (Bãi tắm Hoàng Hậu & Mộ thi nhân Hàn Mặc Tử), chiêm ngưỡng Tháp Đôi Chăm-pa cổ kính, dạo ngắm cảnh đêm bằng xe ngựa.</li>
+            <li><strong>Ngày 4:</strong> Tham quan tìm hiểu lịch sử tại Bảo tàng Tổng hợp Bình Định, dạo bước tạm biệt biển Quy Nhơn, ăn trưa thân mật tại Nhà hàng Cơm Mậu Quy Nhơn và khởi hành về lại TP.HCM.</li>
+          </ul>
+          <p style="margin-top: 12px;"><strong>Khám phá chi tiết các địa danh nổi bật:</strong></p>
+          <ul>
+            <li><a href="tour-detail.html?id=1">1. Kỳ Co - Eo Gió (Nhơn Lý)</a></li>
+            <li><a href="tour-detail.html?id=2">2. Biển Quy Nhơn & Bãi Tắm Vầng Trăng Khuyết</a></li>
+            <li><a href="tour-detail.html?id=3">3. Phố Biển Xuân Diệu, Chợ Đêm & Xe Ngựa Dạo Phố</a></li>
+            <li><a href="tour-detail.html?id=4">4. Ghềnh Ráng Tiên Sa & Mộ Hàn Mặc Tử</a></li>
+            <li><a href="tour-detail.html?id=5">5. Khách Sạn Odin Quy Nhơn</a></li>
+            <li><a href="tour-detail.html?id=6">6. Nhà Hàng Cơm Mậu Quy Nhơn</a></li>
+            <li><a href="tour-detail.html?id=7">7. Tháp Đôi Quy Nhơn (Tháp Chăm Hưng Thạnh)</a></li>
+            <li><a href="tour-detail.html?id=8">8. Bảo Tàng Tổng Hợp Bình Định</a></li>
+          </ul>
+        </div>
+      </noscript>
 
       <!-- Tabs chuyển Ngày 1 / 2 / 3 / 4 -->
       <div class="timeline-tabs reveal-on-scroll" id="timelineTabs">
@@ -382,7 +435,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p data-i18n="footer_rights">© 2024 - 2026 Thập Tứ Tour. Dự án cẩm nang du lịch Quy Nhơn của học sinh lớp 10A4 Trường THPT Lương Thế Vinh, TP.HCM.</p>
+        <p data-i18n="footer_rights">© 2026 Thập Tứ Tour • Dự án học sinh Lớp 10A4 THPT Lương Thế Vinh TP.HCM.</p>
       </div>
     </div>
   </footer>

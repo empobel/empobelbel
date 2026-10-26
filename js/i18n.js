@@ -16,7 +16,7 @@ const I18N = {
 
     // Hero section
     hero_badge: "🎓 Dự án học sinh Lớp 10A4 • THPT Lương Thế Vinh",
-    hero_price_badge: "🏷️ Trọn gói 4N3Đ: <strong class=\"price-nowrap\">5.920.000đ</strong> / bạn",
+    hero_price_badge: "🏷️ Kinh phí tham khảo 4N3Đ: <strong class=\"price-nowrap\">{PRICE}</strong> / bạn",
     hero_title: "Khám Phá Vẻ Đẹp<br><span class=\"hero-gradient-text\">Quy Nhơn - Bình Định</span>",
     hero_desc: "Cẩm nang du lịch Quy Nhơn cùng tập thể 10A4: dạo biển vầng trăng khuyết, đón gió Eo Gió - Kỳ Co, khám phá vũ trụ ExploraScience và thưởng thức hải sản tươi ngon.",
     hero_btn_itinerary: "Xem lịch trình chuyến đi",
@@ -34,15 +34,15 @@ const I18N = {
     about_tag: "🏫 Lớp 10A4 • Năm 2026 • THPT Lương Thế Vinh TP.HCM",
     about_heading: "Chào mọi người, tụi mình là Thập Tứ Tour! 👋",
     about_p1: "Tụi mình là một nhóm học sinh đến từ <strong>lớp 10A4 (khóa 2026), trường THPT Lương Thế Vinh - TP. Hồ Chí Minh</strong>. Xuất phát từ chuyến đi thực tế cùng nhau và niềm say mê vẻ đẹp biển đảo miền Trung, tụi mình đã xây dựng website này như một cẩm nang giới thiệu du lịch Quy Nhơn thật sinh động và gần gũi.",
-    about_p2: "Chuyến đi 4 ngày 3 đêm được tập thể lớp 10A4 lên kế hoạch chi tiết với mức chi phí trọn gói là <strong>5.920.000đ / người</strong> (bao gồm toàn bộ xe khứ hồi & di chuyển, khách sạn 4 sao Odin, tất cả các bữa ăn đặc sản, vé tham quan tất cả điểm đến & bảo hiểm du lịch). Mọi thông tin được chia sẻ để bất cứ ai đang có ý định ghé thăm xứ Nẫu đều có thể dễ dàng tham khảo.",
+    about_p2: "Chuyến đi 4 ngày 3 đêm được tập thể lớp 10A4 lên kế hoạch chi tiết với mức kinh phí tham khảo chuyến đi thực tế là <strong>{PRICE} / người</strong> (bao gồm toàn bộ xe khứ hồi & di chuyển, lưu trú tại Khách sạn Odin, tất cả các bữa ăn đặc sản, vé tham quan tất cả điểm đến & hỗ trợ dự phòng). Mọi thông tin được chia sẻ để bất cứ ai đang có ý định ghé thăm xứ Nẫu đều có thể dễ dàng tham khảo.",
     stat_places_num: "8+",
     stat_places_label: "Điểm đến nổi bật",
     stat_days_num: "4N3Đ",
     stat_days_label: "Trọn vẹn hành trình",
     stat_class_num: "10A4",
     stat_class_label: "Tập thể lớp THPT LTV",
-    stat_price_num: "5.920.000đ",
-    stat_price_label: "Giá cả tour / người",
+    stat_price_num: "{PRICE}",
+    stat_price_label: "Kinh phí thực tế / bạn",
     about_img_caption: "🌊 Toàn cảnh Cù Lao Xanh - Quy Nhơn, Bình Định",
 
     // Itinerary & Pricing section
@@ -50,16 +50,16 @@ const I18N = {
     itinerary_title: "Lịch Trình Chi Tiết 4 Ngày 3 Đêm",
     itinerary_sub: "Hành trình trọn vẹn khám phá Quy Nhơn: chi tiết từng mốc giờ, địa điểm dừng chân, ẩm thực đặc sản & phương án dự phòng thời tiết",
     umbrella_notice: "<strong>Lưu ý chu đáo từ Thập Tứ Tour:</strong> Đoàn luôn chuẩn bị sẵn <strong>dù che và áo mưa tiện lợi</strong> để hỗ trợ tận tình cho các thành viên trong suốt chuyến đi!",
-    cost_tag: "🏷️ CHI PHÍ TRỌN GÓI 4N3Đ",
-    cost_heading: "Giá Trọn Gói: <strong class=\"price-nowrap\">5.920.000đ</strong> <small>/ người</small>",
-    cost_desc: "Mức kinh phí thực tế và minh bạch cho chuyến đi 4 ngày 3 đêm của học sinh lớp 10A4, đã bao trọn toàn bộ dịch vụ chất lượng:",
-    cost_amount: "5.920.000đ",
-    cost_period: "4 Ngày 3 Đêm • Trọn gói",
+    cost_tag: "🏷️ KINH PHÍ THAM KHẢO 4N3Đ",
+    cost_heading: "Kinh Phí Chuyến Đi: <strong class=\"price-nowrap\">{PRICE}</strong> <small>/ bạn (tham khảo)</small>",
+    cost_desc: "Mức kinh phí thực tế và minh bạch cho chuyến đi trải nghiệm 4 ngày 3 đêm của học sinh lớp 10A4 (dự án học sinh phi thương mại, không kinh doanh hay nhận đặt tour):",
+    cost_amount: "{PRICE}",
+    cost_period: "4 Ngày 3 Đêm • Thực tế lớp 10A4",
     cost_feat_bus: "<strong>Xe giường nằm khứ hồi:</strong> TP.HCM - Quy Nhơn & xe du lịch đời mới suốt hành trình",
-    cost_feat_hotel: "<strong>Khách sạn 4 sao Odin Quy Nhơn:</strong> nghỉ ngơi 3 đêm, hồ bơi sân thượng, vị trí trung tâm",
+    cost_feat_hotel: "<strong>Khách sạn Odin Quy Nhơn:</strong> tiêu chuẩn tiện nghi 3 đêm, hồ bơi sân thượng, vị trí trung tâm",
     cost_feat_food: "<strong>Toàn bộ các bữa ăn đặc sản:</strong> Hải sản Duy Mập, Bún cá Ngọc Liên, Cơm Mậu, Bánh xèo Gia Vỹ, Nem Chả Lợi...",
     cost_feat_tickets: "<strong>Trọn bộ vé tham quan & trải nghiệm:</strong> Kỳ Co - Eo Gió, Ghềnh Ráng Tiên Sa, Tháp Đôi, trung tâm vũ trụ ExploraScience, xe ngựa...",
-    cost_feat_care: "<strong>Hỗ trợ chu đáo:</strong> dù che, áo mưa tiện lợi dự phòng thời tiết & bảo hiểm du lịch trọn tour",
+    cost_feat_care: "<strong>Hỗ trợ chu đáo:</strong> chuẩn bị sẵn dù che, áo mưa tiện lợi dự phòng thời tiết & quản lý đoàn học sinh",
     tab_day_prefix: "NGÀY",
     day_badge_prefix: "LỊCH TRÌNH NGÀY",
     timeline_place_link: "📍 <strong>Địa điểm trong chuyến đi:</strong>",
@@ -116,7 +116,7 @@ const I18N = {
     footer_contact: "Thông tin liên hệ",
     footer_school: "🏫 Trường THPT Lương Thế Vinh, TP.HCM",
     footer_address: "📍 Quận 1, TP. Hồ Chí Minh, Việt Nam",
-    footer_rights: "© 2024 - 2026 Thập Tứ Tour. Dự án cẩm nang du lịch Quy Nhơn của học sinh lớp 10A4 Trường THPT Lương Thế Vinh, TP.HCM."
+    footer_rights: "© 2026 Thập Tứ Tour • Dự án học sinh Lớp 10A4 THPT Lương Thế Vinh TP.HCM."
   },
 
   en: {
@@ -130,7 +130,7 @@ const I18N = {
 
     // Hero section
     hero_badge: "🎓 Class 10A4 Project • Luong The Vinh High School",
-    hero_price_badge: "🏷️ 4D3N Tour: <strong class=\"price-nowrap\">5,920,000&nbsp;VND</strong> / student",
+    hero_price_badge: "🏷️ Trip Reference Budget: <strong class=\"price-nowrap\">{PRICE}</strong> / student",
     hero_title: "Discover the Charm of<br><span class=\"hero-gradient-text\">Quy Nhon - Binh Dinh</span>",
     hero_desc: "A handcrafted travel guide by Class 10A4: scenic beaches at Ky Co & Eo Gio, stargazing at ExploraScience, and authentic local coastal delicacies.",
     hero_btn_itinerary: "Explore 4-Day Itinerary",
@@ -148,15 +148,15 @@ const I18N = {
     about_tag: "🏫 Class 10A4 • Year 2026 • Luong The Vinh High School, HCMC",
     about_heading: "Hello everyone, welcome to Thap Tu Tour! 👋",
     about_p1: "We are high school students from <strong>Class 10A4 (Class of 2026) at Luong The Vinh High School in Ho Chi Minh City</strong>. Created right after our class trip to Quy Nhon, this website is our handcrafted, non-profit travel guide designed to share real itineraries, helpful tips, and memorable spots.",
-    about_p2: "Our 4-day 3-night journey is planned with an all-inclusive cost of only <strong>5,920,000 VND / person</strong> (covering round-trip coach transport, 4-star Odin Hotel accommodation, all signature meals, full attraction tickets, and travel insurance) to provide a transparent reference for anyone planning their trip.",
+    about_p2: "Our 4-day 3-night journey was carefully planned with an actual experiential budget of <strong>{PRICE} / person</strong> (covering round-trip coach transport, Odin Hotel accommodation, all signature meals, full attraction tickets, and group amenities). All details are shared as a practical reference for anyone planning their trip (non-commercial, not selling tours).",
     stat_places_num: "8+",
     stat_places_label: "Key Destinations",
     stat_days_num: "4D3N",
     stat_days_label: "Complete Journey",
     stat_class_num: "10A4",
     stat_class_label: "Class 10A4 LTV",
-    stat_price_num: "5,920,000 VND",
-    stat_price_label: "All-inclusive / person",
+    stat_price_num: "{PRICE}",
+    stat_price_label: "Actual budget / student",
     about_img_caption: "🌊 Panoramic view of Cu Lao Xanh - Quy Nhon, Binh Dinh",
 
     // Itinerary & Pricing section
@@ -164,16 +164,16 @@ const I18N = {
     itinerary_title: "Detailed 4-Day 3-Night Schedule",
     itinerary_sub: "Our day-by-day journey through Quy Nhon: exact timings, stops, local food highlights, and weather backup plans",
     umbrella_notice: "<strong>Thoughtful Tip from Thap Tu Tour:</strong> Our group always brings along <strong>umbrellas and raincoats</strong> to keep everyone comfortable throughout the trip!",
-    cost_tag: "🏷️ 4D3N ALL-INCLUSIVE",
-    cost_heading: "Package Price: <strong class=\"price-nowrap\">5,920,000&nbsp;VND</strong> <small>/ student</small>",
-    cost_desc: "Our real, transparent all-inclusive budget for Class 10A4's 4-day 3-night trip, covering all quality services:",
-    cost_amount: "5,920,000 VND",
-    cost_period: "4 Days 3 Nights • All-inclusive",
+    cost_tag: "🏷️ 4D3N TRIP REFERENCE BUDGET",
+    cost_heading: "Trip Budget: <strong class=\"price-nowrap\">{PRICE}</strong> <small>/ student (reference)</small>",
+    cost_desc: "Our real, transparent reference budget for Class 10A4's 4-day 3-night school trip (student non-commercial showcase, not a commercial tour):",
+    cost_amount: "{PRICE}",
+    cost_period: "4 Days 3 Nights • Class 10A4 Experience",
     cost_feat_bus: "<strong>Round-trip sleeper coach:</strong> HCMC - Quy Nhon & dedicated tour bus throughout the journey",
-    cost_feat_hotel: "<strong>4-Star Odin Hotel Quy Nhon:</strong> 3-night stay, rooftop infinity pool, prime central location",
+    cost_feat_hotel: "<strong>Odin Hotel Quy Nhon:</strong> comfortable 3-night stay, rooftop infinity pool, prime central location",
     cost_feat_food: "<strong>All signature meals included:</strong> Duy Map Seafood, Ngoc Lien Fish Noodles, Com Mau, Gia Vy Crispy Pancakes, Nem Loi...",
     cost_feat_tickets: "<strong>All attraction tickets & activities:</strong> Ky Co - Eo Gio, Ghenh Rang Tien Sa, Twin Cham Towers, ExploraScience Space Center, horse carriage...",
-    cost_feat_care: "<strong>Thoughtful amenities:</strong> umbrellas, raincoats for bad weather backup & comprehensive travel insurance",
+    cost_feat_care: "<strong>Thoughtful amenities:</strong> umbrellas, raincoats for bad weather backup & student group coordination",
     tab_day_prefix: "DAY",
     day_badge_prefix: "ITINERARY DAY",
     timeline_place_link: "📍 <strong>Stop on the itinerary:</strong>",
@@ -230,7 +230,7 @@ const I18N = {
     footer_contact: "Contact Information",
     footer_school: "🏫 Luong The Vinh High School, HCMC",
     footer_address: "📍 District 1, Ho Chi Minh City, Vietnam",
-    footer_rights: "© 2024 - 2026 Thap Tu Tour. High school travel project by Class 10A4, Luong The Vinh High School, HCMC."
+    footer_rights: "© 2026 Thap Tu Tour • High school travel project by Class 10A4, Luong The Vinh High School, HCMC."
   }
 };
 
@@ -939,10 +939,12 @@ function getCurrentLang() {
  */
 function t(key) {
   const lang = getCurrentLang();
-  if (I18N[lang] && I18N[lang][key] !== undefined) {
-    return I18N[lang][key];
+  let text = (I18N[lang] && I18N[lang][key] !== undefined) ? I18N[lang][key] : (I18N.vi[key] || key);
+  if (typeof text === 'string' && text.includes('{PRICE}')) {
+    const priceStr = (typeof getTourPrice === 'function') ? getTourPrice(lang) : (lang === 'en' ? '5,920,000 VND' : '5.920.000đ');
+    text = text.split('{PRICE}').join(priceStr);
   }
-  return I18N.vi[key] || key;
+  return text;
 }
 
 /**

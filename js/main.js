@@ -738,8 +738,8 @@ function renderTourDetail(tour) {
       <div class="fact-item">
         <span class="fact-icon">🏷️</span>
         <div>
-          <h4>${isEn ? 'Tour Package' : 'Gói tour trải nghiệm'}</h4>
-          <p>${isEn ? 'Included in full 4D3N tour (5,920,000&nbsp;VND / student)' : 'Nằm trong tour trọn gói 4N3Đ (5.920.000đ / người)'}</p>
+          <h4>${isEn ? 'Trip Reference Budget' : 'Kinh phí tham khảo'}</h4>
+          <p>${isEn ? `Included in 4D3N trip reference budget (${(typeof getTourPrice === 'function') ? getTourPrice('en') : '5,920,000 VND'} / student)` : `Nằm trong kinh phí chuyến đi thực tế 4N3Đ (${(typeof getTourPrice === 'function') ? getTourPrice('vi') : '5.920.000đ'} / bạn)`}</p>
         </div>
       </div>
     </div>
@@ -922,69 +922,56 @@ function updateTimelineTabs(lang) {
 
 /**
  * Cập nhật dòng chữ chạy ngang (Marquee ticker)
+ * Tự động sinh cả bản chính và bản sao vô tận (aria-hidden) từ một nguồn duy nhất.
  */
-function updateMarqueeTicker(lang) {
-  const marqueeBoxes = document.querySelectorAll('.marquee-track .marquee-content');
-  if (!marqueeBoxes || marqueeBoxes.length === 0) return;
+function updateMarqueeTicker(lang = 'vi') {
+  const track = document.getElementById('marqueeTrack');
+  const priceStr = (typeof getTourPrice === 'function') ? getTourPrice(lang) : (lang === 'en' ? '5,920,000 VND' : '5.920.000đ');
 
-  const contentVI = `
-    <span>🌊 THẬP TỨ TOUR</span>
-    <span class="dot">•</span>
-    <span>🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)</span>
-    <span class="dot">•</span>
-    <span>💰 GIÁ CẢ TOUR: 5.920.000đ / NGƯỜI</span>
-    <span class="dot">•</span>
-    <span>🏖️ KỲ CO - EO GIÓ</span>
-    <span class="dot">•</span>
-    <span>🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN</span>
-    <span class="dot">•</span>
-    <span>🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH</span>
-    <span class="dot">•</span>
-    <span>🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN</span>
-    <span class="dot">•</span>
-    <span>🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI</span>
-    <span class="dot">•</span>
-    <span>🦞 HẢI SẢN XUÂN DIỆU DUY MẬP</span>
-    <span class="dot">•</span>
-    <span>🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE</span>
-    <span class="dot">•</span>
-    <span>☂️ SẴN SÀNG DÙ & ÁO MƯA</span>
-    <span class="dot">•</span>
-    <span>🏨 KHÁCH SẠN ODIN QUY NHƠN</span>
-    <span class="dot">•</span>
-  `;
+  const itemsVI = [
+    "🌊 THẬP TỨ TOUR",
+    "🎓 LỚP 10A4 THPT LƯƠNG THẾ VINH (2026)",
+    `💰 KINH PHÍ THAM KHẢO: ${priceStr} / BẠN`,
+    "🏖️ KỲ CO - EO GIÓ",
+    "🌄 GHỀNH RÁNG TIÊN SA - ĐỒI THI NHÂN",
+    "🏛️ BẢO TÀNG TỔNG HỢP BÌNH ĐỊNH",
+    "🍲 NHÀ HÀNG CƠM MẬU QUY NHƠN",
+    "🍜 BÚN CÁ NGỌC LIÊN & NEM CHẢ LỢI",
+    "🦞 HẢI SẢN XUÂN DIỆU DUY MẬP",
+    "🚀 KHÁM PHÁ VŨ TRỤ EXPLORASCIENCE",
+    "☂️ SẴN SÀNG DÙ & ÁO MƯA",
+    "🏨 KHÁCH SẠN ODIN QUY NHƠN"
+  ];
 
-  const contentEN = `
-    <span>🌊 THAP TU TOUR</span>
-    <span class="dot">•</span>
-    <span>🎓 CLASS 10A4 LUONG THE VINH (2026)</span>
-    <span class="dot">•</span>
-    <span>💰 ALL-INCLUSIVE TOUR: 5,920,000 VND / PERSON</span>
-    <span class="dot">•</span>
-    <span>🏖️ KY CO - EO GIO</span>
-    <span class="dot">•</span>
-    <span>🌄 GHENH RANG TIEN SA HILLSIDE</span>
-    <span class="dot">•</span>
-    <span>🏛️ BINH DINH GENERAL MUSEUM</span>
-    <span class="dot">•</span>
-    <span>🍲 COM MAU RETRO RESTAURANT</span>
-    <span class="dot">•</span>
-    <span>🍜 NGOC LIEN FISH NOODLES & NEM LOI</span>
-    <span class="dot">•</span>
-    <span>🦞 XUAN DIEU SEAFOOD STREET</span>
-    <span class="dot">•</span>
-    <span>🚀 EXPLORASCIENCE SPACE CENTER</span>
-    <span class="dot">•</span>
-    <span>☂️ UMBRELLAS & RAINCOATS READY</span>
-    <span class="dot">•</span>
-    <span>🏨 ODIN HOTEL QUY NHON</span>
-    <span class="dot">•</span>
-  `;
+  const itemsEN = [
+    "🌊 THAP TU TOUR",
+    "🎓 CLASS 10A4 LUONG THE VINH (2026)",
+    `💰 TRIP REFERENCE BUDGET: ${priceStr} / STUDENT`,
+    "🏖️ KY CO - EO GIO",
+    "🌄 GHENH RANG TIEN SA HILLSIDE",
+    "🏛️ BINH DINH GENERAL MUSEUM",
+    "🍲 COM MAU RETRO RESTAURANT",
+    "🍜 NGOC LIEN FISH NOODLES & NEM LOI",
+    "🦞 XUAN DIEU SEAFOOD STREET",
+    "🚀 EXPLORASCIENCE SPACE CENTER",
+    "☂️ UMBRELLAS & RAINCOATS READY",
+    "🏨 ODIN HOTEL QUY NHON"
+  ];
 
-  const chosenContent = lang === 'en' ? contentEN : contentVI;
-  marqueeBoxes.forEach(box => {
-    box.innerHTML = chosenContent;
-  });
+  const items = lang === 'en' ? itemsEN : itemsVI;
+  const contentHtml = items.map(text => `<span>${text}</span><span class="dot">•</span>`).join('');
+
+  if (track) {
+    track.innerHTML = `
+      <div class="marquee-content" id="marqueeContentPrimary">${contentHtml}</div>
+      <div class="marquee-content" id="marqueeContentClone" aria-hidden="true">${contentHtml}</div>
+    `;
+  } else {
+    const marqueeBoxes = document.querySelectorAll('.marquee-track .marquee-content');
+    marqueeBoxes.forEach(box => {
+      box.innerHTML = contentHtml;
+    });
+  }
 }
 
 /**
@@ -1005,12 +992,12 @@ function initLanguageSwitcher() {
     });
   });
 
-  // Nếu người dùng đã chọn English trước đó, áp dụng ngay tức thì
-  if (currentLang === 'en' && typeof switchLanguage === 'function') {
-    switchLanguage('en');
+  // Áp dụng ngôn ngữ hiện tại và cập nhật dữ liệu tự động (bao gồm giá từ TOUR_CONFIG)
+  if (typeof switchLanguage === 'function') {
+    switchLanguage(currentLang);
   } else {
-    updateTimelineTabs('vi');
-    updateMarqueeTicker('vi');
+    updateTimelineTabs(currentLang);
+    updateMarqueeTicker(currentLang);
   }
 }
 
@@ -1044,18 +1031,34 @@ function initScrollProgress() {
 
 /**
  * 2. Con trỏ chuột tương tác sáng tạo (Magic Cursor)
- * Chỉ kích hoạt trên thiết bị dùng chuột (pointer: fine)
+ * Tự động tắt trên thiết bị cảm ứng (touch screens) và khi người dùng bật prefers-reduced-motion
  */
 function initMagicCursor() {
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
   if (!dot || !ring) return;
 
-  // Kiểm tra nếu là thiết bị cảm ứng thì ẩn con trỏ tùy biến
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+  const isTouch = window.matchMedia && (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches);
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Kiểm tra nếu là thiết bị cảm ứng hoặc bật prefers-reduced-motion thì ẩn con trỏ tùy biến
+  if (isTouch || prefersReducedMotion) {
     dot.style.display = 'none';
     ring.style.display = 'none';
     return;
+  }
+
+  // Lắng nghe thay đổi tùy chọn prefers-reduced-motion trong thời gian thực
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+      if (e.matches) {
+        dot.style.display = 'none';
+        ring.style.display = 'none';
+      } else if (!isTouch) {
+        dot.style.display = '';
+        ring.style.display = '';
+      }
+    });
   }
 
   let mouseX = -100;
